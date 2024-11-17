@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "985673910194",
+    "project_id": "biteflow-8f7b8",
+    "storage_bucket": "biteflow-8f7b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985673910194:android:e672cc0359cef8a0f206ab",
+        "android_client_info": {
+          "package_name": "com.example.biteflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK4Z3ff-cXvVOXjwxuL-5LbCqRoZHUxi4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
