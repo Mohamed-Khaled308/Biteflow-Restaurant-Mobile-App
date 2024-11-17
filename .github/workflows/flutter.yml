@@ -1,4 +1,4 @@
-name: Flutter CI/CD
+name: Flutter CI
 
 on:
   push:
@@ -11,13 +11,13 @@ on:
 jobs:
   flutter:
     runs-on: ubuntu-latest
-    
+
     steps:
-      # Checkout the repository
+      # Checkout code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Flutter (using your version 3.24.5)
+      # Set up Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -27,10 +27,10 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # (Optional) Build the APK for Android
-      - name: Build APK
-        run: flutter build apk --release
+      # Run flutter doctor to ensure Flutter environment is properly set up
+      - name: Run flutter doctor
+        run: flutter doctor
 
-      # (Optional) Build the iOS app
-      # - name: Build iOS
-      #   run: flutter build ios --release
+      # Try to build the project to ensure it can be built without errors
+      - name: Run flutter build
+        run: flutter build apk --dry-run
