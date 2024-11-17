@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "985673910194",
-    "project_id": "biteflow-8f7b8",
-    "storage_bucket": "biteflow-8f7b8.firebasestorage.app"
+    "project_number": "206872951763",
+    "project_id": "biteflow-e1515",
+    "storage_bucket": "biteflow-e1515.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:985673910194:android:e672cc0359cef8a0f206ab",
+        "mobilesdk_app_id": "1:206872951763:android:5af8b86ec7bf436663cd26",
         "android_client_info": {
-          "package_name": "com.example.biteflow"
+          "package_name": "com.flutter_project.biteflow"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCK4Z3ff-cXvVOXjwxuL-5LbCqRoZHUxi4"
+          "current_key": "AIzaSyBuUvmtv6kgihwW-bncUHlLv8lYiBEV0H0"
         }
       ],
       "services": {
