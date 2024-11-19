@@ -21,10 +21,10 @@ class AuthService {
 
       return userCredential.user != null;
     } on FirebaseAuthException catch (e) {
-      print('FirebaseAuthException: ${e.message}');
+      // print('FirebaseAuthException: ${e.message}');
       return false;
     } catch (e) {
-      print('Error: ${e.toString()}');
+      // print('Error: ${e.toString()}');
       return false;
     }
   }
@@ -46,10 +46,10 @@ class AuthService {
 
       return userCredential.user != null;
     } on FirebaseAuthException catch (e) {
-      print('FirebaseAuthException: ${e.message}');
+      // print('FirebaseAuthException: ${e.message}');
       return false;
     } catch (e) {
-      print('Error: ${e.toString()}');
+      // print('Error: ${e.toString()}');
       return false;
     }
   }
