@@ -20,7 +20,7 @@ class AuthService {
       );
 
       return userCredential.user != null;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       // print('FirebaseAuthException: ${e.message}');
       return false;
     } catch (e) {
@@ -45,7 +45,7 @@ class AuthService {
       }
 
       return userCredential.user != null;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       // print('FirebaseAuthException: ${e.message}');
       return false;
     } catch (e) {

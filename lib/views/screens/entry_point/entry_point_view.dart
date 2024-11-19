@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:biteflow/view-model/entry_point_view_model.dart';
 
 class EntryPointView extends StatefulWidget {
-  const EntryPointView({Key? key}) : super(key: key);
+  const EntryPointView({super.key});
 
   @override
   State<EntryPointView> createState() => _EntryPointViewState();
