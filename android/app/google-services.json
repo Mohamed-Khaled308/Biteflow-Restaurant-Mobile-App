@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:206872951763:android:47938f1a0fe265f163cd26",
+        "android_client_info": {
+          "package_name": "com.biteflow.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuUvmtv6kgihwW-bncUHlLv8lYiBEV0H0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:206872951763:android:5af8b86ec7bf436663cd26",
         "android_client_info": {
           "package_name": "com.flutter_project.biteflow"
