@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:biteflow/view-model/entry_point_view_model.dart';
+import 'package:biteflow/constants/theme_constants.dart';
+
 
 class EntryPointView extends StatefulWidget {
   const EntryPointView({super.key});
@@ -26,8 +28,8 @@ class _EntryPointViewState extends State<EntryPointView> {
               _viewModel.updateIndex(value);
             },
             currentIndex: _viewModel.selectedIndex,
-            activeColor: Colors.blue, // Replace with your primary color
-            inactiveColor: Colors.grey, // Replace with your bodyTextColor
+            activeColor: ThemeConstants.primaryColor, // Replace with your primary color
+            inactiveColor: ThemeConstants.greyColor, // Replace with your bodyTextColor
             items: List.generate(
               _viewModel.navItems.length,
               (index) => BottomNavigationBarItem(
@@ -37,8 +39,8 @@ class _EntryPointViewState extends State<EntryPointView> {
                   width: 30,
                   colorFilter: ColorFilter.mode(
                     index == _viewModel.selectedIndex
-                        ? Colors.blue
-                        : Colors.grey,
+                        ? ThemeConstants.primaryColor
+                        : ThemeConstants.greyColor,
                     BlendMode.srcIn,
                   ),
                 ),
