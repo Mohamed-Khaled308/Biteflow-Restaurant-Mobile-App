@@ -18,7 +18,7 @@ class _CartState extends State<Cart> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Cart"),
+        title: const Text('Cart'),
       ),
       body: Column(
         children: [

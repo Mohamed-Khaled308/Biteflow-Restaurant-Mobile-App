@@ -1,4 +1,4 @@
-import 'package:biteflow/models/orderItem.dart';
+import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -56,7 +56,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
                       const OrderItemCardTrait(
                         Icons.edit_note_rounded,
                         Colors.orange,
-                        "Edit",
+                        'Edit',
                         Colors.orange,
                       ),
                       if (widget.orderItem.notes.isNotEmpty)
@@ -75,13 +75,13 @@ class _OrderItemCardState extends State<OrderItemCard> {
                       OrderItemCardTrait(
                         Icons.star,
                         Colors.green,
-                        "Rating: ${widget.orderItem.rating}",
+                        'Rating: ${widget.orderItem.rating}',
                         Colors.black87,
                       ),
                       OrderItemCardTrait(
                         Icons.price_change_rounded,
                         Colors.red,
-                        "${widget.orderItem.price} EGP",
+                        '${widget.orderItem.price} EGP',
                         Colors.black87,
                       ),
                     ],
@@ -122,9 +122,9 @@ class _OrderItemCardState extends State<OrderItemCard> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
-                            Text("${widget.orderItem.quantity}"),
-                            IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                            IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
+                            Text('${widget.orderItem.quantity}'),
+                            IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
                           ],
                         ),
                       ),

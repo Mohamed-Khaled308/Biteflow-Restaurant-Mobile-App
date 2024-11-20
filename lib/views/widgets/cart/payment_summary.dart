@@ -24,7 +24,7 @@ class PaymentSummary extends StatelessWidget {
             child:  const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                 Text(
                   'Payment Summary',
                   style: TextStyle(
                     fontSize: 18,
@@ -32,11 +32,11 @@ class PaymentSummary extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 8),
+                 SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                     Text(
                       'Total Amount',
                       style: TextStyle(
                         fontSize: 16,
@@ -45,7 +45,7 @@ class PaymentSummary extends StatelessWidget {
                     ),
                     Text(
                       '1000 EGP',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
