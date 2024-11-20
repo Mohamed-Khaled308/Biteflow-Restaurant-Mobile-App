@@ -5,6 +5,8 @@ import 'package:biteflow/views/screens/order_details/order_details_view.dart';
 import 'package:biteflow/views/screens/profile/profile_view.dart';
 import 'package:biteflow/views/screens/search/search_view.dart';
 
+
+
 class EntryPointViewModel extends BaseModel {
   int _selectedIndex = 0;
 
