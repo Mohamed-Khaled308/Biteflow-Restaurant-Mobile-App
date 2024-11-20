@@ -1,3 +1,4 @@
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme(context),
       // Dark theme is inclided in the Full template
       themeMode: ThemeMode.light,
+      navigatorKey: getIt<NavigationService>().navigationKey,
       home: const EntryPointView(),
     );
   }
