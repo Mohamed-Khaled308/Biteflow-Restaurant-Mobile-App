@@ -1,21 +1,17 @@
-class OrderItem {
-  final String id;
-  final String title;
+import 'package:biteflow/models/item.dart';
+
+class OrderItem extends Item{
   final int quantity;
-  final double price;
-  final String imageUrl;
-  final String description;
-  final double rating;
   final String notes;
   
   OrderItem({
-    required this.id,
-    required this.title,
+    required super.id,
+    required super.title,
     required this.quantity,
-    required this.price,
-    required this.imageUrl,
-    required this.description,
-    required this.rating,
+    required super.price,
+    required super.imageUrl,
+    required super.description,
+    required super.rating,
     this.notes = '',
   });
 }
