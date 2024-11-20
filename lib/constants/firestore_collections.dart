@@ -1,4 +1,7 @@
 class FirestoreCollections {
-  static const String clientsCollection = 'clients';
-  static const String managersCollection = 'managers';
+  static const String usersCollection = 'users';
+  static const String restaurantsCollection = 'restaurants';
+  static const String ordersCollection = 'orders';
+  static const String menusCollection = 'menus';
+  static const String menuItemsCollection = 'menu_items';
 }
