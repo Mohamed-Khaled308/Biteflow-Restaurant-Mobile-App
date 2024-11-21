@@ -28,9 +28,11 @@ builder: (context, _) {
         body: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemBuilder: (ctx, index) => OrderItemCard(_viewModel.cartItems[index]),
-                itemCount: _viewModel.cartItems.length,
+              child: AnimatedList(
+                key: _viewModel.listKey,
+                itemBuilder: (ctx, index,animation) => OrderItemCard(_viewModel.cartItems[index]),
+                 // not using animation as an animation is done in the view model
+                initialItemCount: _viewModel.cartItems.length,
               ),
             ),
              const PaymentSummary(),
