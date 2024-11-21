@@ -1,4 +1,6 @@
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/view-model/cart_view_model.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -13,6 +15,8 @@ class OrderItemCard extends StatefulWidget {
 }
 
 class _OrderItemCardState extends State<OrderItemCard> {
+  final CartViewModel _viewModel = getIt<CartViewModel>();
+  
   @override
   Widget build(BuildContext context) {
     return
@@ -122,9 +126,9 @@ class _OrderItemCardState extends State<OrderItemCard> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
+                            IconButton(onPressed: () {_viewModel.decrementItemQuantity(widget.orderItem.id);}, icon: const Icon(Icons.remove)),
                             Text('${widget.orderItem.quantity}'),
-                            IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+                            IconButton(onPressed: () {_viewModel.incrementItemQuantity(widget.orderItem.id);}, icon: const Icon(Icons.add)),
                           ],
                         ),
                       ),

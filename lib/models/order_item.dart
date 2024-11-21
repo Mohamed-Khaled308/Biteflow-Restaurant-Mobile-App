@@ -26,4 +26,17 @@ class OrderItem extends Item{
             imageUrl: data['imageUrl'],
             description: data['description'],
             rating: data['rating']);
+
+      OrderItem copyWith({int? updatedQuantity , String? updatedNotes}){
+        return OrderItem(
+          id: id,
+          title: title,
+          price: price,
+          imageUrl: imageUrl,
+          description: description,
+          rating: rating,
+          quantity: updatedQuantity ?? quantity,
+          notes: updatedNotes ?? notes,
+        );
+      }
 }
