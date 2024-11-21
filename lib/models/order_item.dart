@@ -14,4 +14,16 @@ class OrderItem extends Item{
     required super.rating,
     this.notes = '',
   });
+
+
+    OrderItem.fromData(Map<String, dynamic> data)
+      : quantity = data['quantity'],
+        notes = data['notes'],
+        super(
+            id: data['id'],
+            title: data['title'],
+            price: data['price'],
+            imageUrl: data['imageUrl'],
+            description: data['description'],
+            rating: data['rating']);
 }
