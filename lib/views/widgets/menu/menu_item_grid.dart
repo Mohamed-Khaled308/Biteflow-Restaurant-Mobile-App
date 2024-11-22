@@ -1,87 +1,82 @@
 import 'package:flutter/material.dart';
-import '../../../models/menu_item.dart';
-import '../../theme/app_theme.dart'; // Import the theme for usage
+import '../../theme/app_theme.dart';
 
 class MenuItemGrid extends StatelessWidget {
-  final List<MenuItem> items;
-  final Function(MenuItem) onTap;
+  final String imageUrl;
+  final String title;
+  final double price;
+  final VoidCallback onTap;
 
   const MenuItemGrid({
     Key? key,
-    required this.items,
+    required this.imageUrl,
+    required this.title,
+    required this.price,
     required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); // Accessing the current theme
+    final theme = AppTheme.lightTheme(context);
 
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 3 / 4,
-      ),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return GestureDetector(
-          onTap: () => onTap(item),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(10)),
-                    child: Image.network(
-                      item.imageUrl,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image Section
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  imageUrl,
+                  width: double.infinity,
+                  height: 180, // Ensuring image height for consistency
+                  fit: BoxFit.cover,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    item.title,
+              ),
+              const SizedBox(height: 10),
+              // Title Section
+              Text(
+                title,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16, // Consistent font size for title
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8), // Space between title and price
+
+              // Price Section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${price.toStringAsFixed(2)}',
                     style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${item.price.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/EGP.png',
-                        width: 22,
-                        height: 22,
-                      ),
-                    ],
+                  Image.asset(
+                    'assets/images/EGP.png',
+                    width: 22,
+                    height: 22,
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

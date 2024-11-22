@@ -1,4 +1,3 @@
-import 'package:biteflow/constants/theme_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../theme/app_theme.dart';
@@ -27,28 +26,17 @@ class MenuCard extends StatelessWidget {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image with title and rating overlay
-          Stack(
-            children: [
-              // Background Image
-              ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(15)),
-                child: Image.network(
-                  imageUrl,
-                  height: 150,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              // Title on the top-left
-              Positioned(
-                top: 10,
-                left: 10,
-                child: Container(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top section with title and rating
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Title
+                Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
@@ -64,16 +52,12 @@ class MenuCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              // Rating on the top-right
-              Positioned(
-                top: 10,
-                right: 10,
-                child: Container(
+                // Rating
+                Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: theme.primaryColor.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -91,7 +75,7 @@ class MenuCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         rating.toStringAsFixed(1),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -100,51 +84,53 @@ class MenuCard extends StatelessWidget {
                     ],
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // Center Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                imageUrl,
+                width: double.infinity,
+                height: 250,
+                fit: BoxFit.cover,
               ),
-            ],
-          ),
-          // Description
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
+            ),
+            const SizedBox(height: 20),
+            // Description
+            Text(
               description,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
-                fontSize: 14,
+                fontSize: 18,
+                color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8),
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-          ),
-          // Price with icon on the bottom-right
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const SizedBox(height: 10),
+            // Price Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const SizedBox(), // Spacer for alignment
-                Row(
-                  children: [
-                    Text(
-                      '${price.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Image.asset(
-                      'assets/images/EGP.png',
-                      width: 22,
-                      height: 22,
-                    ),
-                  ],
+                Text(
+                  '${price.toStringAsFixed(2)}',
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Image.asset(
+                  'assets/images/EGP.png',
+                  width: 22,
+                  height: 22,
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

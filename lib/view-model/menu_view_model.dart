@@ -1,12 +1,12 @@
 import 'package:biteflow/dummy_data/category_list.dart';
 import 'package:biteflow/dummy_data/item_list.dart';
-import 'package:flutter/material.dart';
+import 'package:biteflow/view-model/base_mode.dart';
 import '../models/category.dart';
 import '../models/menu_item.dart';
 
-class MenuViewModel extends ChangeNotifier {
-  List<Category> categories = categoriesList; // Your categories
-  List<MenuItem> allItems = menuItemsList; // Your items
+class MenuViewModel extends BaseModel {
+  List<Category> categories = categoriesList;
+  List<MenuItem> allItems = menuItemsList;
   String? selectedCategoryId;
   List<MenuItem> filteredItems = [];
   MenuItem? selectedItem;
@@ -14,7 +14,7 @@ class MenuViewModel extends ChangeNotifier {
   MenuViewModel() {
     // Set default category to 'Offers' (id: 'c1')
     selectedCategoryId = 'c1';
-    filterItems(); // Initialize with filtered items for 'Offers'
+    filterItems();
   }
 
   void selectCategory(String categoryId) {

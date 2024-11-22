@@ -194,4 +194,15 @@ var menuItemsList = [
     rating: 4.8,
     categoryId: 'c7',
   ),
+  MenuItem(
+    id: 'm19',
+    title: 'Chocolate Ice Cream Sundae',
+    price: 549,
+    imageUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrcToGxxm_FrDNoovsYfkTUd7VOMzAFzIy_w&s',
+    description:
+        'Classic Chocolate ice cream with chocolate syrup and a cherry.',
+    rating: 2.5,
+    categoryId: 'c7',
+  ),
 ];
