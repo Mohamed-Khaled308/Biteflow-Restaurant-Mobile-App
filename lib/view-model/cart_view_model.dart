@@ -45,4 +45,12 @@ class CartViewModel extends BaseModel {
     _cartItems[index] = updatedItem;
     notifyListeners();
   }
+
+  double get totalAmount {
+    double total = 0;
+    for (final item in _cartItems) {
+      total += item.price * item.quantity;
+    }
+    return total;
+  }
 }
