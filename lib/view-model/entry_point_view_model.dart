@@ -2,8 +2,9 @@ import 'package:biteflow/view-model/base_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/views/screens/home/home_view.dart';
 import 'package:biteflow/views/screens/order_details/order_details_view.dart';
-import 'package:biteflow/views/screens/profile/profile_view.dart';
+// import 'package:biteflow/views/screens/profile/profile_view.dart';
 import 'package:biteflow/views/screens/search/search_view.dart';
+import 'package:biteflow/views/screens/manager_menu/manager_menu_view.dart';
 
 
 
@@ -21,7 +22,8 @@ class EntryPointViewModel extends BaseModel {
     const HomeView(),
     const SearchView(),
     const OrderDetailsView(),
-    const ProfileView(),
+    // const ProfileView(),
+    const ManagerMenuView(),
   ];
 
   int get selectedIndex => _selectedIndex;

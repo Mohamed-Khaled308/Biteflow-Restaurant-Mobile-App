@@ -12,6 +12,7 @@ class OrderItem extends Item{
     required super.imageUrl,
     required super.description,
     required super.rating,
+    required super.categoryId,
     this.notes = '',
   });
 
@@ -25,7 +26,9 @@ class OrderItem extends Item{
             price: data['price'],
             imageUrl: data['imageUrl'],
             description: data['description'],
-            rating: data['rating']);
+            rating: data['rating'],
+            categoryId: data['categoryId'],
+            );
 
       OrderItem copyWith({int? updatedQuantity , String? updatedNotes}){
         return OrderItem(
@@ -35,6 +38,7 @@ class OrderItem extends Item{
           imageUrl: imageUrl,
           description: description,
           rating: rating,
+          categoryId: categoryId,
           quantity: updatedQuantity ?? quantity,
           notes: updatedNotes ?? notes,
         );
