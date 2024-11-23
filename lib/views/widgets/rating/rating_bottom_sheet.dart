@@ -15,7 +15,9 @@ class RatingBottomSheet extends StatefulWidget {
   });
 
   @override
-  _RatingBottomSheetState createState() => _RatingBottomSheetState();
+  State<RatingBottomSheet> createState() => _RatingBottomSheetState();
+
+
 }
 
 class _RatingBottomSheetState extends State<RatingBottomSheet> {
