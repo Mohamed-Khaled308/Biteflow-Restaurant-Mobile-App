@@ -12,18 +12,20 @@ class CartViewModel extends BaseModel {
   GlobalKey<AnimatedListState> get listKey => _listKey;
   TextEditingController get notesController => _notesController;
 
-void dispose() {
+  @override
+  void dispose() {
     _notesController.dispose();
     super.dispose();
   }
 
-double get totalAmount {
+  double get totalAmount {
     double total = 0;
     for (final item in _cartItems) {
       total += item.price * item.quantity;
     }
     return total;
   }
+
   void updateNotes(String id, String notes) {
     final index = _cartItems.indexWhere((element) => element.id == id);
     final updatedItem = _cartItems[index].copyWith(updatedNotes: notes);
@@ -66,6 +68,4 @@ double get totalAmount {
     _cartItems[index] = updatedItem;
     notifyListeners();
   }
-
-  
 }

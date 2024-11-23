@@ -41,7 +41,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: Text('Special Note'),
+                title: const Text('Special Note'),
                 content: TextField(
                   controller: _viewModel.notesController,
                   decoration: InputDecoration(
@@ -74,8 +74,8 @@ class _OrderItemCardState extends State<OrderItemCard> {
                     onPressed: () {
                       _navigationService.pop();
                     },
-                    child: Text('Cancel'),
                     style: TextButton.styleFrom(foregroundColor: Colors.blue),
+                    child: const Text('Cancel'),
                   ),
                   TextButton(
                     onPressed: () {
@@ -83,11 +83,9 @@ class _OrderItemCardState extends State<OrderItemCard> {
                       _viewModel.updateNotes(
                           widget.orderItem.id, _viewModel.notesController.text);
                       _viewModel.notesController.clear();
-                      
-
                     },
-                    child: Text('Okay'),
                     style: TextButton.styleFrom(foregroundColor: Colors.blue),
+                    child: const Text('Okay'),
                   )
                 ],
               ),
