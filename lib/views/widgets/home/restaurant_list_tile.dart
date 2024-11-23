@@ -26,7 +26,7 @@ class RestaurantListTile extends StatelessWidget {
             SizedBox(height: 4),
             Row(
               children: [
-                Icon(Icons.star, color: Colors.yellow, size: 16),
+                Icon(Icons.star, color: const Color.fromARGB(255, 86, 84, 65), size: 16),
                 SizedBox(width: 4),
                 Text('${restaurant.rating}'),
                 SizedBox(width: 8),
