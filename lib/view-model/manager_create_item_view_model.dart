@@ -20,6 +20,7 @@ class ManagerCreateItemViewModel extends BaseModel {
   // for create category
   final TextEditingController _categoryNameController = TextEditingController();
   
+  // getters and setters
   List<Category> get categories => _categories;
   String? get itemCategoryId => _itemCategoryId;
   TextEditingController get itemNameController => _itemNameController;
@@ -32,6 +33,8 @@ class ManagerCreateItemViewModel extends BaseModel {
     notifyListeners();
   }
 
+
+  // for state management
   void updateItemCategory(String? categoryId) {
     _itemCategoryId = categoryId;
     notifyListeners();
@@ -42,10 +45,28 @@ class ManagerCreateItemViewModel extends BaseModel {
     notifyListeners();
   }
 
+  void clearItemFormFields() {
+    _itemNameController.clear();
+    _itemPriceController.clear();
+    _itemDescriptionController.clear();
+    _itemCategoryId = null;
+    notifyListeners();
+  }
+
+  void clearCategoryFormFields() {
+    _categoryNameController.clear();
+    notifyListeners();
+  }
+
+
+  // for creating item and category
+
   void createCategory() { // should post to db using some service
     // Add the logic to create a new category here
-    print('Creating category...');
+
+    print('Creating Category...');
     print('Category Name: ${_categoryNameController.text}');
+
 
     // after saving in db
     // reload categories list both here and in manager_menu_view_model
@@ -59,6 +80,7 @@ class ManagerCreateItemViewModel extends BaseModel {
     print('Item Description: ${_itemDescriptionController.text}');
     print('Item Category: $_itemCategoryId');
 
+    
     // after saving in db
     // reload items list in manager_menu_view_model
   }

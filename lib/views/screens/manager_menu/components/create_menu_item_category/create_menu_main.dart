@@ -60,26 +60,36 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
   }
 
   Widget _buildCreateCategory() {
+    final _formKey = GlobalKey<FormState>();
     return Form(
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
+          TextFormField(
             controller: _viewModel.categoryNameController,
             decoration: const InputDecoration(
               labelText: 'Category Name',
               border: OutlineInputBorder(),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a category name';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 30),
           Center(
             child: ElevatedButton(
               onPressed: () {
-                _viewModel.createCategory();
-                print('ana henaaa');
+                if (!_formKey.currentState!.validate()) { // to validate the form
+                  return;
+                }
+                _viewModel.createCategory(); // still problematic
+                _viewModel.clearCategoryFormFields();
                 Navigator.pop(context);
                 _viewModel.isCreatingItem = true;
-                // Close the bottom sheet
               },
               child: const Text('Save Category'),
             ),
@@ -90,6 +100,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
   }
 
   Widget _buildCreateItem() {
+    final _formKey = GlobalKey<FormState>();
     return Padding(
       padding: EdgeInsets.only(
         left: 16,
@@ -99,6 +110,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
       ),
       child: SingleChildScrollView(
         child: Form(
+          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -121,38 +133,68 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if(value == null){
+                    return 'Please select a category';
+                  }
+                },
               ),
               const SizedBox(height: 16),
-              TextField(
+              TextFormField(
                 controller: _viewModel.itemNameController,
                 decoration: const InputDecoration(
                   labelText: 'Item Name',
                   // border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter an item name';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
-              TextField(
+              TextFormField(
                 controller: _viewModel.itemPriceController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Price',
                   // border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a price';
+                  }
+                  // check if the value is a number
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
-              TextField(
+              TextFormField(
                 controller: _viewModel.itemDescriptionController,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   labelText: 'Description',
                   // border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
-                  print('ana henaaa fi create item');
+                  if (!_formKey.currentState!.validate()) { // to validate the form
+                    return;
+                  }
                   _viewModel.createItem();
+                  _viewModel.clearItemFormFields();
                   _viewModel.isCreatingItem = true;
                   Navigator.pop(context); // Close the bottom sheet
                 },
@@ -167,4 +209,5 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
       ),
     );
   }
+
 }

@@ -5,7 +5,7 @@ const InputDecorationTheme lightInputDecorationTheme = InputDecorationTheme(
   fillColor: ThemeConstants.lightGreyColor,
   filled: true,
   // hintStyle: TextStyle(color: ThemeConstants.primaryColor),
-  labelStyle: TextStyle(color: ThemeConstants.blackColor80),
+  labelStyle: TextStyle(color: ThemeConstants.blackColor60),
   border: outlineInputBorder,
   enabledBorder: outlineInputBorder,
   focusedBorder: focusedOutlineInputBorder,
