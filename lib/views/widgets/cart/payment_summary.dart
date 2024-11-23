@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PaymentSummary extends StatelessWidget {
-  const PaymentSummary({super.key});
+  const PaymentSummary(this.totalAmount,{super.key});
+
+  final double totalAmount ;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +23,10 @@ class PaymentSummary extends StatelessWidget {
                 ),
               ],
             ),
-            child:  const Column(
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Text(
+                 const Text(
                   'Payment Summary',
                   style: TextStyle(
                     fontSize: 18,
@@ -32,11 +34,11 @@ class PaymentSummary extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 ),
-                 SizedBox(height: 8),
+                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     Text(
+                     const Text(
                       'Total Amount',
                       style: TextStyle(
                         fontSize: 16,
@@ -44,8 +46,8 @@ class PaymentSummary extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '1000 EGP',
-                      style: TextStyle(
+                      '$totalAmount EGP',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
