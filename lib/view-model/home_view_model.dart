@@ -1,7 +1,8 @@
 
 import 'package:biteflow/dummy_data/dummy_restaurants.dart';
+import 'package:biteflow/models/restaurant.dart';
 import 'package:flutter/foundation.dart';
-import '../models/restaurant.dart';
+ 
 // import '../data/dummy_restaurants.dart';
 
 
