@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/view-model/manager_menu_view_model.dart';
 import 'package:biteflow/views/screens/manager_menu/components/categories_list.dart';
-import 'package:biteflow/views/screens/manager_menu/components/create_menu_item.dart';
+import 'package:biteflow/views/screens/manager_menu/components/create_menu_item_category/create_menu_main.dart';
+import 'package:biteflow/views/screens/manager_menu/components/items_list.dart';
 
 
 class ManagerMenuView extends StatefulWidget {
@@ -40,6 +41,8 @@ class _ManagerMenuViewState extends State<ManagerMenuView> {
               SizedBox(height: 10),
               CategoriesList(),
               SizedBox(height: 10),
+              ItemsList(),
+              
             ],
           ),
           floatingActionButton: FloatingActionButton(
@@ -55,7 +58,7 @@ class _ManagerMenuViewState extends State<ManagerMenuView> {
                 builder: (context) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height * 0.7,
-                    child: const CreateMenuItem(),
+                    child: const CreateMenuMain(),
                   );
                 }
               );

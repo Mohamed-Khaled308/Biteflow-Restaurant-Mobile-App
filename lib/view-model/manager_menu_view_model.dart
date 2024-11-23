@@ -32,7 +32,7 @@ class ManagerMenuViewModel extends BaseModel {
   void selectCategory(String? categoryId) {
     _selectedCategoryId = categoryId;
     print('ana hena $categoryId');
-    // getMenuItemsOfSelectedCategory();
+    getMenuItemsOfSelectedCategory();
     notifyListeners();
   }
 

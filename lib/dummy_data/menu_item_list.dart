@@ -71,7 +71,7 @@ final List<MenuItem> menuItemsList = [
     imageUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrcToGxxm_FrDNoovsYfkTUd7VOMzAFzIy_w&s',
     description: 'Tender grilled chicken breast served with steamed veggies.',
-    rating: 4.5,
+    rating: 3.5,
     categoryId: 'c2',
   ),
   MenuItem(
