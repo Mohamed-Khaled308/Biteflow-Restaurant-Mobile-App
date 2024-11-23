@@ -18,7 +18,7 @@ class EntryPointViewModel extends BaseModel {
   ];
 
   final List<Widget> _screens = [
-     HomeView(),
+    const HomeView(),
     const SearchView(),
     const OrderDetailsView(),
     const ProfileView(),

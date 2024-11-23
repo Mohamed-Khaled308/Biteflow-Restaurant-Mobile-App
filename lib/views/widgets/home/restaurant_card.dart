@@ -1,18 +1,23 @@
 // views/widgets/home/restaurant_card.dart
 
+import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/models/restaurant.dart';
 import 'package:flutter/material.dart';
-import '../../../models/restaurant.dart';
+ 
 
 class RestaurantCard extends StatelessWidget {
   final Restaurant restaurant;
 
-  const RestaurantCard({required this.restaurant});
+  const RestaurantCard({
+    required this.restaurant,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 160,
-      margin: EdgeInsets.only(right: 16),
+      margin: const EdgeInsets.only(right: ThemeConstants.defaultPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -22,33 +27,34 @@ class RestaurantCard extends StatelessWidget {
             height: 100,
             fit: BoxFit.cover,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             restaurant.name,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
             restaurant.location,
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: ThemeConstants.greyColor),
           ),
           Row(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(4),
+                  color: ThemeConstants.primaryColor,
+                  borderRadius:
+                      BorderRadius.circular(ThemeConstants.defaultBorderRadious / 3),
                 ),
                 child: Text(
                   '${restaurant.rating}',
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: ThemeConstants.whiteColor),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               if (restaurant.isTableAvailable)
-                Text(
+                const Text(
                   'Table Available',
-                  style: TextStyle(color: Colors.green),
+                  style: TextStyle(color: ThemeConstants.successColor),
                 ),
             ],
           ),

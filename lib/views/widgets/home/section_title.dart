@@ -1,12 +1,16 @@
-// views/widgets/home/section_title.dart
-
+ import 'package:biteflow/constants/theme_constants.dart';
 import 'package:flutter/material.dart';
+ 
 
 class SectionTitle extends StatelessWidget {
   final String title;
   final VoidCallback onSeeAll;
 
-  const SectionTitle({required this.title, required this.onSeeAll});
+  const SectionTitle({
+    required this.title,
+    required this.onSeeAll,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +19,13 @@ class SectionTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         TextButton(
           onPressed: onSeeAll,
-          child: Text(
+          child: const Text(
             'See all',
-            style: TextStyle(color: Color(0xFFC62828)), // Ruby Red
+            style: TextStyle(color: ThemeConstants.primaryColor),
           ),
         ),
       ],

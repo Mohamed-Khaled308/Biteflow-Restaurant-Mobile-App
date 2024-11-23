@@ -1,12 +1,15 @@
-// views/widgets/home/restaurant_list_tile.dart
-
+import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/models/restaurant.dart';
 import 'package:flutter/material.dart';
-import '../../../models/restaurant.dart';
+ 
 
 class RestaurantListTile extends StatelessWidget {
   final Restaurant restaurant;
 
-  const RestaurantListTile({required this.restaurant});
+  const RestaurantListTile({
+    required this.restaurant,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +26,13 @@ class RestaurantListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(restaurant.description),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Row(
               children: [
-                Icon(Icons.star, color: const Color.fromARGB(255, 86, 84, 65), size: 16),
-                SizedBox(width: 4),
+                const Icon(Icons.star, color: ThemeConstants.warningColor, size: 16),
+                const SizedBox(width: 4),
                 Text('${restaurant.rating}'),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text('${restaurant.reviewCount}+ Ratings'),
               ],
             ),

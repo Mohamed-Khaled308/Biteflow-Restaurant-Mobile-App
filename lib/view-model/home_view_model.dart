@@ -20,8 +20,9 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  
+
   Future<void> fetchRestaurantsFromDatabase() async {
-    // TODO: fectch the data from the database
+  //    // TODO: fectch the data from the database
+
   }
 }
