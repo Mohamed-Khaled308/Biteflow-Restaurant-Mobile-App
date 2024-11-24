@@ -2,72 +2,118 @@ import 'package:biteflow/core/result.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/client.dart';
 import 'package:biteflow/models/manager.dart';
+import 'package:biteflow/models/restaurant.dart';
+import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final UserService _firestoreService = getIt<UserService>();
+  final UserService _userService = getIt<UserService>();
+  final RestaurantService _restaurantService = getIt<RestaurantService>();
   final Logger _logger = getIt<Logger>();
-
-  Future<Result<T>> _handleAuthOperation<T>(
-    Future<T> Function() operation,
-    String errorMessage,
-  ) async {
-    try {
-      final result = await operation();
-      return Result(data: result);
-    } on FirebaseAuthException catch (e) {
-      _logger.e('$errorMessage: ${e.message}');
-      return Result(error: e.message);
-    } catch (e) {
-      _logger.e('$errorMessage: ${e.toString()}');
-      return Result(error: e.toString());
-    }
-  }
 
   Future<Result<bool>> loginWithEmail({
     required String email,
     required String password,
   }) async {
-    return await _handleAuthOperation(() async {
+    try {
+      _logger.d('email : $email, password : $password');
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential.user != null;
-    }, 'Login Failed');
+      if (userCredential.user != null) {
+        return Result(data: true);
+      }
+      _logger.e('Unexpected behaviour: user is null');
+      return Result(error: 'Unexpected behaviour: user is null');
+    } catch (e) {
+      _logger.e('Login failed: ${e.toString()}');
+      return Result(error: e.toString());
+    }
+  }
+
+  Future<User?> _signUpWithEmail(
+      {required String email, required String password}) async {
+    final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return userCredential.user;
   }
 
   Future<Result<bool>> signUpClientWithEmail({
-    required String email,
-    required String password,
-    required Map<String, dynamic> info,
+    required Map<String, dynamic> clientInfo,
   }) async {
-    return await _handleAuthOperation(() async {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+    User? user;
+    try {
+      user = await _signUpWithEmail(
+          email: clientInfo['email'], password: clientInfo['password']);
 
-      if (userCredential.user != null) {
-        info['id'] = userCredential.user!.uid;
-        info['email'] = email;
-
-        if (info['role'] == 'client') {
-          Client client = Client.fromData(info);
-          await _firestoreService.createUser(client);
-        } else if (info['role'] == 'manager') {
-          Manager manager = Manager.fromData(info);
-          await _firestoreService.createUser(manager);
-        } else {
-          _logger.e('Unknown user role: ${info['role']}');
-          return false;
-        }
-        return true;
+      if (user != null) {
+        clientInfo['id'] = user.uid;
+        Client client = Client.fromData(clientInfo);
+        await _userService.createUser(client);
+        return Result(data: true);
       }
-      return false;
-    }, 'Sign Up Failed');
+
+      _logger.e('Unexpected behaviour: user is null');
+      return Result(error: 'Unexpected behaviour: user is null');
+    } catch (e) {
+      _logger.e('Sign up failed: ${e.toString()}');
+      if (user != null) {
+        try {
+          await user.delete();
+          _logger.d('Cleaned up: User ${user.email} deleted from Firebase.');
+        } catch (deleteError) {
+          _logger
+              .e('Failed to clean up created user: ${deleteError.toString()}');
+        }
+      }
+      return Result(error: e.toString());
+    }
+  }
+
+  Future<Result<bool>> signUpManagerWithEmail({
+    required Map<String, dynamic> managerInfo,
+  }) async {
+    User? user;
+    try {
+      user = await _signUpWithEmail(
+          email: managerInfo['email'], password: managerInfo['password']);
+
+      if (user != null) {
+        Map<String, dynamic> restaurantInfo = {};
+        restaurantInfo['id'] = _restaurantService.generateId();
+        restaurantInfo['name'] = managerInfo['restaurantName'];
+        restaurantInfo['managerId'] = user.uid;
+
+        Restaurant restaurant = Restaurant.fromData(restaurantInfo);
+        await _restaurantService.createRestaurant(restaurant);
+
+        managerInfo['id'] = user.uid;
+        managerInfo['restaurantId'] = restaurantInfo['id'];
+        Manager manager = Manager.fromData(managerInfo);
+        await _userService.createUser(manager);
+        return Result(data: true);
+      }
+
+      _logger.e('Unexpected behaviour: user is null');
+      return Result(error: 'Unexpected behaviour: user is null');
+    } catch (e) {
+      _logger.e('Sign up failed: ${e.toString()}');
+      if (user != null) {
+        try {
+          await user.delete();
+          _logger.d('Cleaned up: User ${user.email} deleted from Firebase.');
+        } catch (deleteError) {
+          _logger
+              .e('Failed to clean up created user: ${deleteError.toString()}');
+        }
+      }
+      return Result(error: e.toString());
+    }
   }
 }

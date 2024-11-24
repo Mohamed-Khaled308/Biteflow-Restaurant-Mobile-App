@@ -3,5 +3,5 @@ class FirestoreCollections {
   static const String restaurantsCollection = 'restaurants';
   static const String ordersCollection = 'orders';
   static const String menusCollection = 'menus';
-  static const String menuItemsCollection = 'items';
+  static const String itemsCollection = 'items';
 }

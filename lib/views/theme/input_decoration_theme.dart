@@ -22,19 +22,22 @@ const InputDecorationTheme darkInputDecorationTheme = InputDecorationTheme(
 );
 
 const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
+  borderRadius:
+      BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
   borderSide: BorderSide(
     color: Colors.transparent,
   ),
 );
 
 const OutlineInputBorder focusedOutlineInputBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
-  borderSide: BorderSide(color: ThemeConstants.primaryColor),
+  borderRadius:
+      BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
+  borderSide: BorderSide(color: ThemeConstants.darkGreyColor),
 );
 
 const OutlineInputBorder errorOutlineInputBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
+  borderRadius:
+      BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
   borderSide: BorderSide(
     color: ThemeConstants.errorColor,
   ),
@@ -42,7 +45,8 @@ const OutlineInputBorder errorOutlineInputBorder = OutlineInputBorder(
 
 OutlineInputBorder secodaryOutlineInputBorder(BuildContext context) {
   return OutlineInputBorder(
-    borderRadius: const BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
+    borderRadius: const BorderRadius.all(
+        Radius.circular(ThemeConstants.defaultBorderRadious)),
     borderSide: BorderSide(
       color: Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.15),
     ),

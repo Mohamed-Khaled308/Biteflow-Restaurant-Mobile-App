@@ -1,6 +1,6 @@
 import 'package:biteflow/dummy_data/order_list.dart';
 import 'package:biteflow/models/order_item.dart';
-import 'package:biteflow/view-model/base_mode.dart';
+import 'package:biteflow/view-model/base_model.dart';
 import 'package:flutter/material.dart';
 
 class CartViewModel extends BaseModel {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ThemeConstants {
   static const grandisExtendedFont = 'Grandis Extended';
 
@@ -9,7 +8,7 @@ class ThemeConstants {
   // e.g. primaryMaterialColor.shade100
   static const MaterialColor primaryMaterialColor =
       MaterialColor(0xFFC62828, <int, Color>{
-    50: Color(0xFFFFEBEE),  // Very light pink-red
+    50: Color(0xFFFFEBEE), // Very light pink-red
     100: Color(0xFFFFCDD2), // Light pink-red
     200: Color(0xFFEF9A9A), // Soft rosy red
     300: Color(0xFFE57373), // Mellow red
@@ -22,7 +21,6 @@ class ThemeConstants {
   });
 
   static const Color secondaryColor = Color(0xFF6D7434); // Olive Green
-
 
   static const Color blackColor = Color(0xFF16161E);
   static const Color blackColor80 = Color(0xFF45454B);
@@ -47,6 +45,8 @@ class ThemeConstants {
   static const Color successColor = Color(0xFF2ED573);
   static const Color warningColor = Color(0xFFFFBE21);
   static const Color errorColor = Color(0xFFEA5B5B);
+
+  static const Color blueColor = Colors.blue;
 
   static const double defaultPadding = 16.0;
   static const double defaultBorderRadious = 12.0;
