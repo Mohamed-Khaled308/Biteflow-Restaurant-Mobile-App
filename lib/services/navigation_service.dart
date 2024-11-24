@@ -18,12 +18,13 @@ class NavigationService {
     );
   }
 
-  Future<dynamic> navigateToWithReplacment(Widget screen, {dynamic arguments}) {
-    return _navigationKey.currentState!.pushReplacement(
+  Future<dynamic> replaceWith(Widget screen, {dynamic arguments}) {
+    return _navigationKey.currentState!.pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => screen,
         settings: RouteSettings(arguments: arguments),
       ),
+      (Route<dynamic> route) => false,
     );
   }
 }

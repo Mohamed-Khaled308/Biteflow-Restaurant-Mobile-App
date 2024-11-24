@@ -1,12 +1,12 @@
 import 'package:biteflow/services/navigation_service.dart';
-import 'package:biteflow/views/screens/auth/login_view.dart';
+import 'package:biteflow/views/screens/auth/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:biteflow/views/theme/app_theme.dart';
 import 'firebase_options.dart';
 import 'locator.dart';
-import 'package:biteflow/views/theme/app_theme.dart';
 
 void main() async {
   setupLocator();
@@ -25,7 +25,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(context),
         themeMode: ThemeMode.light,
         navigatorKey: getIt<NavigationService>().navigationKey,
-        home: LoginView(),
+        home: const LoginView(),
         builder: (context, widget) {
           ScreenUtil.init(context);
           return widget!;

@@ -1,6 +1,6 @@
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/order_item.dart';
-import 'package:biteflow/view-model/cart_view_model.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';

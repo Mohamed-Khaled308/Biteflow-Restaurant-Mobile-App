@@ -1,11 +1,11 @@
 import 'package:biteflow/core/result.dart';
 import 'package:biteflow/services/auth_service.dart';
-import 'package:biteflow/view-model/base_model.dart';
+import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/locator.dart';
-import 'package:biteflow/views/screens/auth/client_signup_view.dart';
-import 'package:biteflow/views/screens/auth/login_view.dart';
-import 'package:biteflow/views/screens/auth/manager_signup_view.dart';
+import 'package:biteflow/views/screens/auth/signup/client_signup_screen.dart';
+import 'package:biteflow/views/screens/auth/login/login_view.dart';
+import 'package:biteflow/views/screens/auth/signup/manager_signup_screen.dart';
 import 'package:biteflow/views/screens/entry_point/entry_point_view.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class SignupViewModel extends BaseModel {
   void signUp() async {
     Result result = await _signUpUser();
     if (result.isSuccess) {
-      _navigationService.navigateToWithReplacment(const EntryPointView());
+      _navigationService.replaceWith(const EntryPointView());
     } else {
       // TODO display error message.
     }

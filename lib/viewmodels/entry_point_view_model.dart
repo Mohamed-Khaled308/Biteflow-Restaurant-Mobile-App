@@ -1,4 +1,4 @@
-import 'package:biteflow/view-model/base_model.dart';
+import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/views/screens/home/home_view.dart';
 import 'package:biteflow/views/screens/order_details/order_details_view.dart';
