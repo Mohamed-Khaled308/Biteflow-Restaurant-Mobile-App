@@ -137,6 +137,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
                   if(value == null){
                     return 'Please select a category';
                   }
+                  return null;
                 },
               ),
               const SizedBox(height: 16),
