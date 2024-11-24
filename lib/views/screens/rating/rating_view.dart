@@ -79,8 +79,7 @@ class RatingView extends StatelessWidget {
                                 onPressed: () {
                                   // TODO: Handle feedback submission
                                   // For example: saveFeedback(_feedbackController.text);
-                                  print(
-                                      'Feedback: ${_feedbackController.text}');
+                                  
                                   getIt<NavigationService>().navigateAndRemove(
                                     const HomeView(),
                                   );
