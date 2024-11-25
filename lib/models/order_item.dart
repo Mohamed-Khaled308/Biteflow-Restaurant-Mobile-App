@@ -13,5 +13,6 @@ class OrderItem extends Item{
     required super.description,
     required super.rating,
     this.notes = '',
+    required super.categoryId,
   });
 }

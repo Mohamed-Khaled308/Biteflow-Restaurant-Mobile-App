@@ -1,4 +1,5 @@
 import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/views/theme/theme_data.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/category.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,6 @@ class _MenuViewState extends State<MenuView> {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Menu'),
-            backgroundColor: Theme.of(context).primaryColor,
           ),
           body: CustomScrollView(
             controller: _scrollController,
@@ -62,25 +62,17 @@ class _MenuViewState extends State<MenuView> {
                   opacity: _placeholderOpacity,
                   child: Container(
                     width: double.infinity, // Full screen width
-                    color: ThemeConstants.primaryMaterialColor[
-                        300], // Replace with your background color
-                    padding: const EdgeInsets.symmetric(vertical: 32.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/BiteFlowImage.png',
-                          width: 250,
-                          height: 75,
-                          fit: BoxFit.contain,
-                        ),
-                        const SizedBox(height: 15),
-                      ],
+                    height:
+                        300, // Fixed height to match the placeholder's height
+                    // color: ThemeConstants.primaryMaterialColor[300],
+                    child: Image.asset(
+                      'assets/images/BiteFlowNew.png',
+                      fit: BoxFit
+                          .cover, // Scale and crop the image to fully fill the container
                     ),
                   ),
                 ),
               ),
-
               // Fixed Categories
               SliverPersistentHeader(
                 pinned: true,

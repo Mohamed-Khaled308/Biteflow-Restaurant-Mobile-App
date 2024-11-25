@@ -1,7 +1,6 @@
 import 'package:biteflow/models/item.dart';
 
 class MenuItem extends Item {
-  final String categoryId;
 
   MenuItem({
     required super.id,
@@ -10,6 +9,6 @@ class MenuItem extends Item {
     required super.imageUrl,
     required super.description,
     required super.rating,
-    required this.categoryId,
+    required super.categoryId,
   });
 }
