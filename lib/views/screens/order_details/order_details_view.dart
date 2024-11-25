@@ -10,9 +10,9 @@ class OrderDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final OrderViewModel _viewModel = getIt<OrderViewModel>();
+    final OrderViewModel viewModel = getIt<OrderViewModel>();
     return AnimatedBuilder(
-      animation: _viewModel,
+      animation: viewModel,
       builder:(context , _)  { return Scaffold(
         appBar: AppBar(
           title: const Text('Order Details'),
@@ -22,11 +22,11 @@ class OrderDetailsView extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (ctx, index) =>
-                    OrderItemDetails(_viewModel.items[index]),
-                itemCount: _viewModel.items.length,
+                    OrderItemDetails(viewModel.items[index]),
+                itemCount: viewModel.items.length,
               ),
             ),
-            PaymentSummary(_viewModel.totalAmount),
+            PaymentSummary(viewModel.totalAmount),
           ],
         ),
       );
