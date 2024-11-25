@@ -10,13 +10,13 @@ class MenuCard extends StatelessWidget {
   final double rating;
 
   const MenuCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.description,
     required this.price,
     required this.rating,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class MenuCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '${price.toStringAsFixed(2)}',
+                  price.toStringAsFixed(2),
                   style: theme.textTheme.bodyLarge?.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

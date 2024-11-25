@@ -1,5 +1,3 @@
-import 'package:biteflow/constants/theme_constants.dart';
-import 'package:biteflow/views/theme/theme_data.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/category.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,7 @@ import '../../widgets/menu/menu_item_grid.dart';
 import '../../widgets/menu/menu_card.dart';
 
 class MenuView extends StatefulWidget {
-  const MenuView({Key? key}) : super(key: key);
+  const MenuView({super.key});
 
   @override
   State<MenuView> createState() => _MenuViewState();
@@ -41,12 +39,12 @@ class _MenuViewState extends State<MenuView> {
 
   @override
   Widget build(BuildContext context) {
-    final _viewModel = getIt<MenuViewModel>();
+    final viewModel = getIt<MenuViewModel>();
     //final screenHeight = MediaQuery.of(context).size.height;
     //print('Screen height: $screenHeight');
 
     return AnimatedBuilder(
-      animation: _viewModel,
+      animation: viewModel,
       builder: (context, _) {
         return Scaffold(
           appBar: AppBar(
@@ -60,7 +58,7 @@ class _MenuViewState extends State<MenuView> {
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 300),
                   opacity: _placeholderOpacity,
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity, // Full screen width
                     height:
                         300, // Fixed height to match the placeholder's height
@@ -77,16 +75,16 @@ class _MenuViewState extends State<MenuView> {
               SliverPersistentHeader(
                 pinned: true,
                 delegate: CategoriesHeaderDelegate(
-                  categories: _viewModel.categories,
-                  selectedCategoryId: _viewModel.selectedCategoryId ?? '',
-                  onCategorySelected: (id) => _viewModel.selectCategory(id),
+                  categories: viewModel.categories,
+                  selectedCategoryId: viewModel.selectedCategoryId ?? '',
+                  onCategorySelected: (id) => viewModel.selectCategory(id),
                   theme: Theme.of(context),
                 ),
               ),
 
               SliverLayoutBuilder(
                 builder: (BuildContext context, SliverConstraints constraints) {
-                  final totalFilteredItemCount = _viewModel.filteredItems.length;
+                  final totalFilteredItemCount = viewModel.filteredItems.length;
                   // print('FilterdItems: $totalFilteredItemCount');
                   if (totalFilteredItemCount < 3) {
                     // Few items case: Use SliverFillRemaining to stretch
@@ -99,9 +97,9 @@ class _MenuViewState extends State<MenuView> {
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: _viewModel.filteredItems.length,
+                              itemCount: viewModel.filteredItems.length,
                               itemBuilder: (context, index) {
-                                final item = _viewModel.filteredItems[index];
+                                final item = viewModel.filteredItems[index];
                                 return MenuItemGrid(
                                   imageUrl: item.imageUrl,
                                   title: item.title,
@@ -137,13 +135,13 @@ class _MenuViewState extends State<MenuView> {
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          final _item = _viewModel.filteredItems[index];
+                          final item = viewModel.filteredItems[index];
                           return MenuItemGrid(
-                            imageUrl: _item.imageUrl,
-                            title: _item.title,
-                            price: _item.price,
+                            imageUrl: item.imageUrl,
+                            title: item.title,
+                            price: item.price,
                             onTap: () {
-                              _viewModel.selectMenuItem(_item);
+                              viewModel.selectMenuItem(item);
                               showModalBottomSheet(
                                 context: context,
                                 shape: const RoundedRectangleBorder(
@@ -153,18 +151,18 @@ class _MenuViewState extends State<MenuView> {
                                 ),
                                 builder: (context) {
                                   return MenuCard(
-                                    imageUrl: _item.imageUrl,
-                                    title: _item.title,
-                                    description: _item.description,
-                                    price: _item.price,
-                                    rating: _item.rating,
+                                    imageUrl: item.imageUrl,
+                                    title: item.title,
+                                    description: item.description,
+                                    price: item.price,
+                                    rating: item.rating,
                                   );
                                 },
                               );
                             },
                           );
                         },
-                        childCount: _viewModel.filteredItems.length,
+                        childCount: viewModel.filteredItems.length,
                       ),
                     );
                   }

@@ -8,12 +8,12 @@ class MenuItemGrid extends StatelessWidget {
   final VoidCallback onTap;
 
   const MenuItemGrid({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.price,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class MenuItemGrid extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${price.toStringAsFixed(2)}',
+                    price.toStringAsFixed(2),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
