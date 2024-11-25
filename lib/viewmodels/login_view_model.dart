@@ -22,5 +22,5 @@ class LoginViewModel extends BaseModel {
     }
   }
 
-  void navigateToSignup() => _navigationService.navigateTo(SignupView());
+  void navigateToSignup() => _navigationService.navigateTo(const SignupView());
 }

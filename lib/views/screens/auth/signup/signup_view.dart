@@ -11,7 +11,7 @@ class SignupView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => getIt<SignupViewModel>(),
-      child: const SignupScreen(),
+      child: SignupScreen(),
     );
   }
 }

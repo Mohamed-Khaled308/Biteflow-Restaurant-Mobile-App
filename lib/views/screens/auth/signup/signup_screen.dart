@@ -8,14 +8,19 @@ import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:biteflow/views/screens/auth/components/custom_textfield.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  SignupScreen({super.key});
+
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SignupViewModel>();
-    
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -29,7 +34,7 @@ class SignupScreen extends StatelessWidget {
                 verticalSpaceTiny,
                 _buildSubtitle(),
                 SizedBox(
-                  height: viewModel.selectedRole == 'Client' ? 273.h : 337.h,
+                  height: 358,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -47,35 +52,55 @@ class SignupScreen extends StatelessWidget {
                               onPressed: viewModel.setRole)
                         ],
                       ),
+                      verticalSpaceSmall,
                       verticalSpaceMedium,
-                      viewModel.selectedRoleWidget,
+                      CustomTextField(
+                        controller: _nameController,
+                        hintText: 'Enter your name',
+                        obscureText: false,
+                      ),
+                      verticalSpaceSmall,
+                      CustomTextField(
+                        controller: _emailController,
+                        hintText: 'Enter your email',
+                        obscureText: false,
+                      ),
+                      verticalSpaceSmall,
+                      CustomTextField(
+                        controller: _passwordController,
+                        hintText: 'Enter your password',
+                        obscureText: true,
+                      ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: viewModel.selectedRole == 'Client' ? 250.h : 186.h,
+                  height: 250.h,
                   child: Column(
                     children: [
                       CustomButton(
-                          text: 'Sign up', onPressed: viewModel.signUp),
-                      viewModel.selectedRole == 'Client'
-                          ? Column(
-                              children: [
-                                verticalSpaceRegular,
-                                const DividerWithText(text: 'Or'),
-                                verticalSpaceRegular,
-                                SocialLoginButton(
-                                    icon: 'assets/icons/google.svg',
-                                    text: 'Continue with Google',
-                                    onPressed: () {}),
-                                verticalSpaceSmall,
-                                SocialLoginButton(
-                                    icon: 'assets/icons/facebook.svg',
-                                    text: 'Continue with Facebook',
-                                    onPressed: () {}),
-                              ],
-                            )
-                          : const SizedBox(),
+                          text: 'Sign up',
+                          onPressed: () => viewModel.signUp(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                                name: _nameController.text,
+                              )),
+                      Column(
+                        children: [
+                          verticalSpaceRegular,
+                          const DividerWithText(text: 'Or'),
+                          verticalSpaceRegular,
+                          SocialLoginButton(
+                              icon: 'assets/icons/google.svg',
+                              text: 'Continue with Google',
+                              onPressed: () {}),
+                          verticalSpaceSmall,
+                          SocialLoginButton(
+                              icon: 'assets/icons/facebook.svg',
+                              text: 'Continue with Facebook',
+                              onPressed: () {}),
+                        ],
+                      ),
                       verticalSpaceLarge,
                     ],
                   ),
