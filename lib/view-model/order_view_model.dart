@@ -7,4 +7,13 @@ class OrderViewModel extends BaseModel{
   final Order _order = tableOrder;
   Order get order => _order;
   List<OrderItem> get items => _order.items;
+
+  double get totalAmount {
+    double total = 0;
+    for (final item in items) {
+      total += item.price * item.quantity;
+    }
+    return total;
+  }
+
 }

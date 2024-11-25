@@ -1,5 +1,6 @@
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/view-model/order_view_model.dart';
+import 'package:biteflow/views/widgets/cart/payment_summary.dart';
 import 'package:biteflow/views/widgets/order/order_item_details.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class OrderDetailsView extends StatelessWidget {
                 itemCount: _viewModel.items.length,
               ),
             ),
-            // PaymentSummary(_viewModel.totalAmount),
+            PaymentSummary(_viewModel.totalAmount),
           ],
         ),
       );
