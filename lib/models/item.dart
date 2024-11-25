@@ -14,7 +14,7 @@ abstract class Item {
     required this.imageUrl,
     required this.description,
     required this.rating,
-    required this.categoryId
+    required this.categoryId,
   });
 
   Item.fromData(Map<String, dynamic> data)

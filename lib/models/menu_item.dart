@@ -1,7 +1,6 @@
 import 'package:biteflow/models/item.dart';
 
 class MenuItem extends Item {
-
   MenuItem({
     required super.id,
     required super.title,
@@ -11,4 +10,9 @@ class MenuItem extends Item {
     required super.rating,
     required super.categoryId,
   });
+
+  
+  MenuItem.fromData(super.data)
+      : super.fromData();
+  
 }

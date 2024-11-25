@@ -1,9 +1,8 @@
+import 'package:biteflow/locator.dart';
+import 'package:biteflow/view-model/cart_view_model.dart';
 import 'package:biteflow/views/widgets/cart/card.dart';
 import 'package:biteflow/views/widgets/cart/payment_summary.dart';
 import 'package:flutter/material.dart';
-import 'package:biteflow/dummy_data/order_list.dart';
-
-
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -13,24 +12,32 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+  final CartViewModel _viewModel = getIt<CartViewModel>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Cart'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (ctx, index) => OrderItemCard(orderList[index]),
-              itemCount: orderList.length,
+    return AnimatedBuilder(
+        animation: _viewModel,
+        builder: (context, _) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: const Text('Cart'),
             ),
-          ),
-           const PaymentSummary(),
-        ],
-      ),
-    );
+            body: Column(
+              children: [
+                Expanded(
+                  child: AnimatedList(
+                    key: _viewModel.listKey,
+                    itemBuilder: (ctx, index, animation) =>
+                        OrderItemCard(_viewModel.cartItems[index]),
+                    // not using animation as an animation is done in the view model
+                    initialItemCount: _viewModel.cartItems.length,
+                  ),
+                ),
+                PaymentSummary(_viewModel.totalAmount),
+              ],
+            ),
+          );
+        });
   }
 }

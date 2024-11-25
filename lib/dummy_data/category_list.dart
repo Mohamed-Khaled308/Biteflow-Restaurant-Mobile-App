@@ -1,6 +1,6 @@
 import '../models/category.dart';
 
-var categoriesList = [
+final List<Category> categoriesList = [
   Category(id: 'c1', title: 'Offers'),
   Category(id: 'c2', title: 'Main Dishes'),
   Category(id: 'c3', title: 'Breakfast'),

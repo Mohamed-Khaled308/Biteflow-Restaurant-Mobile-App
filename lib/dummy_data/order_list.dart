@@ -9,7 +9,7 @@ final List<OrderItem> orderList = [
       imageUrl: 'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
       description: 'This is a shirt',
       rating: 4.5,
-      categoryId: '1',
+      categoryId: 'c1',
     ),
     OrderItem(
       id: '2',
@@ -20,7 +20,7 @@ final List<OrderItem> orderList = [
       description: 'This is a pants',
       rating: 4.5,
       notes: 'This is a note for pants',
-      categoryId: '2',
+      categoryId: 'c2',
     ),
 
     OrderItem(
@@ -31,7 +31,7 @@ final List<OrderItem> orderList = [
       imageUrl: 'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
       description: 'This is a shoes',
       rating: 4.5,
-      categoryId: '3',
+      categoryId: 'c3',
     ),
     OrderItem(
       id: '4',
@@ -41,6 +41,6 @@ final List<OrderItem> orderList = [
       imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg/800px-Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg',
       description: 'This is a shirt',
       rating: 4.5,
-      categoryId: '4',
+      categoryId: 'c4',
     ),
   ];
