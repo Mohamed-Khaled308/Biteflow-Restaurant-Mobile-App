@@ -21,7 +21,7 @@ final Order tableOrder = Order(
       title: 'Pasta',
       quantity: 9,
       price: 2000,
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg/800px-Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg',
+      imageUrl: 'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
       description: 'This is a pants',
       rating: 4.5,
       notes: 'This is a note for pants',

@@ -73,6 +73,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
                   TextButton(
                     onPressed: () {
                       _navigationService.pop();
+                      _viewModel.notesController.clear();
                     },
                     style: TextButton.styleFrom(foregroundColor: Colors.blue),
                     child: const Text('Cancel'),
