@@ -35,7 +35,7 @@ builder: (context, _) {
                 initialItemCount: _viewModel.cartItems.length,
               ),
             ),
-             const PaymentSummary(),
+              PaymentSummary(_viewModel.totalAmount),
           ],
         ),
       );

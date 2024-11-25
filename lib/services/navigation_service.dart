@@ -17,4 +17,15 @@ class NavigationService {
       ),
     );
   }
+
+  Future<dynamic> navigateAndRemove(Widget screen, {dynamic arguments}) { 
+    return _navigationKey.currentState!.pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (_) => screen,
+        settings: RouteSettings(arguments: arguments),
+      ),
+      (Route<dynamic> route) =>
+          false, // Removes all previous routes from the stack
+    );
+  }
 }
