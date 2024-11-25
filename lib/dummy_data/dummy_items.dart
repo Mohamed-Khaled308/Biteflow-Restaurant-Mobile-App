@@ -10,6 +10,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 1,
     notes: 'Extra spicy',
+    categoryId: 'c1',
   ),
   OrderItem(
     id: '2',
@@ -20,6 +21,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c2',
   ),
    OrderItem(
     id: '2',
@@ -30,6 +32,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c3',
   ),
    OrderItem(
     id: '2',
@@ -40,6 +43,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c4',
   ),
    OrderItem(
     id: '2',
@@ -50,6 +54,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c5',
   ),
    OrderItem(
     id: '2',
@@ -60,6 +65,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c6',
   ),
    OrderItem(
     id: '2',
@@ -70,6 +76,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c7',
   ),
    OrderItem(
     id: '2',
@@ -80,6 +87,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c1',
   ),
    OrderItem(
     id: '2',
@@ -90,6 +98,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c2',
   ),
    OrderItem(
     id: '2',
@@ -100,6 +109,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c3',
   ),
    OrderItem(
     id: '2',
@@ -110,6 +120,7 @@ List<OrderItem> orderedItemsData = [
     rating: 0.0,
     quantity: 2,
     notes: '',
+    categoryId: 'c4',
   ),
   
   // Add more items as needed

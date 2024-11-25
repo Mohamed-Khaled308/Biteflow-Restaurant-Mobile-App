@@ -5,6 +5,7 @@ abstract class Item {
   final String imageUrl;
   final String description;
   final double rating;
+  final String categoryId;
 
   Item({
     required this.id,
@@ -13,6 +14,7 @@ abstract class Item {
     required this.imageUrl,
     required this.description,
     required this.rating,
+    required this.categoryId,
   });
 
   Item.fromData(Map<String, dynamic> data)
@@ -21,5 +23,6 @@ abstract class Item {
         price = data['price'],
         imageUrl = data['imageUrl'],
         description = data['description'],
-        rating = data['rating'];
+        rating = data['rating'],
+        categoryId = data['categoryId'];
 }

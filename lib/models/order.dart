@@ -8,6 +8,7 @@ class Order{
   final List<String> userIDs;
   final String paymentMethod;
   final String restaurantID;
+  final int orderNumber;
 
   Order({
     required this.id,
@@ -17,6 +18,7 @@ class Order{
     required this.userIDs,
     required this.paymentMethod,
     required this.restaurantID,
+    required this.orderNumber,
   });
 
 
@@ -27,6 +29,7 @@ class Order{
       userIDs = data['userIDs'],
       paymentMethod = data['paymentMethod'],
       restaurantID = data['restaurantID'],
-      items = data['items'];
+      items = data['items'],
+      orderNumber = data['orderNumber'];
 
 }

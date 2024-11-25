@@ -14,6 +14,7 @@ final Order tableOrder = Order(
       imageUrl: 'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
       description: 'This is a shirt',
       rating: 4.5,
+      categoryId: 'c1',
     ),
     OrderItem(
       id: '2',
@@ -24,9 +25,11 @@ final Order tableOrder = Order(
       description: 'This is a pants',
       rating: 4.5,
       notes: 'This is a note for pants',
+      categoryId: 'c2',
     ),
   ],
   userIDs: ['1', '2'],
   paymentMethod: 'cash',
   restaurantID: '1',
+  orderNumber: 73,
 );
