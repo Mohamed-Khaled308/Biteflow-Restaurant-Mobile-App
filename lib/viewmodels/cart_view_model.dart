@@ -6,9 +6,32 @@ import 'package:flutter/material.dart';
 class CartViewModel extends BaseModel {
   final List<OrderItem> _cartItems = orderList;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  final TextEditingController _notesController = TextEditingController();
 
   List<OrderItem> get cartItems => _cartItems;
   GlobalKey<AnimatedListState> get listKey => _listKey;
+  TextEditingController get notesController => _notesController;
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    super.dispose();
+  }
+
+  double get totalAmount {
+    double total = 0;
+    for (final item in _cartItems) {
+      total += item.price * item.quantity;
+    }
+    return total;
+  }
+
+  void updateNotes(String id, String notes) {
+    final index = _cartItems.indexWhere((element) => element.id == id);
+    final updatedItem = _cartItems[index].copyWith(updatedNotes: notes);
+    _cartItems[index] = updatedItem;
+    notifyListeners();
+  }
 
   void incrementItemQuantity(String id) {
     final index = _cartItems.indexWhere((element) => element.id == id);

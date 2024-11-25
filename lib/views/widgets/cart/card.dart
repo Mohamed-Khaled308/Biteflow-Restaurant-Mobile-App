@@ -1,29 +1,25 @@
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:provider/provider.dart';
 
-
-class OrderItemCard extends StatefulWidget {
-  const OrderItemCard(this.orderItem, {super.key});
+class OrderItemCard extends StatelessWidget {
+  OrderItemCard(this.orderItem, {super.key});
   final OrderItem orderItem;
 
-  @override
-  State<OrderItemCard> createState() => _OrderItemCardState();
-}
+  final NavigationService _navigationService = getIt<NavigationService>();
 
-class _OrderItemCardState extends State<OrderItemCard> {
-  final CartViewModel _viewModel = getIt<CartViewModel>();
-  
   @override
   Widget build(BuildContext context) {
-    return
-     Container(
+    final viewModel = context.watch<CartViewModel>();
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white,  
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -34,10 +30,63 @@ class _OrderItemCardState extends State<OrderItemCard> {
           ),
         ],
       ),
-        child: Material(
+      child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: const Text('Special Note'),
+                content: TextField(
+                  controller: viewModel.notesController,
+                  decoration: InputDecoration(
+                    labelText: 'Note',
+                    labelStyle: const TextStyle(color: Colors.blue),
+                    hintText: 'Enter your note here',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(color: Colors.blue),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: const BorderSide(color: Colors.blue),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide:
+                          const BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
+                  ),
+                  maxLength: 100,
+                  style: const TextStyle(fontSize: 16.0),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      _navigationService.pop();
+                    },
+                    style: TextButton.styleFrom(foregroundColor: Colors.blue),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _navigationService.pop();
+                      viewModel.updateNotes(
+                          orderItem.id, viewModel.notesController.text);
+                      viewModel.notesController.clear();
+                    },
+                    style: TextButton.styleFrom(foregroundColor: Colors.blue),
+                    child: const Text('Okay'),
+                  )
+                ],
+              ),
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -47,7 +96,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.orderItem.title,
+                        orderItem.title,
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -63,11 +112,11 @@ class _OrderItemCardState extends State<OrderItemCard> {
                         'Edit',
                         Colors.orange,
                       ),
-                      if (widget.orderItem.notes.isNotEmpty)
+                      if (orderItem.notes.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Text(
-                            widget.orderItem.notes,
+                            orderItem.notes,
                             style: TextStyle(
                               color: Colors.grey.shade600,
                               fontStyle: FontStyle.italic,
@@ -79,13 +128,13 @@ class _OrderItemCardState extends State<OrderItemCard> {
                       OrderItemCardTrait(
                         Icons.star,
                         Colors.green,
-                        'Rating: ${widget.orderItem.rating}',
+                        'Rating: ${orderItem.rating}',
                         Colors.black87,
                       ),
                       OrderItemCardTrait(
                         Icons.price_change_rounded,
                         Colors.red,
-                        '${widget.orderItem.price} EGP',
+                        '${orderItem.price} EGP',
                         Colors.black87,
                       ),
                     ],
@@ -97,7 +146,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
                   child: Stack(children: [
                     FadeInImage(
                       placeholder: MemoryImage(kTransparentImage),
-                      image: NetworkImage(widget.orderItem.imageUrl),
+                      image: NetworkImage(orderItem.imageUrl),
                       width: 130,
                       height: 130,
                       fit: BoxFit.cover,
@@ -126,9 +175,17 @@ class _OrderItemCardState extends State<OrderItemCard> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            IconButton(onPressed: () {_viewModel.decrementItemQuantity(widget.orderItem.id);}, icon: const Icon(Icons.remove)),
-                            Text('${widget.orderItem.quantity}'),
-                            IconButton(onPressed: () {_viewModel.incrementItemQuantity(widget.orderItem.id);}, icon: const Icon(Icons.add)),
+                            IconButton(
+                                onPressed: () {
+                                  viewModel.decrementItemQuantity(orderItem.id);
+                                },
+                                icon: const Icon(Icons.remove)),
+                            Text('${orderItem.quantity}'),
+                            IconButton(
+                                onPressed: () {
+                                  viewModel.incrementItemQuantity(orderItem.id);
+                                },
+                                icon: const Icon(Icons.add)),
                           ],
                         ),
                       ),
