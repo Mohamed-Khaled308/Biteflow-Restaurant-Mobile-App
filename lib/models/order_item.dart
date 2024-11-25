@@ -1,9 +1,9 @@
 import 'package:biteflow/models/item.dart';
 
-class OrderItem extends Item{
+class OrderItem extends Item {
   final int quantity;
   final String notes;
-  
+
   OrderItem({
     required super.id,
     required super.title,
@@ -15,8 +15,7 @@ class OrderItem extends Item{
     this.notes = '',
   });
 
-
-    OrderItem.fromData(Map<String, dynamic> data)
+  OrderItem.fromData(Map<String, dynamic> data)
       : quantity = data['quantity'],
         notes = data['notes'],
         super(
@@ -27,16 +26,20 @@ class OrderItem extends Item{
             description: data['description'],
             rating: data['rating']);
 
-      OrderItem copyWith({int? updatedQuantity , String? updatedNotes}){
-        return OrderItem(
-          id: id,
-          title: title,
-          price: price,
-          imageUrl: imageUrl,
-          description: description,
-          rating: rating,
-          quantity: updatedQuantity ?? quantity,
-          notes: updatedNotes ?? notes,
-        );
-      }
+  OrderItem copyWith({
+    int? updatedQuantity,
+    String? updatedNotes,
+    double? updatedRating,
+  }) {
+    return OrderItem(
+      id: id,
+      title: title,
+      price: price,
+      imageUrl: imageUrl,
+      description: description,
+      rating: updatedRating ?? rating,
+      quantity: updatedQuantity ?? quantity,
+      notes: updatedNotes ?? notes,
+    );
+  }
 }
