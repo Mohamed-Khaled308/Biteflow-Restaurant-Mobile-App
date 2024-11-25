@@ -60,9 +60,9 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
   }
 
   Widget _buildCreateCategory() {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -83,7 +83,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                if (!_formKey.currentState!.validate()) { // to validate the form
+                if (!formKey.currentState!.validate()) { // to validate the form
                   return;
                 }
                 _viewModel.createCategory(); // still problematic
@@ -100,7 +100,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
   }
 
   Widget _buildCreateItem() {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Padding(
       padding: EdgeInsets.only(
         left: 16,
@@ -110,7 +110,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
       ),
       child: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -191,7 +191,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
-                  if (!_formKey.currentState!.validate()) { // to validate the form
+                  if (!formKey.currentState!.validate()) { // to validate the form
                     return;
                   }
                   _viewModel.createItem();

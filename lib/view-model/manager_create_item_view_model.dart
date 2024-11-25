@@ -11,7 +11,7 @@ class ManagerCreateItemViewModel extends BaseModel {
   bool _isCreatingItem = true; // Tracks which page to show
 
   // for create item
-  List<Category> _categories = categoriesList; // should be fetched from db
+  final List<Category> _categories = categoriesList; // should be fetched from db
   String? _itemCategoryId;
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _itemPriceController = TextEditingController();
@@ -64,8 +64,8 @@ class ManagerCreateItemViewModel extends BaseModel {
   void createCategory() { // should post to db using some service
     // Add the logic to create a new category here
 
-    print('Creating Category...');
-    print('Category Name: ${_categoryNameController.text}');
+    // print('Creating Category...');
+    // print('Category Name: ${_categoryNameController.text}');
 
 
     // after saving in db
@@ -74,11 +74,11 @@ class ManagerCreateItemViewModel extends BaseModel {
 
   void createItem() { // should post to db using some service
     // Add the logic to create a new item here
-    print('Creating item...');
-    print('Item Name: ${_itemNameController.text}');
-    print('Item Price: ${_itemPriceController.text}');
-    print('Item Description: ${_itemDescriptionController.text}');
-    print('Item Category: $_itemCategoryId');
+    // print('Creating item...');
+    // print('Item Name: ${_itemNameController.text}');
+    // print('Item Price: ${_itemPriceController.text}');
+    // print('Item Description: ${_itemDescriptionController.text}');
+    // print('Item Category: $_itemCategoryId');
 
     
     // after saving in db

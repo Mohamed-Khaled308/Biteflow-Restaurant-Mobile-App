@@ -3,7 +3,7 @@ import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/models/client.dart';
 
 // They all have same restaurantID corresponding to the same manager
-final List<Order> manager_list_of_orders = [
+final List<Order> managerListOfOrders = [
   Order(
     id: '1',
     status: 'pending',
@@ -146,7 +146,7 @@ final List<Order> manager_list_of_orders = [
 ];
 
 // They should be of same size as manager_list_of_orders
-final List<Client> order_clients = [
+final List<Client> orderClients = [
   Client(
     id: '1',
     email: 'a@g.com',
