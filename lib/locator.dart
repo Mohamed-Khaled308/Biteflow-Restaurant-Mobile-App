@@ -4,7 +4,9 @@ import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
+import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
+import 'package:biteflow/viewmodels/rating_view_model.dart';
 import 'package:biteflow/viewmodels/signup_view_model.dart';
 import 'package:logger/logger.dart';
 import 'package:get_it/get_it.dart';
@@ -24,4 +26,6 @@ void setupLocator() {
   getIt.registerFactory<CartViewModel>(() => CartViewModel());
   getIt.registerFactory<LoginViewModel>(() => LoginViewModel());
   getIt.registerFactory<SignupViewModel>(() => SignupViewModel());
+  getIt.registerFactory<HomeViewModel>(() => HomeViewModel());
+  getIt.registerFactory<RatingViewModel>(() => RatingViewModel());
 }

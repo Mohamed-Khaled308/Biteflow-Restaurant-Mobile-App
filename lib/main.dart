@@ -1,6 +1,5 @@
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/views/screens/auth/login/login_view.dart';
-import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(context),
         themeMode: ThemeMode.light,
         navigatorKey: getIt<NavigationService>().navigationKey,
-        home: const CartView(),
+        home: const LoginView(),
         builder: (context, widget) {
           ScreenUtil.init(context);
           return widget!;
