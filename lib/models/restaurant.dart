@@ -14,13 +14,13 @@ class Restaurant {
     required this.id,
     required this.name,
     required this.managerId,
-    required this.imageUrl,
     required this.location,
+    this.imageUrl = '',
+    this.description = '',
     this.itemsIds = const [],
     this.rating = 0.0,
     this.reviewCount = 0,
     this.isTableAvailable = true,
-    this.description = '',
   });
 
   factory Restaurant.fromData(Map<String, dynamic> data) {
@@ -28,15 +28,15 @@ class Restaurant {
       id: data['id'],
       name: data['name'],
       managerId: data['managerId'],
+      location: data['location'],
       imageUrl: data['imageUrl'] ?? '',
-      location: data['location'] ?? '',
+      description: data['description'] ?? '',
       itemsIds: (data['itemsIds'] != null && data['itemsIds'] is List)
           ? List<String>.from(data['itemsIds'] as List)
           : [],
       rating: data['rating'].toDouble() ?? 0.0,
       reviewCount: data['reviewCount'] ?? 0,
       isTableAvailable: data['isTableAvailable'] ?? true,
-      description: data['description'] ?? '',
     );
   }
 

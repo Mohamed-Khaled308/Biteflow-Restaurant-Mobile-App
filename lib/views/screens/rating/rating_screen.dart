@@ -1,4 +1,4 @@
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/services/navigation_service.dart';

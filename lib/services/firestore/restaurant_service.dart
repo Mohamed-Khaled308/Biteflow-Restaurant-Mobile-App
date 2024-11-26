@@ -1,8 +1,8 @@
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/restaurant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:biteflow/constants/firestore_collections.dart';
-import 'package:biteflow/core/result.dart';
+import 'package:biteflow/core/constants/firestore_collections.dart';
+import 'package:biteflow/core/utils/result.dart';
 import 'package:logger/logger.dart';
 
 class RestaurantService {

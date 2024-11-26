@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 
 const InputDecorationTheme lightInputDecorationTheme = InputDecorationTheme(
   fillColor: ThemeConstants.lightGreyColor,
@@ -32,7 +32,7 @@ const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
 const OutlineInputBorder focusedOutlineInputBorder = OutlineInputBorder(
   borderRadius:
       BorderRadius.all(Radius.circular(ThemeConstants.defaultBorderRadious)),
-  borderSide: BorderSide(color: ThemeConstants.darkGreyColor),
+  borderSide: BorderSide(color: ThemeConstants.primaryColor),
 );
 
 const OutlineInputBorder errorOutlineInputBorder = OutlineInputBorder(

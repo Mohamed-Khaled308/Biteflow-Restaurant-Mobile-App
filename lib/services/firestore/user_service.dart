@@ -1,9 +1,10 @@
+import 'package:biteflow/core/utils/auth_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:biteflow/models/user.dart';
-import 'package:biteflow/constants/firestore_collections.dart';
+import 'package:biteflow/core/constants/firestore_collections.dart';
 import 'package:biteflow/models/client.dart';
 import 'package:biteflow/models/manager.dart';
-import 'package:biteflow/core/result.dart';
+import 'package:biteflow/core/utils/result.dart';
 
 class UserService {
   final CollectionReference _users = FirebaseFirestore.instance
@@ -23,9 +24,9 @@ class UserService {
       DocumentSnapshot userDoc = await _users.doc(userId).get();
       if (userDoc.exists) {
         Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-        if (userData['role'] == 'client') {
+        if (userData['role'] == AuthHelper.clientRole) {
           return Result(data: Client.fromData(userData));
-        } else if (userData['role'] == 'manager') {
+        } else if (userData['role'] == AuthHelper.managerRole) {
           return Result(data: Manager.fromData(userData));
         }
         return Result(error: 'Unknown user role: ${userData['role']}');

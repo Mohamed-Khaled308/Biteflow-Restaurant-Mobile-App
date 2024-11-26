@@ -1,4 +1,4 @@
-import 'package:biteflow/constants/order_status.dart';
+import 'package:biteflow/core/constants/order_status.dart';
 import 'package:biteflow/models/order_item.dart';
 
 class Order {

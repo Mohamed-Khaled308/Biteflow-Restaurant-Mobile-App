@@ -1,4 +1,4 @@
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:flutter/material.dart';
 
 class RoleButton extends StatelessWidget {
@@ -24,8 +24,7 @@ class RoleButton extends StatelessWidget {
           backgroundColor: isSelected
               ? ThemeConstants.primaryColor
               : ThemeConstants.whiteColor,
-          side:
-              const BorderSide(color: ThemeConstants.greyColor), // Border color
+          side: const BorderSide(color: ThemeConstants.greyColor),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,
           ),

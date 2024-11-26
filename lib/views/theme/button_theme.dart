@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 
 ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
   style: ElevatedButton.styleFrom(

@@ -1,5 +1,5 @@
 
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/item.dart';
 import 'package:biteflow/views/widgets/rating/star_rating_bar.dart';
 import 'package:flutter/material.dart'; 

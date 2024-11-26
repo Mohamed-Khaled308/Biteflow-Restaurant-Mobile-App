@@ -7,7 +7,9 @@ import 'package:biteflow/viewmodels/entry_point_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
 import 'package:biteflow/viewmodels/rating_view_model.dart';
+import 'package:biteflow/viewmodels/restaurant_onboarding_view_model.dart';
 import 'package:biteflow/viewmodels/signup_view_model.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:get_it/get_it.dart';
 
@@ -20,6 +22,7 @@ void setupLocator() {
   getIt.registerLazySingleton<UserService>(() => UserService());
   getIt.registerLazySingleton<RestaurantService>(() => RestaurantService());
   getIt.registerLazySingleton<Logger>(() => Logger());
+  getIt.registerLazySingleton<UserProvider>(() => UserProvider());
 
   // ViewModels - Use factories for scoped ViewModels
   getIt.registerFactory<EntryPointViewModel>(() => EntryPointViewModel());
@@ -28,4 +31,6 @@ void setupLocator() {
   getIt.registerFactory<SignupViewModel>(() => SignupViewModel());
   getIt.registerFactory<HomeViewModel>(() => HomeViewModel());
   getIt.registerFactory<RatingViewModel>(() => RatingViewModel());
+  getIt.registerFactory<RestaurantOnboardingViewModel>(
+      () => RestaurantOnboardingViewModel());
 }

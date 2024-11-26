@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:provider/provider.dart';
 
 class EntryPointScreen extends StatelessWidget {

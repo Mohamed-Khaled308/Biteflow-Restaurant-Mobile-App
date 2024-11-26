@@ -1,6 +1,6 @@
 // views/widgets/home/restaurant_card.dart
 
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/restaurant.dart';
 import 'package:flutter/material.dart';
  

@@ -1,76 +1,52 @@
-import 'package:biteflow/core/result.dart';
-import 'package:biteflow/core/utils/auth_helper.dart';
-import 'package:biteflow/locator.dart';
-import 'package:biteflow/models/client.dart';
-import 'package:biteflow/models/manager.dart';
-import 'package:biteflow/services/firestore/user_service.dart';
+import 'package:biteflow/core/utils/result.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final UserService _userService = getIt<UserService>();
-  final Logger _logger = getIt<Logger>();
+  User? get currentUser => _firebaseAuth.currentUser;
 
-  Future<Result<bool>> loginWithEmail({
-    required String email,
-    required String password,
-  }) async {
+  Future<Result<void>> loginWithEmail(
+      {required String email, required String password}) async {
     try {
-      _logger.d('email : $email, password : $password');
-      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      if (userCredential.user != null) {
-        return Result(data: true);
-      }
-      _logger.e('Unexpected behaviour: user is null');
-      return Result(error: 'Unexpected behaviour: user is null');
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return Result();
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = e.code.replaceAll('-', ' ');
+      return Result(error: errorMessage);
+    } on FirebaseException catch (e) {
+      return Result(error: 'Firebase error: ${e.message}');
     } catch (e) {
-      _logger.e('Login failed: ${e.toString()}');
-      return Result(error: e.toString());
+      return Result(error: 'An unexpected error occurred: ${e.toString()}');
     }
   }
 
-  Future<Result<bool>> signUpWithEmail(
-      {required Map<String, dynamic> info}) async {
-    User? user;
+  Future<Result<void>> signUpWithEmail(
+      {required String email, required String password}) async {
     try {
-      _logger.d(info);
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: info['email'],
-        password: info['password'],
-      );
-      user = userCredential.user;
-
-      if (user != null) {
-        info['id'] = user.uid;
-        _logger.d(info);
-        if (info['role'] == AuthHelper.clientRole) {
-          Client client = Client.fromData(info);
-          await _userService.createUser(client);
-        } else if (info['role'] == AuthHelper.managerRole) {
-          Manager manager = Manager.fromData(info);
-          await _userService.createUser(manager);
-        }
-        return Result(data: true);
-      }
-
-      _logger.e('Unexpected behaviour: user is null');
-      return Result(error: 'Unexpected behaviour: user is null');
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return Result();
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = e.code.replaceAll('-', ' ');
+      return Result(error: errorMessage);
+    } on FirebaseException catch (e) {
+      return Result(error: 'Firebase error: ${e.message}');
     } catch (e) {
-      _logger.e('Sign up failed: ${e.toString()}');
-      if (user != null) {
-        try {
-          await user.delete();
-          _logger.d('Cleaned up: User ${user.email} deleted from Firebase.');
-        } catch (deleteError) {
-          _logger
-              .e('Failed to clean up created user: ${deleteError.toString()}');
-        }
-      }
-      return Result(error: e.toString());
+      return Result(error: 'An unexpected error occurred: ${e.toString()}');
+    }
+  }
+
+  Future<Result<void>> logout() async {
+    try {
+      await _firebaseAuth.signOut();
+      return Result();
+    } on FirebaseAuthException catch (e) {
+      return Result(error: 'Logout failed: ${e.message}');
+    } on FirebaseException catch (e) {
+      return Result(error: 'Firebase error: ${e.message}');
+    } catch (e) {
+      return Result(error: 'An unexpected error occurred: ${e.toString()}');
     }
   }
 }

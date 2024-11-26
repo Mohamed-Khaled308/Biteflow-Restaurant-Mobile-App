@@ -1,4 +1,4 @@
-import 'package:biteflow/constants/theme_constants.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_list_tile.dart';
