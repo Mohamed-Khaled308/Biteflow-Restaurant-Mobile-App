@@ -11,7 +11,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => getIt<LoginViewModel>(),
-      child: LoginScreen(),
+      child: const LoginScreen(),
     );
   }
 }
