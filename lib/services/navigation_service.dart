@@ -28,4 +28,12 @@ class NavigationService {
           false, // Removes all previous routes from the stack
     );
   }
+  Future<dynamic> navigateAndReplace(Widget screen, {dynamic arguments}) {
+    return _navigationKey.currentState!.pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => screen,
+        settings: RouteSettings(arguments: arguments),
+      ),
+    );
+  }
 }

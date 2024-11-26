@@ -1,3 +1,4 @@
+import 'package:biteflow/animated_splash_screen.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       // Dark theme is inclided in the Full template
       themeMode: ThemeMode.light,
       navigatorKey: getIt<NavigationService>().navigationKey,
-      home: const EntryPointView(),
+      home: const AnimatedSplashScreen(nextScreen: EntryPointView()),
     );
   }
 }
