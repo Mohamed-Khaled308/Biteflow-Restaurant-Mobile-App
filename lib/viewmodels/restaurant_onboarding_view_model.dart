@@ -108,7 +108,7 @@ class RestaurantOnboardingViewModel extends BaseModel {
       Manager newManager = Manager.fromData(data);
       await _userService.updateUser(newManager);
       _userProvider.setUser = newManager;
-      _navigationService.replaceWith(const EntryPointView());
+      _navigationService.replaceWith(EntryPointView());
     } else {
       // Error!
     }

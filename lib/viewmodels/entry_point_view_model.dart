@@ -4,6 +4,8 @@ import 'package:biteflow/views/screens/home/home_view.dart';
 import 'package:biteflow/views/screens/order_details/order_details_view.dart';
 import 'package:biteflow/views/screens/profile/profile_view.dart';
 import 'package:biteflow/views/screens/search/search_view.dart';
+// import 'package:biteflow/views/screens/manager_menu/manager_menu_view.dart';
+// import 'package:biteflow/views/screens/manager_orders/manager_orders_view.dart';
 
 
 
@@ -13,6 +15,7 @@ class EntryPointViewModel extends BaseModel {
   final List<Map<String, dynamic>> _navItems = [
     {'icon': 'assets/icons/home.svg', 'title': 'Home'},
     {'icon': 'assets/icons/search.svg', 'title': 'Search'},
+    // {'icon': 'assets/icons/order.svg', 'title': 'Menu'},
     {'icon': 'assets/icons/order.svg', 'title': 'Orders'},
     {'icon': 'assets/icons/profile.svg', 'title': 'Profile'},
   ];
@@ -20,8 +23,10 @@ class EntryPointViewModel extends BaseModel {
   final List<Widget> _screens = [
     const HomeView(),
     const SearchView(),
+    // const ManagerOrdersView(),
     const OrderDetailsView(),
     const ProfileView(),
+    // const ManagerMenuView(),
   ];
 
   int get selectedIndex => _selectedIndex;

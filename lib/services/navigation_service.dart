@@ -27,4 +27,12 @@ class NavigationService {
       (Route<dynamic> route) => false,
     );
   }
+  Future<dynamic> navigateAndReplace(Widget screen, {dynamic arguments}) {
+    return _navigationKey.currentState!.pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => screen,
+        settings: RouteSettings(arguments: arguments),
+      ),
+    );
+  }
 }

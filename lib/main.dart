@@ -1,5 +1,8 @@
+import 'package:biteflow/animated_splash_screen.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
-import 'package:biteflow/views/screens/login/login_view.dart';
+import 'package:provider/provider.dart';
+import 'views/screens/entry_point/entry_point_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,9 +21,10 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
-    runApp(
-      const MyApp(),
-    );
+    runApp(ChangeNotifierProvider(
+      create: (_) => getIt<UserProvider>(),
+      child: const MyApp(),
+    ));
   });
 }
 
@@ -38,7 +42,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(context),
         themeMode: ThemeMode.light,
         navigatorKey: getIt<NavigationService>().navigationKey,
-        home: const LoginView(),
+        home: AnimatedSplashScreen(nextScreen: EntryPointView()),
         builder: (context, widget) {
           ScreenUtil.init(context);
           return widget!;

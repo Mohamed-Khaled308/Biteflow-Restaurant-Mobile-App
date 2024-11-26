@@ -58,7 +58,7 @@ class CartViewModel extends BaseModel {
             ),
           ),
         );
-      }, duration: const Duration(milliseconds: 500));
+      }, duration: const Duration(milliseconds: 1000));
       _cartItems.removeAt(index);
       notifyListeners();
       return;

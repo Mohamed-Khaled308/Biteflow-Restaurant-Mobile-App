@@ -52,5 +52,5 @@ class LoginViewModel extends BaseModel {
 
   void navigateToSignup() => _navigationService.navigateTo(const SignupView());
   void _navigateToEntryPoint() =>
-      _navigationService.replaceWith(const EntryPointView());
+      _navigationService.replaceWith(EntryPointView());
 }

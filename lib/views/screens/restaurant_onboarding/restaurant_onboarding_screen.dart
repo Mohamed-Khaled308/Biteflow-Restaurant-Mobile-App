@@ -8,7 +8,6 @@ import 'package:biteflow/viewmodels/restaurant_onboarding_view_model.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_button.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:biteflow/locator.dart';
 
 class RestaurantOnboardingScreen extends StatelessWidget {
   RestaurantOnboardingScreen({super.key});
@@ -22,7 +21,7 @@ class RestaurantOnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<RestaurantOnboardingViewModel>();
-    final userProvider = getIt<UserProvider>();
+    final userProvider = context.watch<UserProvider>();
 
     return Scaffold(
       body: SafeArea(

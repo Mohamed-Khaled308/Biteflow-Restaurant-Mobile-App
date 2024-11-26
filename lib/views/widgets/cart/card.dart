@@ -69,6 +69,7 @@ class OrderItemCard extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       _navigationService.pop();
+                      viewModel.notesController.clear();
                     },
                     style: TextButton.styleFrom(foregroundColor: Colors.blue),
                     child: const Text('Cancel'),

@@ -9,10 +9,12 @@ class Order {
   final List<String> userIDs;
   final String paymentMethod;
   final String restaurantID;
+  final int orderNumber;
 
   Order({
     required this.id,
     required this.restaurantID,
+    required this.orderNumber,
     this.status = OrderStatus.pending,
     this.totalAmount = 0.0,
     this.items = const [],
@@ -21,8 +23,9 @@ class Order {
   });
 
   Order.fromData(Map<String, dynamic> data)
-      : id = data['id'] ?? '',
-        restaurantID = data['restaurantID'] ?? '',
+      : id = data['id'],
+        restaurantID = data['restaurantID'],
+        orderNumber = data['orderNumber'],
         status = data['status'] ?? OrderStatus.pending,
         totalAmount = (data['totalAmount'] ?? 0).toDouble(),
         userIDs = List<String>.from(data['userIDs'] ?? []),

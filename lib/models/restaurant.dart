@@ -9,6 +9,9 @@ class Restaurant {
   final int reviewCount;
   final bool isTableAvailable;
   final String description;
+  final List<String> categoriesIDs = [];
+  final List<String> menuItemIDs = [];
+
 
   Restaurant({
     required this.id,
