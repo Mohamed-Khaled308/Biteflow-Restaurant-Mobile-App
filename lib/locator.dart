@@ -1,4 +1,6 @@
 import 'package:biteflow/services/auth_service.dart';
+import 'package:biteflow/services/firestore/category_service.dart';
+import 'package:biteflow/services/firestore/menu_item_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
@@ -15,7 +17,6 @@ import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
 import 'package:biteflow/viewmodels/menu_view_model.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
-import 'package:biteflow/services/firestore/manager_menu_service.dart';
 import 'package:logger/logger.dart';
 import 'package:get_it/get_it.dart';
 
@@ -27,7 +28,8 @@ void setupLocator() {
   getIt.registerLazySingleton<AuthService>(() => AuthService());
   getIt.registerLazySingleton<UserService>(() => UserService());
   getIt.registerLazySingleton<RestaurantService>(() => RestaurantService());
-  getIt.registerLazySingleton<ManagerMenuService>(() => ManagerMenuService());
+  getIt.registerLazySingleton<CategoryService>(() => CategoryService());
+  getIt.registerLazySingleton<MenuItemService>(() => MenuItemService());
   getIt.registerLazySingleton<Logger>(() => Logger());
   getIt.registerLazySingleton<UserProvider>(() => UserProvider());
 

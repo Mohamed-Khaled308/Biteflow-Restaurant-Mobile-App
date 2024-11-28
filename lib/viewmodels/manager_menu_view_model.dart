@@ -1,7 +1,8 @@
 import 'package:biteflow/models/category.dart';
 import 'package:biteflow/models/menu_item.dart';
 import 'package:biteflow/models/restaurant.dart';
-import 'package:biteflow/services/firestore/manager_menu_service.dart';
+import 'package:biteflow/services/firestore/category_service.dart';
+import 'package:biteflow/services/firestore/menu_item_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
@@ -74,7 +75,7 @@ class ManagerMenuViewModel extends BaseModel {
   }
 
   Future<void> _fetchCategories() async{
-    final categoriesData = await getIt<ManagerMenuService>().getCategories(_authenticatedManager.restaurantId);
+    final categoriesData = await getIt<CategoryService>().getCategories(_authenticatedManager.restaurantId);
     if(categoriesData.isSuccess){
       _categories = categoriesData.data;
     }
@@ -84,7 +85,7 @@ class ManagerMenuViewModel extends BaseModel {
   }
 
   Future<void> _fetchMenuItems() async{
-    final menuItemsData = await getIt<ManagerMenuService>().getMenuItems(_authenticatedManager.restaurantId);
+    final menuItemsData = await getIt<MenuItemService>().getMenuItems(_authenticatedManager.restaurantId);
     if(menuItemsData.isSuccess){
       _menuItems = menuItemsData.data;
     }
