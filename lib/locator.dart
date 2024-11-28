@@ -1,4 +1,6 @@
 import 'package:biteflow/services/auth_service.dart';
+import 'package:biteflow/services/firestore/category_service.dart';
+import 'package:biteflow/services/firestore/menu_item_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
@@ -26,6 +28,8 @@ void setupLocator() {
   getIt.registerLazySingleton<AuthService>(() => AuthService());
   getIt.registerLazySingleton<UserService>(() => UserService());
   getIt.registerLazySingleton<RestaurantService>(() => RestaurantService());
+  getIt.registerLazySingleton<CategoryService>(() => CategoryService());
+  getIt.registerLazySingleton<MenuItemService>(() => MenuItemService());
   getIt.registerLazySingleton<Logger>(() => Logger());
   getIt.registerLazySingleton<UserProvider>(() => UserProvider());
 
