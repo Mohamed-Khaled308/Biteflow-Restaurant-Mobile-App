@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
 import 'package:biteflow/views/screens/manager_orders/components/order_bottom_sheet.dart';
-import 'package:biteflow/utils/status_icon_color.dart';
+import 'package:biteflow/core/utils/status_icon_color.dart';
+
 
 class OrdersList extends StatefulWidget {
   const OrdersList({super.key});
@@ -94,7 +95,11 @@ class _OrdersListState extends State<OrdersList> {
                     viewModel.selectedOrder = order;
                     viewModel
                         .loadSelectedOrderClients(); // to load clients based on selected order
-                    return const OrderBottomSheet();
+
+                    return ChangeNotifierProvider(
+                        create: (_) => viewModel,
+                        child: const OrderBottomSheet(),
+                    );
                   },
                 );
               });

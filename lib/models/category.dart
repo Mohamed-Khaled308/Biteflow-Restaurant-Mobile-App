@@ -1,9 +1,11 @@
 class Category {
   String id;
   String title;
-  Category({required this.id, required this.title});
+  String restaurantId ;
+  Category({required this.id, required this.title, required this.restaurantId});
 
   Category.fromData(Map<String, dynamic> data)
       : id = data['id'],
-        title = data['title'];
+        title = data['title'],
+        restaurantId = data['restaurantId'];
 }

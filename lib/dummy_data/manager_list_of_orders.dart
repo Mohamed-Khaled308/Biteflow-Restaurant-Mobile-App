@@ -19,6 +19,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -31,6 +32,7 @@ final List<Order> managerListOfOrders = [
           rating: 4.5,
           categoryId: 'c2',
           notes: 'This is a note for pants',
+          restaurantId: 'r1',
         ),
       ],
       userIDs: ['1', '2'],
@@ -52,6 +54,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -63,6 +66,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 4.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
         OrderItem(
@@ -75,6 +79,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 3.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
       ],
@@ -97,6 +102,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -108,6 +114,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 4.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
       ],
@@ -130,6 +137,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -141,6 +149,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 4.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
       ],

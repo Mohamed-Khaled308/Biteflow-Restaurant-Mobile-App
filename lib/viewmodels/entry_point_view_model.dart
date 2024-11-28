@@ -2,10 +2,10 @@ import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/views/screens/home/home_view.dart';
 import 'package:biteflow/views/screens/order_details/order_details_view.dart';
-import 'package:biteflow/views/screens/profile/profile_view.dart';
-import 'package:biteflow/views/screens/search/search_view.dart';
-// import 'package:biteflow/views/screens/manager_menu/manager_menu_view.dart';
-// import 'package:biteflow/views/screens/manager_orders/manager_orders_view.dart';
+// import 'package:biteflow/views/screens/profile/profile_view.dart';
+// import 'package:biteflow/views/screens/search/search_view.dart';
+import 'package:biteflow/views/screens/manager_menu/manager_menu_view.dart';
+import 'package:biteflow/views/screens/manager_orders/manager_orders_view.dart';
 
 
 
@@ -22,11 +22,11 @@ class EntryPointViewModel extends BaseModel {
 
   final List<Widget> _screens = [
     const HomeView(),
-    const SearchView(),
-    // const ManagerOrdersView(),
+    // const SearchView(),
+    const ManagerOrdersView(),
     const OrderDetailsView(),
-    const ProfileView(),
-    // const ManagerMenuView(),
+    // const ProfileView(),
+    const ManagerMenuView(),
   ];
 
   int get selectedIndex => _selectedIndex;

@@ -2,14 +2,14 @@ import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CreateMenuMain extends StatefulWidget {
-  const CreateMenuMain({super.key});
+class CreateItemCategory extends StatefulWidget {
+  const CreateItemCategory({super.key});
 
   @override
-  State<CreateMenuMain> createState() => _CreateMenuMainState();
+  State<CreateItemCategory> createState() => _CreateItemCategoryState();
 }
 
-class _CreateMenuMainState extends State<CreateMenuMain> {
+class _CreateItemCategoryState extends State<CreateItemCategory> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ManagerCreateItemViewModel>();

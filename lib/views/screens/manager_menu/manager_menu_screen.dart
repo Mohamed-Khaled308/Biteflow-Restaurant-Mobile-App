@@ -1,10 +1,12 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/views/screens/manager_menu/components/categories_list.dart';
-import 'package:biteflow/views/screens/manager_menu/components/create_menu_item_category/create_menu_main.dart';
+import 'package:biteflow/views/screens/manager_menu/components/create_item_category.dart';
 import 'package:biteflow/views/screens/manager_menu/components/items_list.dart';
+import 'package:biteflow/locator.dart';
 
 class ManagerMenuScreen extends StatefulWidget {
   const ManagerMenuScreen({super.key});
@@ -15,17 +17,31 @@ class ManagerMenuScreen extends StatefulWidget {
 
 class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
   @override
+  void initState() {
+    super.initState();
+    // final viewModel = context.watch<ManagerMenuViewModel>(); // causes errors
+    final viewModel = getIt<ManagerMenuViewModel>();
+    viewModel.loadRestaurantData();
+  }
+
+  @override
+  // ignore: must_call_super
+  void dispose() {}
+
+  @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ManagerMenuViewModel>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(viewModel.restaurantName,
-            style: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: ThemeConstants.whiteColor,
-            )),
+        title: viewModel.busy
+            ? const Text('Loading...')
+            : Text(viewModel.authenticatedManagerRestaurant!.name,
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeConstants.whiteColor,
+                )),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: const Column(
@@ -47,9 +63,12 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                 ),
               ),
               builder: (context) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: const CreateMenuMain(),
+                return ChangeNotifierProvider(
+                  create: (_) => getIt<ManagerCreateItemViewModel>(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: const CreateItemCategory(),
+                  ),
                 );
               });
         },

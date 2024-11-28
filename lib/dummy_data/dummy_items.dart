@@ -11,6 +11,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 1,
     notes: 'Extra spicy',
     categoryId: 'c1',
+    restaurantId: 'r1',
   ),
   OrderItem(
     id: '2',
@@ -22,6 +23,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -33,6 +35,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c3',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -44,6 +47,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c4',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -55,6 +59,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c5',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -66,6 +71,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c6',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -77,6 +83,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c7',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -88,6 +95,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c1',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -99,6 +107,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -110,6 +119,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c3',
+    restaurantId: 'r1',
   ),
    OrderItem(
     id: '2',
@@ -121,6 +131,7 @@ List<OrderItem> orderedItemsData = [
     quantity: 2,
     notes: '',
     categoryId: 'c4',
+    restaurantId: 'r1',
   ),
   
   // Add more items as needed

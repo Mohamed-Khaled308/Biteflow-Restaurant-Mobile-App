@@ -10,6 +10,7 @@ final List<OrderItem> orderList = [
       description: 'This is a shirt',
       rating: 4.5,
       categoryId: 'c1',
+      restaurantId: 'r1'
     ),
     OrderItem(
       id: '2',
@@ -21,6 +22,7 @@ final List<OrderItem> orderList = [
       rating: 4.5,
       notes: 'This is a note for pants',
       categoryId: 'c2',
+      restaurantId: 'r1'
     ),
 
     OrderItem(
@@ -32,6 +34,7 @@ final List<OrderItem> orderList = [
       description: 'This is a shoes',
       rating: 4.5,
       categoryId: 'c3',
+      restaurantId: 'r1'
     ),
     OrderItem(
       id: '4',
@@ -42,5 +45,6 @@ final List<OrderItem> orderList = [
       description: 'This is a shirt',
       rating: 4.5,
       categoryId: 'c4',
+      restaurantId: 'r1'
     ),
   ];

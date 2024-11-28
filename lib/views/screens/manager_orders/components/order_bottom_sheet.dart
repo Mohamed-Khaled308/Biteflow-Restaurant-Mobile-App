@@ -3,7 +3,7 @@ import 'package:biteflow/views/screens/manager_orders/components/order_details.d
 import 'package:biteflow/views/screens/manager_orders/components/order_update_status.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
-import 'package:biteflow/utils/status_icon_color.dart';
+import 'package:biteflow/core/utils/status_icon_color.dart';
 import 'package:provider/provider.dart';
 
 class OrderBottomSheet extends StatefulWidget {
@@ -14,6 +14,13 @@ class OrderBottomSheet extends StatefulWidget {
 }
 
 class _OrderBottomSheetState extends State<OrderBottomSheet> {
+
+  @override
+  // ignore: must_call_super
+  void dispose() {
+    // don't call super
+  }
+
   
   @override
   Widget build(BuildContext context) {

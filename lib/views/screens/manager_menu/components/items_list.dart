@@ -47,78 +47,86 @@ class _ItemsListState extends State<ItemsList> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ManagerMenuViewModel>();
-    // return const Text('Items List');
     return Expanded(
       child: SingleChildScrollView(
-        child: Column(
-          children: viewModel.menuItemsOfSelectedCategory
-              .map((item) => GestureDetector(
-                    onTap: () => showItemDetails(context, item),
-                    child: Card(
-                      margin: const EdgeInsets.all(8),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.network(
-                              item.imageUrl,
-                              width: double.infinity,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              item.title,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '\$${item.price.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
-                                  Row(
+        child: viewModel.busy
+            ? const Center (child: CircularProgressIndicator())
+            : viewModel.menuItemsOfSelectedCategory!.isEmpty
+                ? const Text('No items')
+                : Column(
+                    children: viewModel.menuItemsOfSelectedCategory!
+                        .map((item) => GestureDetector(
+                              onTap: () => showItemDetails(context, item),
+                              child: Card(
+                                margin: const EdgeInsets.all(8),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      RatingBarIndicator(
-                                        rating: item.rating,
-                                        itemBuilder: (context, index) =>
-                                            const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        itemCount: 5,
-                                        itemSize: 16,
-                                        direction: Axis.horizontal,
+                                      Image.network(
+                                        item.imageUrl,
+                                        width: double.infinity,
+                                        height: 100,
+                                        fit: BoxFit.cover,
                                       ),
-                                      const SizedBox(width: 4),
+                                      const SizedBox(height: 8),
                                       Text(
-                                        item.rating.toStringAsFixed(1),
+                                        item.title,
                                         style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '\$${item.price.toStringAsFixed(2)}',
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey),
+                                            ),
+                                            Row(
+                                              children: [
+                                                RatingBarIndicator(
+                                                  rating: item.rating,
+                                                  itemBuilder:
+                                                      (context, index) =>
+                                                          const Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  itemCount: 5,
+                                                  itemSize: 16,
+                                                  direction: Axis.horizontal,
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  item.rating
+                                                      .toStringAsFixed(1),
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ]),
                                     ],
-                                  )
-                                ]),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ))
-              .toList(),
-        ),
+                                  ),
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
       ),
     );
     // return Container(

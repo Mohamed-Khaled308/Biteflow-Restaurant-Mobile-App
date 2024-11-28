@@ -9,6 +9,7 @@ class MenuItem extends Item {
     required super.description,
     required super.rating,
     required super.categoryId,
+    required super.restaurantId,
   });
 
   
