@@ -16,7 +16,11 @@ class LoginViewModel extends BaseModel {
   bool _isInputActive = false;
   bool get isInputActive => _isInputActive;
 
+  String _emailError = '';
+  String _passwordError = '';
   String _generalError = '';
+  String get emailError => _emailError;
+  String get passwordError => _passwordError;
   String get errorMessage => _generalError;
 
   String? validateEmail(String email) {
@@ -32,9 +36,34 @@ class LoginViewModel extends BaseModel {
     notifyListeners();
   }
 
-  void login({required String email, required String password}) async {
+  void clearError() {
     _generalError = '';
     notifyListeners();
+  }
+
+  void login({required String email, required String password}) async {
+    _emailError = '';
+    _passwordError = '';
+    _generalError = '';
+    notifyListeners();
+
+    bool hasError = false;
+    final emailValidation = validateEmail(email);
+    final passwordValidation = validatePassword(password);
+
+    if (emailValidation != null) {
+      _emailError = emailValidation;
+      hasError = true;
+    }
+    if (passwordValidation != null) {
+      _passwordError = passwordValidation;
+      hasError = true;
+    }
+    _logger.e(_emailError);
+    if (hasError) {
+      notifyListeners();
+      return;
+    }
 
     setBusy(true);
     Result result = await _authProvider.login(email, password);

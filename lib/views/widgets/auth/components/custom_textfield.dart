@@ -1,10 +1,11 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode? focusNode;
   final String hintText;
+  final String labelText;
   final bool obscureText;
   final String? Function(String?)? validator;
   final String? errorText;
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.hintText,
+    required this.labelText,
     this.focusNode,
     this.obscureText = false,
     this.validator,
@@ -20,17 +22,45 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  late bool _isObscured;
+
+  @override
+  void initState() {
+    super.initState();
+    _isObscured = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 60.h,
       child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        validator: validator,
-        focusNode: focusNode,
+        controller: widget.controller,
+        obscureText: _isObscured,
+        validator: widget.validator,
+        focusNode: widget.focusNode,
         decoration: InputDecoration(
-          hintText: hintText,
-          border: const OutlineInputBorder(),
+          hintText: widget.hintText,
+          labelText: widget.labelText,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          suffixIcon: widget.obscureText
+              ? IconButton(
+                  icon: Icon(
+                    _isObscured ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isObscured = !_isObscured;
+                    });
+                  },
+                )
+              : null,
         ),
       ),
     );

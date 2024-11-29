@@ -41,6 +41,11 @@ class SignupViewModel extends BaseModel {
     return AuthHelper.validatePassword(password);
   }
 
+  void clearError() {
+    _generalError = '';
+    notifyListeners();
+  }
+
   bool _isInputActive = false;
   bool get isInputActive => _isInputActive;
 

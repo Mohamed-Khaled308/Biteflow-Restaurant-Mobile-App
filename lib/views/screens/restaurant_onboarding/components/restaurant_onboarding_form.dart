@@ -31,6 +31,7 @@ class RestaurantOnboardingForm extends StatelessWidget {
           CustomTextField(
             controller: nameController,
             hintText: 'Enter restaurant name',
+            labelText: 'Restaurant Name *',
             obscureText: false,
             validator: (value) => viewModel.validateName(value ?? ''),
             errorText: viewModel.nameError,
@@ -38,6 +39,7 @@ class RestaurantOnboardingForm extends StatelessWidget {
           verticalSpaceSmall,
           CustomTextField(
             controller: imageUrlController,
+            labelText: 'Image URL *',
             hintText: 'Enter image URL',
             obscureText: false,
             validator: (value) => viewModel.validateImageUrl(value ?? ''),
@@ -46,16 +48,16 @@ class RestaurantOnboardingForm extends StatelessWidget {
           verticalSpaceSmall,
           CustomTextField(
             controller: locationController,
+            labelText: 'Location *',
             hintText: 'Enter location',
-            obscureText: true,
             validator: (value) => viewModel.validateLocation(value ?? ''),
             errorText: viewModel.locationError,
           ),
           verticalSpaceSmall,
           CustomTextField(
             controller: descriptionController,
+            labelText: 'Describtion *',
             hintText: 'Enter a short description',
-            obscureText: true,
             validator: (value) => viewModel.validateDescription(value ?? ''),
             errorText: viewModel.descriptionError,
           ),

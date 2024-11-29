@@ -48,80 +48,88 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  void _dismissKeyboard() {
+    _emailFocusNode.unfocus();
+    _passwordFocusNode.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<LoginViewModel>();
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: SizedBox(
-              width: 320.w,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: !viewModel.isInputActive
-                        ? Column(
-                            children: [
-                              verticalSpaceMedium,
-                              const AuthTitle(title: 'Hello Again!'),
-                              verticalSpaceTiny,
-                              const AuthSubtitle(
-                                  subtitle:
-                                      'Welcome back you\'ve been missed!'),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              verticalSpaceMedium,
-                              const AuthSubtitle(subtitle: 'Login with email'),
-                              verticalSpaceSmall,
-                            ],
-                          ),
-                  ),
-                  LoginForm(
-                    formKey: _formKey,
-                    emailController: _emailController,
-                    passwordController: _passwordController,
-                    emailFocusNode: _emailFocusNode,
-                    passwordFocusNode: _passwordFocusNode,
-                  ),
-                  verticalSpaceLarge,
-                  CustomButton(
-                    text: viewModel.busy ? 'Logging in...' : 'Log in',
-                    onPressed: viewModel.busy
-                        ? null
-                        : () => viewModel.login(
-                              email: _emailController.text,
-                              password: _passwordController.text,
+    return GestureDetector(
+      onTap: _dismissKeyboard, // Dismiss keyboard on tap outside
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Center(
+              child: SizedBox(
+                width: 320.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: !viewModel.isInputActive
+                          ? Column(
+                              children: [
+                                verticalSpaceMedium,
+                                const AuthTitle(title: 'Hello Again!'),
+                                verticalSpaceTiny,
+                                const AuthSubtitle(
+                                    subtitle:
+                                        'Welcome back you\'ve been missed!'),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                verticalSpaceMedium,
+                                const AuthSubtitle(
+                                    subtitle: 'Login with email'),
+                                verticalSpaceSmall,
+                              ],
                             ),
-                  ),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: viewModel.isInputActive
-                        ? verticalSpaceLarge
-                        : verticalSpaceSmall,
-                  ),
-                  const DividerWithText(text: 'Or'),
-                  verticalSpaceSmall,
-                  SocialLoginButton(
-                    icon: 'assets/icons/google.svg',
-                    text: 'Continue with Google',
-                    onPressed: () {},
-                  ),
-                  verticalSpaceSmall,
-                  SocialLoginButton(
-                    icon: 'assets/icons/facebook.svg',
-                    text: 'Continue with Facebook',
-                    onPressed: () {},
-                  ),
-                  verticalSpaceMedium,
-                  verticalSpaceTiny,
-                  _buildRegisterLink(viewModel.navigateToSignup),
-                ],
+                    ),
+                    LoginForm(
+                      formKey: _formKey,
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                      emailFocusNode: _emailFocusNode,
+                      passwordFocusNode: _passwordFocusNode,
+                    ),
+                    SizedBox(
+                      height: 60.h,
+                      child: _buildErrorBanner(viewModel.errorMessage),
+                    ),
+                    CustomButton(
+                      text: viewModel.busy ? 'Logging in...' : 'Log in',
+                      onPressed:
+                          viewModel.busy ? null : _handleLogin(viewModel),
+                    ),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: viewModel.isInputActive
+                          ? verticalSpaceLarge
+                          : verticalSpaceSmall,
+                    ),
+                    const DividerWithText(text: 'Or'),
+                    verticalSpaceSmall,
+                    SocialLoginButton(
+                      icon: 'assets/icons/google.svg',
+                      text: 'Continue with Google',
+                      onPressed: () {},
+                    ),
+                    verticalSpaceSmall,
+                    SocialLoginButton(
+                      icon: 'assets/icons/facebook.svg',
+                      text: 'Continue with Facebook',
+                      onPressed: () {},
+                    ),
+                    verticalSpaceMedium,
+                    verticalSpaceTiny,
+                    _buildRegisterLink(viewModel.navigateToSignup),
+                  ],
+                ),
               ),
             ),
           ),
@@ -147,6 +155,56 @@ class _LoginScreenState extends State<LoginScreen> {
             'Sign Up',
             style: TextStyle(
                 color: ThemeConstants.blueColor, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  VoidCallback _handleLogin(LoginViewModel viewModel) {
+    return () {
+      _dismissKeyboard(); // Dismiss keyboard when logging in
+      if (_formKey.currentState!.validate()) {
+        viewModel.login(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+      }
+    };
+  }
+
+  Widget _buildErrorBanner(String errorMessage) {
+    if (errorMessage.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+      decoration: BoxDecoration(
+        color: ThemeConstants.errorColor.withOpacity(0.1),
+        border: Border.all(color: ThemeConstants.errorColor),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.error_outline, color: ThemeConstants.errorColor),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Text(
+              errorMessage,
+              style: TextStyle(
+                color: ThemeConstants.errorColor,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              context.read<LoginViewModel>().clearError();
+            },
+            child: const Icon(Icons.close, color: ThemeConstants.errorColor),
           ),
         ],
       ),
