@@ -37,7 +37,7 @@ final List<Order> managerListOfOrders = [
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 1),
   Order(
       id: '2',
@@ -85,7 +85,7 @@ final List<Order> managerListOfOrders = [
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 2),
   Order(
       id: '3',
@@ -120,7 +120,7 @@ final List<Order> managerListOfOrders = [
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 23),
   Order(
       id: '3',
@@ -155,7 +155,7 @@ final List<Order> managerListOfOrders = [
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 76),
 ];
 

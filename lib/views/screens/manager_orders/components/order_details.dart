@@ -1,5 +1,5 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
-import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
+import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/models/client.dart';
@@ -12,14 +12,13 @@ class OrderDetails extends StatefulWidget {
 }
 
 class _OrderDetailsState extends State<OrderDetails> {
-
   final double fontSizeLarge = 22.0;
   final fontSizeMedium = 20.0;
   final fontSizeSmall = 18.0;
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ManagerOrdersViewModel>();
+    final viewModel = context.watch<ManagerOrdersDetailsViewModel>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 5, 25, 15),
       child: Column(
@@ -28,7 +27,8 @@ class _OrderDetailsState extends State<OrderDetails> {
           const SizedBox(height: 16),
           Text(
             'Items:',
-            style: TextStyle(fontSize: fontSizeLarge, fontWeight: FontWeight.bold),
+            style:
+                TextStyle(fontSize: fontSizeLarge, fontWeight: FontWeight.bold),
           ),
           ...viewModel.selectedOrder!.items.map<Widget>((item) {
             return Padding(
@@ -73,28 +73,37 @@ class _OrderDetailsState extends State<OrderDetails> {
           const SizedBox(height: 16),
           Text(
             'Clients:',
-            style: TextStyle(fontSize: fontSizeLarge, fontWeight: FontWeight.bold),
+            style:
+                TextStyle(fontSize: fontSizeLarge, fontWeight: FontWeight.bold),
           ),
-          ...viewModel.selectedOrderClients!.map<Widget>((Client client) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                children: [
-                  const Icon(Icons.person,
-                      size: 20, color: ThemeConstants.blackColor80),
-                  const SizedBox(width: 8),
-                  Text(
-                    client.name,
-                    style: TextStyle(fontSize: fontSizeMedium),
-                  ),
-                ],
-              ),
-            );
-          }),
+          viewModel.isLoadingClients
+              ? const Text('Loading clients...')
+              : Column(
+                  children: [
+                    ...viewModel.selectedOrderClients!
+                        .map<Widget>((Client client) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.person,
+                                size: 20, color: ThemeConstants.blackColor80),
+                            const SizedBox(width: 8),
+                            Text(
+                              client.name,
+                              style: TextStyle(fontSize: fontSizeMedium),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
+                ),
           const SizedBox(height: 16),
           Text(
             'Total:',
-            style: TextStyle(fontSize: fontSizeLarge, fontWeight: FontWeight.bold),
+            style:
+                TextStyle(fontSize: fontSizeLarge, fontWeight: FontWeight.bold),
           ),
           Text(
             '\$${viewModel.selectedOrder!.totalAmount.toStringAsFixed(2)}',

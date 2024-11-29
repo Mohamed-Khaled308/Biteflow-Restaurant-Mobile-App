@@ -32,6 +32,6 @@ final Order tableOrder = Order(
   ],
   userIDs: ['1', '2'],
   paymentMethod: 'cash',
-  restaurantID: '1',
+  restaurantId: '1',
   orderNumber: 73,
 );

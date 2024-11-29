@@ -31,7 +31,7 @@ class ManagerMenuViewModel extends BaseModel {
   List<MenuItem>? get menuItemsOfSelectedCategory =>
       _menuItemsOfSelectedCategory;
 
-
+  
 
   // state management methods
   void selectCategory(String? categoryId) {

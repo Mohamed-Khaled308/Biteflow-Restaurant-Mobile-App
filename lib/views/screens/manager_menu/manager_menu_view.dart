@@ -9,8 +9,10 @@ class ManagerMenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ManagerMenuViewModel managerMenuViewModel = getIt<ManagerMenuViewModel>();
+    managerMenuViewModel.loadRestaurantData(); // can be made automatic in constructor
     return ChangeNotifierProvider(
-      create: (_) => getIt<ManagerMenuViewModel>(),
+      create: (_) => managerMenuViewModel,
       child: const ManagerMenuScreen(),
     );
   }

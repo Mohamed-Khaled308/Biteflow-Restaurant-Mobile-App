@@ -16,17 +16,12 @@ class ManagerMenuScreen extends StatefulWidget {
 }
 
 class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // final viewModel = context.watch<ManagerMenuViewModel>(); // causes errors
-    final viewModel = getIt<ManagerMenuViewModel>();
-    viewModel.loadRestaurantData();
-  }
 
   @override
   // ignore: must_call_super
-  void dispose() {}
+  void dispose() {
+    // don't call super
+  }
 
   @override
   Widget build(BuildContext context) {
