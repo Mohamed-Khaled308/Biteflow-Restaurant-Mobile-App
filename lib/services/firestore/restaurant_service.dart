@@ -60,4 +60,20 @@ class RestaurantService {
       return Result(error: e.toString());
     }
   }
+
+
+
+    // fetch all restaurants
+  Future<Result<List<Restaurant>>> getAllRestaurants() async {
+    try {
+      QuerySnapshot querySnapshot = await _restaurants.get();
+      List<Restaurant> restaurants = querySnapshot.docs.map((doc) {
+        return Restaurant.fromData(doc.data() as Map<String, dynamic>);
+      }).toList();
+      return Result(data: restaurants);
+    } catch (e) {
+      _logger.e(e.toString());
+      return Result(error: e.toString());
+    }
+  }
 }
