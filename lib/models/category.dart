@@ -8,4 +8,12 @@ class Category {
       : id = data['id'],
         title = data['title'],
         restaurantId = data['restaurantId'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'restaurantId': restaurantId,
+    };
+  }
 }

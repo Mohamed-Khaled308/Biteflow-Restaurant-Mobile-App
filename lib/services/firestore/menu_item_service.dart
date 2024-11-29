@@ -25,5 +25,16 @@ class MenuItemService {
       return Result(error: e.toString());
     }
   }
+
+  // create a new menuItem
+  Future<Result<bool>> createMenuItem(MenuItem menuItem) async {
+    try {
+      await _menuItems.doc(menuItem.id).set(menuItem.toJson());
+      return Result(data: true);
+    } catch (e) {
+      return Result(error: e.toString());
+    }
+  }
+  
   
 }

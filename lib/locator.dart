@@ -49,8 +49,5 @@ void setupLocator() {
   getIt.registerFactory<ManagerCreateItemViewModel>(
       () => ManagerCreateItemViewModel());
   getIt.registerFactory<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
-  // tmp solution because if factory is used:
-  // (1) cannot access it in initState() of menuviewscreen
-  // (2) cannot access it from another viewmodel (manager_create_item_view_model.dart)
   getIt.registerLazySingleton<ManagerMenuViewModel>(() => ManagerMenuViewModel());
 }

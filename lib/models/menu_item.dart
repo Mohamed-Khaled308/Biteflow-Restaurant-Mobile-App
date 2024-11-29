@@ -16,4 +16,5 @@ class MenuItem extends Item {
   MenuItem.fromData(super.data)
       : super.fromData();
   
+  
 }

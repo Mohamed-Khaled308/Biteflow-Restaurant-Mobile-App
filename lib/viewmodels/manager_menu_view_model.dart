@@ -64,6 +64,18 @@ class ManagerMenuViewModel extends BaseModel {
     setBusy(false);
   }
 
+  Future<void> reloadCategoriesAndMenuItems() async{
+    // setBusy(true);
+
+    await _fetchCategories();
+    await _fetchMenuItems();
+    if (_categories!.isNotEmpty) {
+      selectCategory(_categories!.first.id); // this also calls getMenuItemsOfSelectedCategory
+    }
+
+    // setBusy(false);
+  }
+
   Future<void> _fetchRestaurant() async{
     final restaurantResult =  await getIt<RestaurantService>().getRestaurantById(_authenticatedManager.restaurantId);
     if(restaurantResult.isSuccess){

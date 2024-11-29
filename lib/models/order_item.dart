@@ -49,4 +49,12 @@ class OrderItem extends Item {
       restaurantId: restaurantId,
     );
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = super.toJson();
+    data['quantity'] = quantity;
+    data['notes'] = notes;
+    return data;
+  }
 }

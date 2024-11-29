@@ -44,15 +44,21 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                 )),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: const Column(
-        children: [
-          SizedBox(height: 10),
-          CategoriesList(),
-          SizedBox(height: 10),
-          ItemsList(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
+      body: viewModel.busy
+          ? const Center(
+              child: CircularProgressIndicator(
+              backgroundColor: ThemeConstants.blackColor40,
+              color: ThemeConstants.blackColor80,
+            ))
+          : const Column(
+              children: [
+                SizedBox(height: 10),
+                CategoriesList(),
+                SizedBox(height: 10),
+                ItemsList(),
+              ],
+            ),
+      floatingActionButton: viewModel.busy? null : FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
               context: context,
@@ -66,8 +72,8 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                 return ChangeNotifierProvider(
                   create: (_) => getIt<ManagerCreateItemViewModel>(),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: const CreateItemCategory(),
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    child: CreateItemCategory(categories: viewModel.categories),
                   ),
                 );
               });

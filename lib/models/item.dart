@@ -28,4 +28,17 @@ abstract class Item {
         rating = data['rating'],
         categoryId = data['categoryId'],
         restaurantId = data['restaurantId'];
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'imageUrl': imageUrl,
+      'description': description,
+      'rating': rating,
+      'categoryId': categoryId,
+      'restaurantId': restaurantId,
+    };
+  }
 }
