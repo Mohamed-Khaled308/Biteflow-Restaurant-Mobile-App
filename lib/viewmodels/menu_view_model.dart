@@ -1,5 +1,5 @@
-import 'package:biteflow/dummy_data/category_list.dart';
-import 'package:biteflow/dummy_data/item_list.dart';
+// import 'package:biteflow/dummy_data/category_list.dart';
+// import 'package:biteflow/dummy_data/item_list.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/restaurant.dart';
 import 'package:biteflow/services/firestore/category_service.dart';
@@ -95,7 +95,7 @@ class MenuViewModel extends BaseModel {
   Future<void> _fetchCategories() async {
     final categoriesData =
         await getIt<CategoryService>().getCategories(_restaurantId!);
-    print('Categories fetched: ${categoriesData}');
+    // print('Categories fetched: ${categoriesData}');
     if (categoriesData.isSuccess) {
       _categories = categoriesData.data;
       // Automatically set the selected category to the first fetched category's ID
