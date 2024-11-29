@@ -129,6 +129,30 @@ class MenuCard extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
+            // Add to Cart Button
+            GestureDetector(
+              onTap: () {
+                // Handle Add to Cart action here
+                // print('Added $title to cart');
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: theme.primaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  'Add to Cart',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
