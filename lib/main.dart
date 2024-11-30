@@ -1,7 +1,6 @@
 import 'package:biteflow/animated_splash_screen.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
-import 'package:biteflow/views/screens/menu/menu_view.dart';
 import 'package:provider/provider.dart';
 import 'views/screens/entry_point/entry_point_view.dart';
 import 'package:flutter/material.dart';

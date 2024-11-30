@@ -1,5 +1,4 @@
 import 'package:biteflow/locator.dart';
-import 'package:biteflow/main.dart';
 import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
@@ -145,20 +144,21 @@ class MenuCard extends StatelessWidget {
             // Add to Cart Button
             GestureDetector(
               onTap: () {
-                // viewModel.addItemToCart(
-                //   OrderItem(
-                //     id: DateTime.now().toString(),
-                //     title: title,
-                //     imageUrl: imageUrl,
-                //     price: price,
-                //     rating: rating,
-                //     quantity: 1,
-                //     notes: '',
-                //     description: description,
-                //     categoryId: categoryId
-                //   ),
-                // );
-                // // getIt<NavigationService>().navigateTo(const CartView());
+
+                viewModel.addItemToCart(
+                  OrderItem(
+                    id: DateTime.now().toString(),
+                    title: title,
+                    imageUrl: imageUrl,
+                    price: price,
+                    rating: rating,
+                    quantity: 1,
+                    notes: '',
+                    description: description,
+                    categoryId: categoryId
+                  ),
+                );
+                getIt<NavigationService>().navigateAndReplace(const CartView());
 
               },
               child: Container(

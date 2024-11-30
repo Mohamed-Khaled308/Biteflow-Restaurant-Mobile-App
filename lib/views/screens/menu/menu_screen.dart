@@ -1,4 +1,6 @@
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/category.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../../viewmodels/menu_view_model.dart';
@@ -149,15 +151,18 @@ class _MenuScreenState extends State<MenuScreen> {
                                     ),
                                   ),
                                   builder: (context) {
-                                    return SingleChildScrollView(
-                                      child: MenuCard(
-                                        imageUrl: item.imageUrl,
-                                        title: item.title,
-                                        description: item.description,
-                                        price: item.price,
-                                        rating: item.rating,
-                                        categoryId: item.categoryId,
-                                        
+                                    return ChangeNotifierProvider(
+                                      create: (_) => getIt<CartViewModel>(),
+                                      child: SingleChildScrollView(
+                                        child: MenuCard(
+                                          imageUrl: item.imageUrl,
+                                          title: item.title,
+                                          description: item.description,
+                                          price: item.price,
+                                          rating: item.rating,
+                                          categoryId: item.categoryId,
+                                          
+                                        ),
                                       ),
                                     );
                                   },
