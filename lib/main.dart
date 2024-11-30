@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(context),
         themeMode: ThemeMode.light,
         navigatorKey: getIt<NavigationService>().navigationKey,
-        home: const MenuView(),
+        home: AnimatedSplashScreen(nextScreen: EntryPointView()),
         builder: (context, widget) {
           ScreenUtil.init(context);
           return widget!;

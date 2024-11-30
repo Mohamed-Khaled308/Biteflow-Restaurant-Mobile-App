@@ -156,6 +156,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                         description: item.description,
                                         price: item.price,
                                         rating: item.rating,
+                                        categoryId: item.categoryId,
+                                        
                                       ),
                                     );
                                   },
@@ -194,6 +196,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 description: item.description,
                                 price: item.price,
                                 rating: item.rating,
+                                categoryId: item.categoryId,
                               );
                             },
                           );
