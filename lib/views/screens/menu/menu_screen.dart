@@ -33,7 +33,7 @@ class _MenuScreenState extends State<MenuScreen> {
         });
       });
 
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final viewModel = context.read<MenuViewModel>();
       viewModel.restaurantId = widget.restaurantId;
       // print('Set restaurant ID to: ${widget.restaurantId}');
@@ -111,7 +111,8 @@ class _MenuScreenState extends State<MenuScreen> {
           SliverPersistentHeader(
             pinned: true,
             delegate: CategoriesHeaderDelegate(
-              categories: viewModel.categories ?? [], // Provide an empty list if null
+              categories:
+                  viewModel.categories ?? [], // Provide an empty list if null
               selectedCategoryId: viewModel.selectedCategoryId ?? '',
               onCategorySelected: (id) {
                 viewModel.selectedCategoryId = id; // Use the setter
@@ -161,7 +162,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                           price: item.price,
                                           rating: item.rating,
                                           categoryId: item.categoryId,
-                                          
+                                          restaurantId: widget.restaurantId,
                                         ),
                                       ),
                                     );
@@ -186,7 +187,8 @@ class _MenuScreenState extends State<MenuScreen> {
                         title: item.title,
                         price: item.price,
                         onTap: () {
-                          viewModel.selectedItem = item; // Use the setter to update selectedItem
+                          viewModel.selectedItem =
+                              item; // Use the setter to update selectedItem
                           showModalBottomSheet(
                             context: context,
                             shape: const RoundedRectangleBorder(
@@ -202,6 +204,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 price: item.price,
                                 rating: item.rating,
                                 categoryId: item.categoryId,
+                                restaurantId: widget.restaurantId,
                               );
                             },
                           );
