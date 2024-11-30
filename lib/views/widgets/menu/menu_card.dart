@@ -8,7 +8,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
-
 class MenuCard extends StatelessWidget {
   final String imageUrl;
   final String title;
@@ -16,6 +15,7 @@ class MenuCard extends StatelessWidget {
   final double price;
   final double rating;
   final String categoryId;
+  final String restaurantId;
 
   const MenuCard({
     super.key,
@@ -25,11 +25,12 @@ class MenuCard extends StatelessWidget {
     required this.price,
     required this.rating,
     required this.categoryId,
+    required this.restaurantId,
   });
 
   @override
   Widget build(BuildContext context) {
-    final viewModel  = context.watch<CartViewModel>();
+    final viewModel = context.watch<CartViewModel>();
 
     // Accessing the current theme for colors and text styles
     final theme = AppTheme.lightTheme(context); // Get light theme from AppTheme
@@ -144,22 +145,20 @@ class MenuCard extends StatelessWidget {
             // Add to Cart Button
             GestureDetector(
               onTap: () {
-
                 viewModel.addItemToCart(
                   OrderItem(
-                    id: DateTime.now().toString(),
-                    title: title,
-                    imageUrl: imageUrl,
-                    price: price,
-                    rating: rating,
-                    quantity: 1,
-                    notes: '',
-                    description: description,
-                    categoryId: categoryId
-                  ),
+                      id: DateTime.now().toString(),
+                      title: title,
+                      imageUrl: imageUrl,
+                      price: price,
+                      rating: rating,
+                      quantity: 1,
+                      notes: '',
+                      description: description,
+                      categoryId: categoryId,
+                      restaurantId: restaurantId),
                 );
                 getIt<NavigationService>().navigateAndReplace(const CartView());
-
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
