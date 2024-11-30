@@ -9,8 +9,10 @@ class ManagerOrdersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ManagerOrdersViewModel managerOrdersViewModel = getIt<ManagerOrdersViewModel>();
+    managerOrdersViewModel.loadOrdersData();
     return ChangeNotifierProvider(
-      create: (_) => getIt<ManagerOrdersViewModel>(),
+      create: (_) => managerOrdersViewModel,
       child: const ManagerOrdersScreen(),
     );
   }

@@ -19,6 +19,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -31,11 +32,12 @@ final List<Order> managerListOfOrders = [
           rating: 4.5,
           categoryId: 'c2',
           notes: 'This is a note for pants',
+          restaurantId: 'r1',
         ),
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 1),
   Order(
       id: '2',
@@ -52,6 +54,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -63,6 +66,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 4.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
         OrderItem(
@@ -75,12 +79,13 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 3.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 2),
   Order(
       id: '3',
@@ -97,6 +102,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -108,12 +114,13 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 4.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 23),
   Order(
       id: '3',
@@ -130,6 +137,7 @@ final List<Order> managerListOfOrders = [
           description: 'This is a shirt',
           rating: 4.5,
           categoryId: 'c1',
+          restaurantId: 'r1',
         ),
         OrderItem(
           id: '2',
@@ -141,12 +149,13 @@ final List<Order> managerListOfOrders = [
           description: 'This is a pants',
           rating: 4.5,
           categoryId: 'c3',
+          restaurantId: 'r1',
           notes: 'This is a note for pants',
         ),
       ],
       userIDs: ['1', '2'],
       paymentMethod: 'cash',
-      restaurantID: '1',
+      restaurantId: '1',
       orderNumber: 76),
 ];
 

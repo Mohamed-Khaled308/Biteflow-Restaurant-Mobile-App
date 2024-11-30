@@ -6,7 +6,7 @@ import 'package:biteflow/core/utils/result.dart';
 class MenuItemService {
   final CollectionReference _menuItems = FirebaseFirestore.instance
       .collection(FirestoreCollections.menuItemsCollection);
-
+  
   String generateMenuItemId() {
     return _menuItems.doc().id;
   }
@@ -25,4 +25,16 @@ class MenuItemService {
       return Result(error: e.toString());
     }
   }
+
+  // create a new menuItem
+  Future<Result<bool>> createMenuItem(MenuItem menuItem) async {
+    try {
+      await _menuItems.doc(menuItem.id).set(menuItem.toJson());
+      return Result(data: true);
+    } catch (e) {
+      return Result(error: e.toString());
+    }
+  }
+  
+  
 }

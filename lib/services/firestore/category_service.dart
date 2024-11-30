@@ -26,4 +26,15 @@ class CategoryService {
       return Result(error: e.toString());
     }
   }
+
+  // create a new category
+  Future<Result<bool>> createCategory(Category category) async {
+    try {
+      await _categories.doc(category.id).set(category.toJson());
+      return Result(data: true);
+    } catch (e) {
+      return Result(error: e.toString());
+    }
+  }
+
 }

@@ -1,20 +1,36 @@
+import 'package:biteflow/models/category.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:biteflow/locator.dart';
 
-class CreateMenuMain extends StatefulWidget {
-  const CreateMenuMain({super.key});
+class CreateItemCategory extends StatefulWidget {
+  final List<Category>? categories;
+  const CreateItemCategory({super.key, required this.categories});
 
   @override
-  State<CreateMenuMain> createState() => _CreateMenuMainState();
+  State<CreateItemCategory> createState() => _CreateItemCategoryState();
 }
 
-class _CreateMenuMainState extends State<CreateMenuMain> {
+class _CreateItemCategoryState extends State<CreateItemCategory> {
+  
+  // category form
+  final categoryFormKey = GlobalKey<FormState>();
+  final TextEditingController _categoryNameController = TextEditingController();
+  
+  // item form
+  final itemFormKey = GlobalKey<FormState>();
+  final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _itemPriceController = TextEditingController();
+  final TextEditingController _itemDescriptionController = TextEditingController();
+  final TextEditingController _itemImageUrlController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ManagerCreateItemViewModel>();
     return Container(
-      height: 400, // Constant height
+      height: 500, // Constant height
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,14 +70,13 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
   }
 
   Widget _buildCreateCategory(ManagerCreateItemViewModel viewModel) {
-    final formKey = GlobalKey<FormState>();
     return Form(
-      key: formKey,
+      key: categoryFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            controller: viewModel.categoryNameController,
+            controller: _categoryNameController,
             decoration: const InputDecoration(
               labelText: 'Category Name',
               border: OutlineInputBorder(),
@@ -76,16 +91,20 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
           const SizedBox(height: 30),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                if (!formKey.currentState!.validate()) {
-                  // to validate the form
-                  return;
-                }
-                viewModel.createCategory(); // still problematic
-                viewModel.clearCategoryFormFields();
-                Navigator.pop(context);
-                viewModel.isCreatingItem = true;
-              },
+              onPressed: viewModel.busy
+                  ? null // disable the button if the view model is busy
+                  : () async {
+                      if (!categoryFormKey.currentState!.validate()) {
+                        // to validate the form
+                        return;
+                      }
+                      await viewModel
+                          .createCategory(_categoryNameController.text);
+                      _categoryNameController.clear();
+                      getIt<NavigationService>()
+                          .pop(); // Close the bottom sheet
+                      viewModel.isCreatingItem = true;
+                    },
               child: const Text('Save Category'),
             ),
           ),
@@ -95,7 +114,6 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
   }
 
   Widget _buildCreateItem(ManagerCreateItemViewModel viewModel) {
-    final formKey = GlobalKey<FormState>();
     return Padding(
       padding: EdgeInsets.only(
         left: 16,
@@ -105,7 +123,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
       ),
       child: SingleChildScrollView(
         child: Form(
-          key: formKey,
+          key: itemFormKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -113,8 +131,8 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
               DropdownButtonFormField<String>(
                 value: viewModel.itemCategoryId,
                 hint: const Text('Select a category'),
-                items: viewModel.categories
-                    .map(
+                items: widget.categories==null? [] : widget.categories
+                    !.map(
                       (category) => DropdownMenuItem(
                         value: category.id,
                         child: Text(category.title),
@@ -123,7 +141,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
                     .toList(),
                 onChanged: (value) {
                   // The value is the id of the selected category
-                  viewModel.updateItemCategory(value);
+                  viewModel.itemCategoryId = value;
                 },
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -137,7 +155,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: viewModel.itemNameController,
+                controller: _itemNameController,
                 decoration: const InputDecoration(
                   labelText: 'Item Name',
                   // border: OutlineInputBorder(),
@@ -151,7 +169,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: viewModel.itemPriceController,
+                controller: _itemPriceController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Price',
@@ -170,7 +188,7 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: viewModel.itemDescriptionController,
+                controller: _itemDescriptionController,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   labelText: 'Description',
@@ -184,17 +202,46 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
                 },
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  if (!formKey.currentState!.validate()) {
-                    // to validate the form
-                    return;
+              TextFormField(
+                controller: _itemImageUrlController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  labelText: 'Image Url',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a Url';
                   }
-                  viewModel.createItem();
-                  viewModel.clearItemFormFields();
-                  viewModel.isCreatingItem = true;
-                  Navigator.pop(context); // Close the bottom sheet
+                  return null;
                 },
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: viewModel.busy
+                    ? null // disable the button if the view model is busy
+                    : () async {
+                        if (!itemFormKey.currentState!.validate()) {
+                          // to validate the form
+                          return;
+                        }
+                        // create item
+                        await viewModel.createItem(
+                            _itemNameController.text,
+                            _itemPriceController.text,
+                            _itemDescriptionController.text,
+                            _itemImageUrlController.text);
+
+                        // clear form fields
+                        viewModel.itemCategoryId = null;
+                        _itemNameController.clear();
+                        _itemPriceController.clear();
+                        _itemDescriptionController.clear();
+                        _itemImageUrlController.clear();
+
+                        // close bottome sheet
+                        getIt<NavigationService>().pop();
+                        viewModel.isCreatingItem = true;
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
                 ),
@@ -206,4 +253,5 @@ class _CreateMenuMainState extends State<CreateMenuMain> {
       ),
     );
   }
+
 }

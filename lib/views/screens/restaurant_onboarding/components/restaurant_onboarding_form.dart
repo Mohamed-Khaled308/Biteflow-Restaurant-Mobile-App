@@ -47,7 +47,7 @@ class RestaurantOnboardingForm extends StatelessWidget {
           CustomTextField(
             controller: locationController,
             hintText: 'Enter location',
-            obscureText: true,
+            obscureText: false,
             validator: (value) => viewModel.validateLocation(value ?? ''),
             errorText: viewModel.locationError,
           ),
@@ -55,7 +55,7 @@ class RestaurantOnboardingForm extends StatelessWidget {
           CustomTextField(
             controller: descriptionController,
             hintText: 'Enter a short description',
-            obscureText: true,
+            obscureText: false,
             validator: (value) => viewModel.validateDescription(value ?? ''),
             errorText: viewModel.descriptionError,
           ),

@@ -15,6 +15,7 @@ final Order tableOrder = Order(
       description: 'This is a shirt',
       rating: 4.5,
       categoryId: 'c1',
+      restaurantId: 'r1'
     ),
     OrderItem(
       id: '2',
@@ -26,10 +27,11 @@ final Order tableOrder = Order(
       rating: 4.5,
       notes: 'This is a note for pants',
       categoryId: 'c2',
+      restaurantId: 'r1'
     ),
   ],
   userIDs: ['1', '2'],
   paymentMethod: 'cash',
-  restaurantID: '1',
+  restaurantId: '1',
   orderNumber: 73,
 );

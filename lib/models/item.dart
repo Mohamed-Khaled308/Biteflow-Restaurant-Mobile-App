@@ -6,6 +6,7 @@ abstract class Item {
   final String description;
   final double rating;
   final String categoryId;
+  final String restaurantId;
 
   Item({
     required this.id,
@@ -15,6 +16,7 @@ abstract class Item {
     required this.description,
     required this.rating,
     required this.categoryId,
+    required this.restaurantId,
   });
 
   Item.fromData(Map<String, dynamic> data)
@@ -24,5 +26,19 @@ abstract class Item {
         imageUrl = data['imageUrl'],
         description = data['description'],
         rating = data['rating'],
-        categoryId = data['categoryId'];
+        categoryId = data['categoryId'],
+        restaurantId = data['restaurantId'];
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'imageUrl': imageUrl,
+      'description': description,
+      'rating': rating,
+      'categoryId': categoryId,
+      'restaurantId': restaurantId,
+    };
+  }
 }

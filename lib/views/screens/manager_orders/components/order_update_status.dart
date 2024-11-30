@@ -1,9 +1,11 @@
+import 'package:biteflow/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/core/constants/business_constants.dart';
 import 'package:biteflow/core/constants/theme_constants.dart';
-import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
+import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:biteflow/utils/status_icon_color.dart';
+import 'package:biteflow/core/utils/status_icon_color.dart';
+import 'package:biteflow/services/navigation_service.dart';
 
 class OrderUpdateStatus extends StatefulWidget {
   const OrderUpdateStatus({super.key});
@@ -13,21 +15,19 @@ class OrderUpdateStatus extends StatefulWidget {
 }
 
 class _OrderUpdateStatusState extends State<OrderUpdateStatus> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // String _selectedStatus = '';
-
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ManagerOrdersViewModel>();
+    final viewModel = context.watch<ManagerOrdersDetailsViewModel>();
+
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.only(top:30),
+            padding: EdgeInsets.only(top: 30),
             child: Center(
               child: Text(
                 'Update Order Status',
@@ -72,13 +72,15 @@ class _OrderUpdateStatusState extends State<OrderUpdateStatus> {
           const SizedBox(height: 16),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                if(viewModel.selectedStatus != ''){
-                  viewModel.updateOrderStatus();
-                  viewModel.selectedStatus = '';
-                  Navigator.pop(context);
-                }
-              },
+              onPressed: viewModel.busy
+                  ? null // Disable button when busy
+                  : () async {
+                      if (viewModel.selectedStatus != '') {
+                        await viewModel.updateOrderStatus();
+                        viewModel.selectedStatus = '';
+                        getIt<NavigationService>().pop();
+                      }
+                    },
               child: const Text('Submit'),
             ),
           ),
