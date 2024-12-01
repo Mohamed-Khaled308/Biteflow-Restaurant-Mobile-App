@@ -6,16 +6,15 @@ import 'package:provider/provider.dart';
 import 'package:biteflow/locator.dart';
 
 class MenuView extends StatelessWidget {
-  const MenuView({super.key});
+  final String restaurantId;
+
+  const MenuView({super.key, required this.restaurantId});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => getIt<MenuViewModel>()),
-        ChangeNotifierProvider(create: (_) => getIt<CartViewModel>()),
-      ],
-      child: const MenuScreen(restaurantId: '28TIbvVM1386tuWHHH3b'),
-    );
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => getIt<MenuViewModel>()),
+      ChangeNotifierProvider(create: (_) => getIt<CartViewModel>()),
+    ], child: MenuScreen(restaurantId: restaurantId));
   }
 }
