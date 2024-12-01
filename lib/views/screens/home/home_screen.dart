@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeViewModel>();
-    final NavigationService _navigationService = getIt<NavigationService>();
+    final NavigationService navigationService = getIt<NavigationService>();
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                                 viewModel.bestPickRestaurants[index];
                             return GestureDetector(
                               onTap: () {
-                                _navigationService.navigateTo(
+                                navigationService.navigateTo(
                                   MenuView(restaurantId: restaurant.id),
                                 );
                               },
@@ -92,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                             .map(
                               (restaurant) => GestureDetector(
                                 onTap: () {
-                                  _navigationService.navigateTo(
+                                  navigationService.navigateTo(
                                     MenuView(restaurantId: restaurant.id),
                                   );
                                 },
