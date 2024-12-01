@@ -7,4 +7,5 @@ class FirestoreCollections {
   static const String categoriesCollection = 'categories';
   static const String menuItemsCollection = 'menu_items';
   static const String orderItemsCollection = 'order_items';
+  static const String cartsCollection = 'carts';
 }

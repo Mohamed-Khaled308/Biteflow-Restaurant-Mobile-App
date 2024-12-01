@@ -152,8 +152,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                     ),
                                   ),
                                   builder: (context) {
-                                    return ChangeNotifierProvider(
-                                      create: (_) => getIt<CartViewModel>(),
+                                    return ChangeNotifierProvider.value(
+                                      value: getIt<CartViewModel>(),
                                       child: SingleChildScrollView(
                                         child: MenuCard(
                                           imageUrl: item.imageUrl,

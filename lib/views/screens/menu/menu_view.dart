@@ -1,4 +1,3 @@
-import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/menu_view_model.dart';
 import 'package:biteflow/views/screens/menu/menu_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +9,8 @@ class MenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => getIt<MenuViewModel>()),
-        ChangeNotifierProvider(create: (_) => getIt<CartViewModel>()),
-      ],
-      child: const MenuScreen(restaurantId: '28TIbvVM1386tuWHHH3b'),
-    );
+    return ChangeNotifierProvider(
+        create: (_) => getIt<MenuViewModel>(),
+        child: const MenuScreen(restaurantId: '28TIbvVM1386tuWHHH3b'));
   }
 }
