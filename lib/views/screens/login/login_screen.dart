@@ -163,7 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   VoidCallback _handleLogin(LoginViewModel viewModel) {
     return () {
-      _dismissKeyboard(); // Dismiss keyboard when logging in
+      _dismissKeyboard();
+      viewModel.clearError();
       if (_formKey.currentState!.validate()) {
         viewModel.login(
           email: _emailController.text,
@@ -179,12 +180,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
+      margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 4.w),
       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
       decoration: BoxDecoration(
         color: ThemeConstants.errorColor.withOpacity(0.1),
         border: Border.all(color: ThemeConstants.errorColor),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius:
+            BorderRadius.circular(ThemeConstants.defaultBorderRadious),
       ),
       child: Row(
         children: [

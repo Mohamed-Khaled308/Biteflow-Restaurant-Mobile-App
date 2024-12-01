@@ -13,11 +13,12 @@ class AuthService {
       return Result();
     } on FirebaseAuthException catch (e) {
       String errorMessage = e.code.replaceAll('-', ' ');
+      errorMessage[0].toUpperCase();
       return Result(error: errorMessage);
-    } on FirebaseException catch (e) {
-      return Result(error: 'Firebase error: ${e.message}');
-    } catch (e) {
-      return Result(error: 'An unexpected error occurred: ${e.toString()}');
+    } on FirebaseException catch (_) {
+      return Result(error: 'Server is down. Try again later!');
+    } catch (_) {
+      return Result(error: 'Login failed. Please try again!');
     }
   }
 
@@ -30,10 +31,10 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       String errorMessage = e.code.replaceAll('-', ' ');
       return Result(error: errorMessage);
-    } on FirebaseException catch (e) {
-      return Result(error: 'Firebase error: ${e.message}');
+    } on FirebaseException catch (_) {
+      return Result(error: 'Server is down. Try again later!');
     } catch (e) {
-      return Result(error: 'An unexpected error occurred: ${e.toString()}');
+      return Result(error: 'Sign up failed. Please try again!');
     }
   }
 
