@@ -69,39 +69,40 @@ class _MenuScreenState extends State<MenuScreen> {
               builder: (context, viewModel, child) {
                 final imageUrl = viewModel.restaurantImageUrl;
 
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: _placeholderOpacity,
-                  child: SizedBox(
-                    width: double.infinity, // Full screen width
-                    height:
-                        300, // Fixed height to match the placeholder's height
-                    child: imageUrl != null
-                        ? Image.network(
-                            imageUrl,
-                            fit: BoxFit
-                                .cover, // Scale and crop the image to fill the container
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Icon(
-                                Icons.broken_image,
-                                size: 50,
-                                color: Colors.grey,
-                              ); // Placeholder for error loading
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const Center(
-                                child:
-                                    CircularProgressIndicator(), // Show loading spinner
-                              );
-                            },
-                          )
-                        : const Icon(
-                            Icons.image,
-                            size: 50,
-                            color: Colors
-                                .grey, // Placeholder when no image URL is available
-                          ),
+                return Hero(
+                  tag: widget.restaurantId,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: _placeholderOpacity,
+                    child: SizedBox(
+                      width: double.infinity, // Full screen width
+                      height:
+                          300, // Fixed height to match the placeholder's height
+                      child: imageUrl != null
+                          ? Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.broken_image,
+                                  size: 50,
+                                  color: Colors.grey,
+                                );
+                              },
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            )
+                          : const Icon(
+                              Icons.image,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                    ),
                   ),
                 );
               },

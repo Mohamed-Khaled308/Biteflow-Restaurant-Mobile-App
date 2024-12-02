@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:biteflow/locator.dart';
 
 class MenuView extends StatelessWidget {
-  const MenuView({super.key});
+  final String restaurantId;
+
+  const MenuView({super.key, required this.restaurantId});
 
   @override
   Widget build(BuildContext context) {
