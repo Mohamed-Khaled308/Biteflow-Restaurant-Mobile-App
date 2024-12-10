@@ -61,6 +61,7 @@ class ManagerMenuViewModel extends BaseModel {
       selectCategory(_categories!.first.id); // this also calls getMenuItemsOfSelectedCategory
     }
 
+
     setBusy(false);
   }
 
@@ -92,6 +93,7 @@ class ManagerMenuViewModel extends BaseModel {
       _categories = categoriesData.data;
     }
     else{
+      _categories = [];
       _logger.e(categoriesData.error);
     }
   }
