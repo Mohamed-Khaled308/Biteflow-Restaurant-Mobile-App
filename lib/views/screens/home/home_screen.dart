@@ -2,12 +2,14 @@ import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
+import 'package:biteflow/views/screens/menu/menu_view.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_list_tile.dart';
 import 'package:biteflow/views/widgets/home/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:biteflow/services/navigation_service.dart';
+import 'package:biteflow/locator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeViewModel>();
+    final NavigationService navigationService = getIt<NavigationService>();
 
     return Scaffold(
       appBar: AppBar(
@@ -87,8 +90,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (context, index) {
                             final restaurant =
                                 viewModel.bestPickRestaurants[index];
-                            return RestaurantCard(
-                              restaurant: restaurant,
+                            return GestureDetector(
+                              onTap: () {
+                                navigationService.navigateTo(
+                                  MenuView(restaurantId: restaurant.id),
+                                );
+                              },
+                              child: RestaurantCard(
+                                restaurant: restaurant,
+                              ),
                             );
                           },
                         )
@@ -104,8 +114,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? Column(
                         children: viewModel.allRestaurants
                             .map(
-                              (restaurant) => RestaurantListTile(
-                                restaurant: restaurant,
+                              (restaurant) => GestureDetector(
+                                onTap: () {
+                                  navigationService.navigateTo(
+                                    MenuView(restaurantId: restaurant.id),
+                                  );
+                                },
+                                child: Hero(
+                                  tag: restaurant.id,
+                                  child: RestaurantListTile(
+                                    restaurant: restaurant,
+                                  ),
+                                ),
                               ),
                             )
                             .toList(),
