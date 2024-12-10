@@ -7,6 +7,7 @@ class Client extends User {
     required super.id,
     required super.name,
     required super.email,
+    super.fcmToken,
     this.orderIds = const [],
   }) : super(role: 'Client');
 
@@ -15,6 +16,7 @@ class Client extends User {
       id: data['id'],
       name: data['name'],
       email: data['email'],
+      fcmToken: data['fcmToken'],
       orderIds: (data['orderIds'] != null && data['orderIds'] is List)
           ? List<String>.from(data['orderIds'] as List)
           : [],
@@ -27,5 +29,10 @@ class Client extends User {
       'orderIds': orderIds,
       ...super.toJson(),
     };
+  }
+
+  @override
+  String toString() {
+    return 'Client{id: $id, name: $name, email: $email, fcmToken: $fcmToken, orderIds: $orderIds}';
   }
 }

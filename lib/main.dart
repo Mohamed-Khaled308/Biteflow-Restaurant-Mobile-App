@@ -1,6 +1,9 @@
 import 'package:biteflow/animated_splash_screen.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
+// import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/services/navigation_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'views/screens/login/login_view.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +14,22 @@ import 'package:biteflow/views/theme/app_theme.dart';
 import 'firebase_options.dart';
 import 'locator.dart';
 
+// // ignore: non_constant_identifier_names
+// Future<void> My_fm_BackgroundHandler(RemoteMessage message) async {
+//   print("Handling a background message: ${message.messageId}");
+// }
+
 void main() async {
   setupLocator();
+
   WidgetsFlutterBinding.ensureInitialized();
+
+  // FirebaseMessaging.onBackgroundMessage(My_fm_BackgroundHandler);
+  // await createNotificationChannel();
+  // FirebaseNotifications().initNotifications();
+
+  FirebaseMessaging.onBackgroundMessage(My_fm_BackgroundHandler);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -26,6 +42,11 @@ void main() async {
       child: const MyApp(),
     ));
   });
+}
+
+Future<void> My_fm_BackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+  // Handle background message logic
 }
 
 class MyApp extends StatelessWidget {

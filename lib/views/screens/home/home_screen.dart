@@ -1,13 +1,38 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
+import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_list_tile.dart';
 import 'package:biteflow/views/widgets/home/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Delay provider access after widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final user = userProvider.user;
+
+      print("USER: " + user.toString());
+      // Initialize Firebase notifications with the user ID
+      if (user != null) {
+        FirebaseNotifications().initNotifications(user);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
