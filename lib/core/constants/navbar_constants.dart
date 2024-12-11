@@ -1,4 +1,3 @@
-import 'package:biteflow/views/screens/menu/menu_view.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/views/screens/home/home_view.dart';
 import 'package:biteflow/views/screens/order_details/order_details_view.dart';
@@ -15,7 +14,7 @@ class NavbarConstants {
 
   static final List<Widget> clientScreens = [
     const HomeView(),
-    const MenuView(),
+    const OrderDetailsView(),
     const ProfileView(),
   ];
 

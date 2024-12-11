@@ -172,4 +172,33 @@ class CartService {
       return Result(error: 'Error updating item note: $e');
     }
   }
+
+  Future<Result<bool>> removeItem(String cartId, String itemId) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection(FirestoreCollections.cartsCollection)
+          .doc(cartId)
+          .get();
+
+      if (!snapshot.exists) {
+        return Result(error: 'Cart not found');
+      }
+
+      Map<String, dynamic> cartData = snapshot.data() as Map<String, dynamic>;
+      List<dynamic> items = cartData['items'] ?? [];
+
+      List<dynamic> updatedItems = items.where((item) {
+        return item['menuItem']['id'] != itemId;
+      }).toList();
+
+      await FirebaseFirestore.instance
+          .collection(FirestoreCollections.cartsCollection)
+          .doc(cartId)
+          .update({'items': updatedItems});
+
+      return Result(data: true);
+    } catch (e) {
+      return Result(error: 'Error removing item: $e');
+    }
+  }
 }

@@ -19,6 +19,24 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartViewModel>();
 
+    viewModel.onItemRemoved = (index) {
+      final removedItem = viewModel.cart.items[index];
+
+      _listKey.currentState?.removeItem(
+        index,
+        (context, animation) => SlideTransition(
+          position: animation.drive(
+            Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).chain(CurveTween(curve: Curves.easeInOut)),
+          ),
+          child: CartItemCard(removedItem),
+        ),
+        duration: const Duration(milliseconds: 300),
+      );
+    };
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -39,13 +57,14 @@ class _CartScreenState extends State<CartScreen> {
             return const Center(child: Text('Cart is empty'));
           }
 
-          final cart = snapshot.data!;
+          viewModel.setCart = snapshot.data!;
+
           return Column(
             children: [
               Expanded(
                 child: AnimatedList(
                   key: _listKey,
-                  initialItemCount: cart.items.length,
+                  initialItemCount: viewModel.cart.items.length,
                   itemBuilder: (ctx, index, animation) {
                     return SlideTransition(
                       position: animation.drive(
@@ -54,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
                           end: Offset.zero,
                         ).chain(CurveTween(curve: Curves.easeInOut)),
                       ),
-                      child: CartItemCard(cart.items[index]),
+                      child: CartItemCard(viewModel.cart.items[index]),
                     );
                   },
                 ),

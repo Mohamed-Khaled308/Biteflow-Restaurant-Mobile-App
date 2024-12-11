@@ -18,6 +18,12 @@ class CartViewModel extends BaseModel {
   Stream<Cart>? get cartStream => _cartStream;
 
   Cart? _cart;
+  get cart => _cart;
+  set setCart(cart) {
+    _cart = cart;
+  }
+
+  void Function(int index)? onItemRemoved;
 
   Future<void> startListeningToCart(String cartId) async {
     _cartStream = _cartService.listenToCartUpdates(cartId);
@@ -61,7 +67,6 @@ class CartViewModel extends BaseModel {
     } else {
       final result = await _cartService.addItemToCart(_cart!.id, cartItem);
       if (result.isSuccess) {
-        // _cart!.items.add(cartItem);
         _navigationService.navigateTo(const CartView());
       } else {
         _logger.e(result.error);
@@ -79,7 +84,12 @@ class CartViewModel extends BaseModel {
     return total;
   }
 
-  void updateItemQuantity(String itemId, int quantity) {
+  void updateItemQuantity(String itemId, int quantity) async {
+    if (quantity <= 0) {
+      _removeItem(itemId);
+      return;
+    }
+
     CartItem cartItem = _cart!.items.firstWhere((item) =>
         item.menuItem.id == itemId && item.userId == _userProvider.user!.id);
 
@@ -90,10 +100,21 @@ class CartViewModel extends BaseModel {
       notes: cartItem.notes,
     );
 
-    _cartService.updateItemQuantityInCart(_cart!.id, updatedItem);
+    await _cartService.updateItemQuantityInCart(_cart!.id, updatedItem);
   }
 
-  void updateItemNotes(String itemId, String notes) {
+  void _removeItem(String itemId) async {
+    int index = _cart!.items.indexWhere((item) =>
+        item.menuItem.id == itemId && item.userId == _userProvider.user!.id);
+
+    if (index == -1) return;
+
+    onItemRemoved?.call(index);
+
+    await _cartService.removeItem(_cart!.id, itemId);
+  }
+
+  void updateItemNotes(String itemId, String notes) async {
     CartItem cartItem = _cart!.items.firstWhere((item) =>
         item.menuItem.id == itemId && item.userId == _userProvider.user!.id);
 
@@ -104,6 +125,6 @@ class CartViewModel extends BaseModel {
       notes: notes,
     );
 
-    _cartService.updateItemNoteInCart(_cart!.id, updatedItem);
+    await _cartService.updateItemNoteInCart(_cart!.id, updatedItem);
   }
 }
