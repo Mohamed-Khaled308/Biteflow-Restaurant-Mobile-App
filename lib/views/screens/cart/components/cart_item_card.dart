@@ -2,7 +2,7 @@ import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_description.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_notes_dialog.dart';
-import 'package:biteflow/views/screens/cart/components/cart_item_participants.dart';
+import 'package:biteflow/views/screens/cart/components/cart_item_participant.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,7 +46,7 @@ class CartItemCard extends StatelessWidget {
                 CartItemThumbnail(cartItem: cartItem),
                 SizedBox(width: 16.w),
                 CartItemDescription(cartItem: cartItem),
-                CartItemParticipants(cartItem: cartItem),
+                CartItemParticipant(cartItem: cartItem),
               ],
             ),
           ),

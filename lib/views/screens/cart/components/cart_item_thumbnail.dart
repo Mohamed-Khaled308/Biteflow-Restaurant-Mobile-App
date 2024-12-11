@@ -68,33 +68,31 @@ class CartItemThumbnail extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Decrease button (remove item or reduce quantity)
                   IconButton(
                     onPressed: cartItem.userId == userProvider.user!.id
                         ? () {
                             viewModel.updateItemQuantity(
                                 cartItem.menuItem.id, cartItem.quantity - 1);
                           }
-                        : null, // Disable the button for other users
+                        : null,
                     icon: cartItem.quantity == 1
                         ? Icon(Icons.delete,
                             color: cartItem.userId == userProvider.user!.id
                                 ? ThemeConstants.errorColor
                                 : ThemeConstants.greyColor)
-                        : const Icon(Icons.remove),
+                        : Icon(Icons.remove,
+                            color: cartItem.userId == userProvider.user!.id
+                                ? ThemeConstants.blackColor
+                                : ThemeConstants.greyColor),
                   ),
-
-                  // Quantity text
                   Text('${cartItem.quantity}'),
-
-                  // Increase button (add item or increase quantity)
                   IconButton(
                     onPressed: cartItem.userId == userProvider.user!.id
                         ? () {
                             viewModel.updateItemQuantity(
                                 cartItem.menuItem.id, cartItem.quantity + 1);
                           }
-                        : null, // Disable the button for other users
+                        : null,
                     icon: const Icon(Icons.add),
                   ),
                 ],

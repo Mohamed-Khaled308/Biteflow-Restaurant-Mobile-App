@@ -60,12 +60,14 @@ class CartParticipant {
 class CartItem {
   final MenuItem menuItem;
   final String userId;
+  final String userName;
   int quantity;
   String notes;
 
   CartItem({
     required this.menuItem,
     required this.userId,
+    required this.userName,
     this.quantity = 1,
     this.notes = '',
   });
@@ -74,6 +76,7 @@ class CartItem {
     return CartItem(
       menuItem: MenuItem.fromData(data['menuItem']),
       userId: data['userId'],
+      userName: data['userName'],
       quantity: data['quantity'] ?? 1,
       notes: data['notes'] ?? '',
     );
@@ -83,6 +86,7 @@ class CartItem {
     return {
       'menuItem': menuItem.toJson(),
       'userId': userId,
+      'userName': userName,
       'quantity': quantity,
       'notes': notes,
     };

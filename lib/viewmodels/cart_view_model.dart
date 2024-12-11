@@ -25,12 +25,13 @@ class CartViewModel extends BaseModel {
 
   void Function(int index)? onItemRemoved;
 
-  Future<void> startListeningToCart(String cartId) async {
+  void startListeningToCart(String cartId) {
+    _logger.d(cartId);
     _cartStream = _cartService.listenToCartUpdates(cartId);
     notifyListeners();
   }
 
-  Future<void> addItemToCart({
+  void addItemToCart({
     required MenuItem menuItem,
     int quantity = 1,
     String note = '',
@@ -38,32 +39,13 @@ class CartViewModel extends BaseModel {
     CartItem cartItem = CartItem(
       menuItem: menuItem,
       userId: _userProvider.user!.id,
+      userName: _userProvider.user!.name,
       quantity: quantity,
       notes: note,
     );
     _navigationService.pop();
     if (_cart == null) {
-      // Create a new cart
-      final cartId = _cartService.generateCartId();
-      final cartParticipant = CartParticipant(
-        id: _userProvider.user!.id,
-        name: _userProvider.user!.name,
-      );
-
-      Cart cart = Cart(
-        id: cartId,
-        restaurantId: menuItem.restaurantId,
-        participants: [cartParticipant],
-        items: [cartItem],
-      );
-
-      final result = await _cartService.createCart(cart);
-      if (result.isSuccess) {
-        await startListeningToCart(cartId);
-        _navigationService.navigateTo(const CartView());
-      } else {
-        _logger.e(result.error);
-      }
+      _createNewCart(cartItem);
     } else {
       final result = await _cartService.addItemToCart(_cart!.id, cartItem);
       if (result.isSuccess) {
@@ -72,6 +54,29 @@ class CartViewModel extends BaseModel {
         _logger.e(result.error);
       }
     }
+  }
+
+  void _createNewCart(CartItem cartItem) async {
+    final cartId = _cartService.generateCartId();
+      final cartParticipant = CartParticipant(
+        id: _userProvider.user!.id,
+        name: _userProvider.user!.name,
+      );
+
+      Cart cart = Cart(
+        id: cartId,
+        restaurantId: cartItem.menuItem.restaurantId,
+        participants: [cartParticipant],
+        items: [cartItem],
+      );
+
+      final result = await _cartService.createCart(cart);
+      if (result.isSuccess) {
+        startListeningToCart(cartId);
+        _navigationService.navigateTo(const CartView());
+      } else {
+        _logger.e(result.error);
+      }
   }
 
   double get totalAmount {
@@ -96,6 +101,7 @@ class CartViewModel extends BaseModel {
     CartItem updatedItem = CartItem(
       menuItem: cartItem.menuItem,
       userId: cartItem.userId,
+      userName: cartItem.userName,
       quantity: quantity,
       notes: cartItem.notes,
     );
@@ -121,6 +127,7 @@ class CartViewModel extends BaseModel {
     CartItem updatedItem = CartItem(
       menuItem: cartItem.menuItem,
       userId: cartItem.userId,
+      userName: _userProvider.user!.name,
       quantity: cartItem.quantity,
       notes: notes,
     );
