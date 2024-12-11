@@ -94,16 +94,23 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: _buildErrorBanner(viewModel.errorMessage),
                     ),
                     CustomButton(
-                      text: viewModel.busy ? 'Signing up...' : 'Sign up',
                       onPressed:
                           viewModel.busy ? null : _handleSignup(viewModel),
+                      child: viewModel.busy
+                          ? SizedBox(
+                              width: 16.w,
+                              height: 16.h,
+                              child: const CircularProgressIndicator(
+                                color: ThemeConstants.primaryColor,
+                              ),
+                            )
+                          : const Text('Sign up'),
                     ),
                     verticalSpaceSmall,
                     const DividerWithText(text: 'Or'),
                     verticalSpaceSmall,
                     SocialLoginButton(
                       icon: 'assets/icons/google.svg',
-                      text: 'Continue with Google',
                       onPressed: () {
                         // Handle Google login
                       },
@@ -111,7 +118,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     verticalSpaceSmall,
                     SocialLoginButton(
                       icon: 'assets/icons/facebook.svg',
-                      text: 'Continue with Facebook',
                       onPressed: () {
                         // Handle Facebook login
                       },

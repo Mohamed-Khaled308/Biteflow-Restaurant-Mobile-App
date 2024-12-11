@@ -59,7 +59,6 @@ class LoginViewModel extends BaseModel {
       _passwordError = passwordValidation;
       hasError = true;
     }
-    _logger.e(_emailError);
     if (hasError) {
       notifyListeners();
       return;
@@ -79,7 +78,40 @@ class LoginViewModel extends BaseModel {
     setBusy(false);
   }
 
+  void signInWithGoogle() async {
+    setBusy(true);
+    final result = await _authProvider.loginWithGoogle();
+
+    if (result.isSuccess && result.data!) {
+      _navigateToEntryPoint();
+    } else {
+      _generalError = result.error ?? 'Google sign-in failed. try again!';
+      _logger.e(_generalError);
+      notifyListeners();
+    }
+    setBusy(false);
+  }
+
+  void signInWithFacebook() async {
+    setBusy(true);
+    final result = await _authProvider.loginWithFacebook();
+
+    if (result.isSuccess) {
+      _navigateToEntryPoint();
+    } else {
+      _generalError =
+          result.error ?? 'Facebook sign-in failed. Please try again.';
+      _logger.e(_generalError);
+      notifyListeners();
+    }
+    setBusy(false);
+  }
+
   void navigateToSignup() => _navigationService.navigateTo(const SignupView());
-  void _navigateToEntryPoint() =>
+  void navigateToEntryPoint() =>
       _navigationService.replaceWith(EntryPointView());
+
+  void _navigateToEntryPoint() {
+    navigateToEntryPoint();
+  }
 }

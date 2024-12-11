@@ -111,5 +111,41 @@ class SignupViewModel extends BaseModel {
     setBusy(false);
   }
 
+  void signInWithGoogle() async {
+    setBusy(true);
+    final result = await _userProvider.loginWithGoogle();
+
+    if (result.isSuccess && result.data!) {
+      _navigateToEntryPoint();
+    } else {
+      _generalError =
+          result.error ?? 'Google sign-in failed. Please try again.';
+      _logger.e(_generalError);
+      notifyListeners();
+    }
+    setBusy(false);
+  }
+
+  void signInWithFacebook() async {
+    setBusy(true);
+    final result = await _userProvider.loginWithFacebook();
+
+    if (result.isSuccess) {
+      _navigateToEntryPoint();
+    } else {
+      _generalError =
+          result.error ?? 'Facebook sign-in failed. Please try again.';
+      _logger.e(_generalError);
+      notifyListeners();
+    }
+    setBusy(false);
+  }
+
   void navigateToLogin() => _navigationService.navigateTo(const LoginView());
+  void navigateToEntryPoint() =>
+      _navigationService.replaceWith(EntryPointView());
+
+  void _navigateToEntryPoint() {
+    navigateToEntryPoint();
+  }
 }

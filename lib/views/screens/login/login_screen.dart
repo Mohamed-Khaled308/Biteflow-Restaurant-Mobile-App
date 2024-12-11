@@ -68,27 +68,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      child: !viewModel.isInputActive
-                          ? Column(
-                              children: [
-                                verticalSpaceMedium,
-                                const AuthTitle(title: 'Hello Again!'),
-                                verticalSpaceTiny,
-                                const AuthSubtitle(
-                                    subtitle:
-                                        'Welcome back you\'ve been missed!'),
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                verticalSpaceMedium,
-                                const AuthSubtitle(
-                                    subtitle: 'Login with email'),
-                                verticalSpaceSmall,
-                              ],
-                            ),
+                    Column(
+                      children: [
+                        verticalSpaceMedium,
+                        const AuthTitle(title: 'Hello Again!'),
+                        verticalSpaceTiny,
+                        const AuthSubtitle(
+                            subtitle: 'Welcome back you\'ve been missed!'),
+                      ],
                     ),
                     LoginForm(
                       formKey: _formKey,
@@ -97,36 +84,53 @@ class _LoginScreenState extends State<LoginScreen> {
                       emailFocusNode: _emailFocusNode,
                       passwordFocusNode: _passwordFocusNode,
                     ),
-                    SizedBox(
-                      height: 60.h,
-                      child: _buildErrorBanner(viewModel.errorMessage),
-                    ),
-                    CustomButton(
-                      text: viewModel.busy ? 'Logging in...' : 'Log in',
-                      onPressed:
-                          viewModel.busy ? null : _handleLogin(viewModel),
-                    ),
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       child: viewModel.isInputActive
-                          ? verticalSpaceLarge
-                          : verticalSpaceSmall,
+                          ? verticalSpaceSmall
+                          : SizedBox(
+                              height: 60.h,
+                              child: _buildErrorBanner(viewModel.errorMessage),
+                            ),
                     ),
-                    const DividerWithText(text: 'Or'),
-                    verticalSpaceSmall,
-                    SocialLoginButton(
-                      icon: 'assets/icons/google.svg',
-                      text: 'Continue with Google',
-                      onPressed: () {},
+                    CustomButton(
+                      onPressed:
+                          viewModel.busy ? null : _handleLogin(viewModel),
+                      child: viewModel.busy
+                          ? SizedBox(
+                              width: 16.w,
+                              height: 16.h,
+                              child: const CircularProgressIndicator(
+                                color: ThemeConstants.primaryColor,
+                              ),
+                            )
+                          : const Text('Log in'),
                     ),
-                    verticalSpaceSmall,
-                    SocialLoginButton(
-                      icon: 'assets/icons/facebook.svg',
-                      text: 'Continue with Facebook',
-                      onPressed: () {},
-                    ),
+                    verticalSpaceRegular,
+                    const DividerWithText(text: 'Or Continue With'),
                     verticalSpaceMedium,
-                    verticalSpaceTiny,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SocialLoginButton(
+                          icon: 'assets/icons/google.svg',
+                          onPressed: viewModel.busy
+                              ? null
+                              : viewModel.signInWithGoogle,
+                        ),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        SocialLoginButton(
+                          icon: 'assets/icons/facebook.svg',
+                          onPressed: viewModel.busy
+                              ? null
+                              : viewModel.signInWithFacebook,
+                        ),
+                      ],
+                    ),
+                    verticalSpaceLarge,
+                    verticalSpaceSmall,
                     _buildRegisterLink(viewModel.navigateToSignup),
                   ],
                 ),
@@ -210,6 +214,12 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showError(String errorMessage) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
     );
   }
 }
