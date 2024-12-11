@@ -7,13 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:biteflow/views/theme/app_theme.dart';
+import 'package:biteflow/views/theme/biteflow_theme.dart';
 import 'firebase_options.dart';
 import 'locator.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -39,7 +43,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) => MaterialApp(
         title: 'Biteflow',
-        theme: AppTheme.lightTheme(context),
+        theme: BiteflowTheme.lightTheme(context),
         themeMode: ThemeMode.light,
         navigatorKey: getIt<NavigationService>().navigationKey,
         home: const AnimatedSplashScreen(nextScreen: LoginView()),

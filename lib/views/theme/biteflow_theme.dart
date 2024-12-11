@@ -5,7 +5,7 @@ import 'package:biteflow/core/constants/theme_constants.dart';
 import 'checkbox_themedata.dart';
 import 'theme_data.dart';
 
-class AppTheme {
+class BiteflowTheme {
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
       brightness: Brightness.light,
