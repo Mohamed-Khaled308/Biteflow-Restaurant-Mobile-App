@@ -12,7 +12,12 @@
           "package_name": "com.biteflow.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "206872951763-7tonupihp4mv6havd1to3vpaha6bomuu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBuUvmtv6kgihwW-bncUHlLv8lYiBEV0H0"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206872951763-7tonupihp4mv6havd1to3vpaha6bomuu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "206872951763-p9eueapfjsl7tn5i0o4ntblpm03p0oi4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.biteflow"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,20 @@
           "package_name": "com.flutter_project.biteflow"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "206872951763-epn15t3qc46bj1a3b3upg1tn4g7b01k8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flutter_project.biteflow",
+            "certificate_hash": "6cd84872e0c8be3aeef7561d0e1c41cf1742e4d4"
+          }
+        },
+        {
+          "client_id": "206872951763-7tonupihp4mv6havd1to3vpaha6bomuu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBuUvmtv6kgihwW-bncUHlLv8lYiBEV0H0"
@@ -39,7 +69,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206872951763-7tonupihp4mv6havd1to3vpaha6bomuu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "206872951763-p9eueapfjsl7tn5i0o4ntblpm03p0oi4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.biteflow"
+              }
+            }
+          ]
         }
       }
     }
