@@ -13,6 +13,7 @@ class OrderItem extends Item {
     required super.description,
     required super.rating,
     required super.categoryId,
+    required super.restaurantId,
     this.notes = '',
   });
 
@@ -27,6 +28,7 @@ class OrderItem extends Item {
             description: data['description'],
             rating: data['rating'],
             categoryId: data['categoryId'],
+            restaurantId: data['restaurantId']
             );
 
   OrderItem copyWith({
@@ -44,6 +46,15 @@ class OrderItem extends Item {
       quantity: updatedQuantity ?? quantity,
       notes: updatedNotes ?? notes,
       categoryId: categoryId,
+      restaurantId: restaurantId,
     );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = super.toJson();
+    data['quantity'] = quantity;
+    data['notes'] = notes;
+    return data;
   }
 }

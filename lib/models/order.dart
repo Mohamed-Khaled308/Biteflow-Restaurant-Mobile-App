@@ -1,4 +1,4 @@
-import 'package:biteflow/core/constants/order_status.dart';
+import 'package:biteflow/core/constants/business_constants.dart';
 import 'package:biteflow/models/order_item.dart';
 
 class Order {
@@ -8,14 +8,14 @@ class Order {
   final List<OrderItem> items;
   final List<String> userIDs;
   final String paymentMethod;
-  final String restaurantID;
+  final String restaurantId;
   final int orderNumber;
 
   Order({
     required this.id,
-    required this.restaurantID,
+    required this.restaurantId,
     required this.orderNumber,
-    this.status = OrderStatus.pending,
+    this.status = BusinessConstants.pendingStatus,
     this.totalAmount = 0.0,
     this.items = const [],
     this.userIDs = const [],
@@ -24,9 +24,9 @@ class Order {
 
   Order.fromData(Map<String, dynamic> data)
       : id = data['id'],
-        restaurantID = data['restaurantID'],
+        restaurantId = data['restaurantId'],
         orderNumber = data['orderNumber'],
-        status = data['status'] ?? OrderStatus.pending,
+        status = data['status'] ?? BusinessConstants.pendingStatus,
         totalAmount = (data['totalAmount'] ?? 0).toDouble(),
         userIDs = List<String>.from(data['userIDs'] ?? []),
         paymentMethod = data['paymentMethod'] ?? '',

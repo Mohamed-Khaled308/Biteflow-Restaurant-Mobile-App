@@ -11,6 +11,7 @@ var menuItemsList = [
     description: 'A delicious double cheeseburger with a special offer!',
     rating: 4.8,
     categoryId: 'c1',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm2',
@@ -21,6 +22,7 @@ var menuItemsList = [
     description: 'Two large pizzas, a side, and a drink for the family.',
     rating: 4.7,
     categoryId: 'c1',
+    restaurantId: 'r1',
   ),
 
   // Main Dishes
@@ -33,6 +35,7 @@ var menuItemsList = [
     description: 'Tender grilled chicken breast served with steamed veggies.',
     rating: 4.5,
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm4',
@@ -43,6 +46,7 @@ var menuItemsList = [
     description: 'Classic Italian spaghetti with rich meat sauce.',
     rating: 5,
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm5',
@@ -53,6 +57,7 @@ var menuItemsList = [
     description: 'Tender grilled chicken breast served with steamed veggies.',
     rating: 4.5,
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm6',
@@ -63,6 +68,7 @@ var menuItemsList = [
     description: 'Classic Italian spaghetti with rich meat sauce.',
     rating: 5,
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm7',
@@ -73,6 +79,7 @@ var menuItemsList = [
     description: 'Tender grilled chicken breast served with steamed veggies.',
     rating: 4.5,
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm8',
@@ -83,6 +90,7 @@ var menuItemsList = [
     description: 'Classic Italian spaghetti with rich meat sauce.',
     rating: 5,
     categoryId: 'c2',
+    restaurantId: 'r1',
   ),
 
   // Breakfast
@@ -95,6 +103,7 @@ var menuItemsList = [
     description: 'Fluffy pancakes topped with maple syrup and butter.',
     rating: 2,
     categoryId: 'c3',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm10',
@@ -105,6 +114,7 @@ var menuItemsList = [
     description: 'Whole-grain toast topped with creamy avocado spread.',
     rating: 4,
     categoryId: 'c3',
+    restaurantId: 'r1',
   ),
 
   // Appetizers
@@ -117,6 +127,7 @@ var menuItemsList = [
     description: 'Crispy fried mozzarella cheese served with marinara sauce.',
     rating: 3,
     categoryId: 'c4',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm12',
@@ -127,6 +138,7 @@ var menuItemsList = [
     description: 'Nachos topped with cheese, jalapeños, sour cream, and salsa.',
     rating: 41.8,
     categoryId: 'c4',
+    restaurantId: 'r1',
   ),
 
   // Side Dishes
@@ -139,6 +151,7 @@ var menuItemsList = [
     description: 'Golden and crispy fries, lightly salted.',
     rating: 4.5,
     categoryId: 'c5',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm14',
@@ -149,6 +162,7 @@ var menuItemsList = [
     description: 'Warm garlic bread topped with butter and herbs.',
     rating: 4.7,
     categoryId: 'c5',
+    restaurantId: 'r1',
   ),
 
   // Beverages
@@ -161,6 +175,7 @@ var menuItemsList = [
     description: 'Freshly squeezed orange juice with no added sugar.',
     rating: 4.8,
     categoryId: 'c6',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm16',
@@ -171,6 +186,7 @@ var menuItemsList = [
     description: 'Chilled coffee served over ice with a touch of milk.',
     rating: 4.7,
     categoryId: 'c6',
+    restaurantId: 'r1',
   ),
 
   // Desserts
@@ -183,6 +199,7 @@ var menuItemsList = [
     description: 'Warm chocolate cake with a gooey molten center.',
     rating: 4.9,
     categoryId: 'c7',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm18',
@@ -193,6 +210,7 @@ var menuItemsList = [
     description: 'Classic vanilla ice cream with chocolate syrup and a cherry.',
     rating: 4.8,
     categoryId: 'c7',
+    restaurantId: 'r1',
   ),
   MenuItem(
     id: 'm19',
@@ -204,5 +222,6 @@ var menuItemsList = [
         'Classic Chocolate ice cream with chocolate syrup and a cherry.',
     rating: 2.5,
     categoryId: 'c7',
+    restaurantId: 'r1',
   ),
 ];

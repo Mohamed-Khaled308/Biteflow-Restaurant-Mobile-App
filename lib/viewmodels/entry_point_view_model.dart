@@ -1,33 +1,23 @@
+import 'package:biteflow/core/constants/navbar_constants.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:flutter/material.dart';
-import 'package:biteflow/views/screens/home/home_view.dart';
-import 'package:biteflow/views/screens/order_details/order_details_view.dart';
-import 'package:biteflow/views/screens/profile/profile_view.dart';
-import 'package:biteflow/views/screens/search/search_view.dart';
-// import 'package:biteflow/views/screens/manager_menu/manager_menu_view.dart';
-// import 'package:biteflow/views/screens/manager_orders/manager_orders_view.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
+import 'package:biteflow/locator.dart';
+import 'package:biteflow/models/user.dart';
 
 
 
 class EntryPointViewModel extends BaseModel {
   int _selectedIndex = 0;
 
-  final List<Map<String, dynamic>> _navItems = [
-    {'icon': 'assets/icons/home.svg', 'title': 'Home'},
-    {'icon': 'assets/icons/search.svg', 'title': 'Search'},
-    // {'icon': 'assets/icons/order.svg', 'title': 'Menu'},
-    {'icon': 'assets/icons/order.svg', 'title': 'Orders'},
-    {'icon': 'assets/icons/profile.svg', 'title': 'Profile'},
-  ];
+  final User _authenticatedUser = getIt<UserProvider>().user!;
+  List<Map<String, dynamic>> _navItems = [];
+  List<Widget> _screens = [];
 
-  final List<Widget> _screens = [
-    const HomeView(),
-    const SearchView(),
-    // const ManagerOrdersView(),
-    const OrderDetailsView(),
-    const ProfileView(),
-    // const ManagerMenuView(),
-  ];
+  EntryPointViewModel() {
+    _navItems = _authenticatedUser.role == 'Client' ? NavbarConstants.clientNavItems : NavbarConstants.managerNavItems;
+    _screens = _authenticatedUser.role == 'Client' ? NavbarConstants.clientScreens : NavbarConstants.managerScreens;
+  }
 
   int get selectedIndex => _selectedIndex;
   List<Map<String, dynamic>> get navItems => _navItems;

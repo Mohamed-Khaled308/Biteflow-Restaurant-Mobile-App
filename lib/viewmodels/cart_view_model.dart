@@ -26,6 +26,11 @@ class CartViewModel extends BaseModel {
     return total;
   }
 
+
+  void addItemToCart(OrderItem item) {
+    _cartItems.add(item);
+    notifyListeners();
+  }
   void updateNotes(String id, String notes) {
     final index = _cartItems.indexWhere((element) => element.id == id);
     final updatedItem = _cartItems[index].copyWith(updatedNotes: notes);

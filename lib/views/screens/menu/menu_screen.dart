@@ -1,4 +1,6 @@
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/category.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../../viewmodels/menu_view_model.dart';
@@ -7,7 +9,8 @@ import '../../widgets/menu/menu_card.dart';
 import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+  final String restaurantId;
+  const MenuScreen({super.key, required this.restaurantId});
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
@@ -29,6 +32,14 @@ class _MenuScreenState extends State<MenuScreen> {
               : 0;
         });
       });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final viewModel = context.read<MenuViewModel>();
+      viewModel.restaurantId = widget.restaurantId;
+      // print('Set restaurant ID to: ${widget.restaurantId}');
+      await viewModel.loadRestaurantData();
+      // print('Data loaded successfully');
+    });
   }
 
   @override
@@ -40,6 +51,8 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MenuViewModel>();
+    // print('Categories: ${viewModel.categories}');
+    // print('Filtered Items: ${viewModel.filteredItems.length}');
     //final screenHeight = MediaQuery.of(context).size.height;
     //print('Screen height: $screenHeight');
 
@@ -52,28 +65,59 @@ class _MenuScreenState extends State<MenuScreen> {
         slivers: [
           // Placeholder Section
           SliverToBoxAdapter(
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: _placeholderOpacity,
-              child: SizedBox(
-                width: double.infinity, // Full screen width
-                height: 300, // Fixed height to match the placeholder's height
-                // color: ThemeConstants.primaryMaterialColor[300],
-                child: Image.asset(
-                  'assets/images/BiteFlowNew.png',
-                  fit: BoxFit
-                      .cover, // Scale and crop the image to fully fill the container
-                ),
-              ),
+            child: Consumer<MenuViewModel>(
+              builder: (context, viewModel, child) {
+                final imageUrl = viewModel.restaurantImageUrl;
+
+                return Hero(
+                  tag: widget.restaurantId,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: _placeholderOpacity,
+                    child: SizedBox(
+                      width: double.infinity, // Full screen width
+                      height:
+                          300, // Fixed height to match the placeholder's height
+                      child: imageUrl != null
+                          ? Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.broken_image,
+                                  size: 50,
+                                  color: Colors.grey,
+                                );
+                              },
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            )
+                          : const Icon(
+                              Icons.image,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           // Fixed Categories
           SliverPersistentHeader(
             pinned: true,
             delegate: CategoriesHeaderDelegate(
-              categories: viewModel.categories,
+              categories:
+                  viewModel.categories ?? [], // Provide an empty list if null
               selectedCategoryId: viewModel.selectedCategoryId ?? '',
-              onCategorySelected: (id) => viewModel.selectCategory(id),
+              onCategorySelected: (id) {
+                viewModel.selectedCategoryId = id; // Use the setter
+              },
               theme: Theme.of(context),
             ),
           ),
@@ -109,12 +153,19 @@ class _MenuScreenState extends State<MenuScreen> {
                                     ),
                                   ),
                                   builder: (context) {
-                                    return MenuCard(
-                                      imageUrl: item.imageUrl,
-                                      title: item.title,
-                                      description: item.description,
-                                      price: item.price,
-                                      rating: item.rating,
+                                    return ChangeNotifierProvider(
+                                      create: (_) => getIt<CartViewModel>(),
+                                      child: SingleChildScrollView(
+                                        child: MenuCard(
+                                          imageUrl: item.imageUrl,
+                                          title: item.title,
+                                          description: item.description,
+                                          price: item.price,
+                                          rating: item.rating,
+                                          categoryId: item.categoryId,
+                                          restaurantId: widget.restaurantId,
+                                        ),
+                                      ),
                                     );
                                   },
                                 );
@@ -137,7 +188,8 @@ class _MenuScreenState extends State<MenuScreen> {
                         title: item.title,
                         price: item.price,
                         onTap: () {
-                          viewModel.selectMenuItem(item);
+                          viewModel.selectedItem =
+                              item; // Use the setter to update selectedItem
                           showModalBottomSheet(
                             context: context,
                             shape: const RoundedRectangleBorder(
@@ -152,6 +204,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                 description: item.description,
                                 price: item.price,
                                 rating: item.rating,
+                                categoryId: item.categoryId,
+                                restaurantId: widget.restaurantId,
                               );
                             },
                           );

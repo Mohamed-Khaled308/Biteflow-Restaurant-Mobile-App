@@ -1,6 +1,9 @@
 import 'package:biteflow/services/auth_service.dart';
+import 'package:biteflow/services/firestore/category_service.dart';
+import 'package:biteflow/services/firestore/menu_item_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
+import 'package:biteflow/services/firestore/order_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
@@ -13,6 +16,7 @@ import 'package:biteflow/viewmodels/order_view_model.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
+import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:biteflow/viewmodels/menu_view_model.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:logger/logger.dart';
@@ -26,6 +30,9 @@ void setupLocator() {
   getIt.registerLazySingleton<AuthService>(() => AuthService());
   getIt.registerLazySingleton<UserService>(() => UserService());
   getIt.registerLazySingleton<RestaurantService>(() => RestaurantService());
+  getIt.registerLazySingleton<CategoryService>(() => CategoryService());
+  getIt.registerLazySingleton<MenuItemService>(() => MenuItemService());
+  getIt.registerLazySingleton<OrderService>(() => OrderService());
   getIt.registerLazySingleton<Logger>(() => Logger());
   getIt.registerLazySingleton<UserProvider>(() => UserProvider());
 
@@ -39,9 +46,10 @@ void setupLocator() {
   getIt.registerFactory<RestaurantOnboardingViewModel>(
       () => RestaurantOnboardingViewModel());
   getIt.registerFactory<OrderViewModel>(() => OrderViewModel());
-  getIt.registerFactory<ManagerMenuViewModel>(() => ManagerMenuViewModel());
-  getIt.registerFactory<ManagerCreateItemViewModel>(
-      () => ManagerCreateItemViewModel());
-  getIt.registerFactory<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
   getIt.registerFactory<MenuViewModel>(() => MenuViewModel());
+
+  getIt.registerFactory<ManagerCreateItemViewModel>(() => ManagerCreateItemViewModel());
+  getIt.registerFactory<ManagerOrdersDetailsViewModel>(() => ManagerOrdersDetailsViewModel());
+  getIt.registerLazySingleton<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
+  getIt.registerLazySingleton<ManagerMenuViewModel>(() => ManagerMenuViewModel());
 }

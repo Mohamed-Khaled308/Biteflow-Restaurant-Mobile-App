@@ -12,6 +12,15 @@ class ManagerOrdersScreen extends StatefulWidget {
 }
 
 class _ManagerOrdersScreenState extends State<ManagerOrdersScreen> {
+
+  @override
+  // ignore: must_call_super
+  void dispose() {
+    // don't call super
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ManagerOrdersViewModel>();
@@ -19,20 +28,28 @@ class _ManagerOrdersScreenState extends State<ManagerOrdersScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('${viewModel.restaurantName} Orders',
-            style: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: ThemeConstants.whiteColor,
-            )),
+        title: viewModel.busy
+            ? const Text('Loading...')
+            : Text('${viewModel.authenticatedManagerRestaurant!.name} Orders',
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeConstants.whiteColor,
+                )),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: const Column(
-        children: [
-          SizedBox(height: 10),
-          OrdersList(),
-        ],
-      ),
+      body: viewModel.busy
+          ? const Center(
+              child: CircularProgressIndicator(
+              backgroundColor: ThemeConstants.blackColor40,
+              color: ThemeConstants.blackColor80,
+            ))
+          : const Column(
+              children: [
+                SizedBox(height: 10),
+                OrdersList(),
+              ],
+            ),
     );
   }
 }

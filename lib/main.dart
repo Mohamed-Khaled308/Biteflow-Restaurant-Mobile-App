@@ -2,7 +2,7 @@ import 'package:biteflow/animated_splash_screen.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:provider/provider.dart';
-import 'views/screens/entry_point/entry_point_view.dart';
+import 'views/screens/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme(context),
         themeMode: ThemeMode.light,
         navigatorKey: getIt<NavigationService>().navigationKey,
-        home: AnimatedSplashScreen(nextScreen: EntryPointView()),
+        home: const AnimatedSplashScreen(nextScreen: LoginView()),
         builder: (context, widget) {
           ScreenUtil.init(context);
           return widget!;

@@ -1,6 +1,12 @@
+import 'package:biteflow/locator.dart';
+import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/services/navigation_service.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
+import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class MenuCard extends StatelessWidget {
   final String imageUrl;
@@ -8,6 +14,8 @@ class MenuCard extends StatelessWidget {
   final String description;
   final double price;
   final double rating;
+  final String categoryId;
+  final String restaurantId;
 
   const MenuCard({
     super.key,
@@ -16,10 +24,14 @@ class MenuCard extends StatelessWidget {
     required this.description,
     required this.price,
     required this.rating,
+    required this.categoryId,
+    required this.restaurantId,
   });
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<CartViewModel>();
+
     // Accessing the current theme for colors and text styles
     final theme = AppTheme.lightTheme(context); // Get light theme from AppTheme
 
@@ -128,6 +140,42 @@ class MenuCard extends StatelessWidget {
                   height: 22,
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+            // Add to Cart Button
+            GestureDetector(
+              onTap: () {
+                viewModel.addItemToCart(
+                  OrderItem(
+                      id: DateTime.now().toString(),
+                      title: title,
+                      imageUrl: imageUrl,
+                      price: price,
+                      rating: rating,
+                      quantity: 1,
+                      notes: '',
+                      description: description,
+                      categoryId: categoryId,
+                      restaurantId: restaurantId),
+                );
+                getIt<NavigationService>().navigateAndReplace(const CartView());
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: theme.primaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  'Add to Cart',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
