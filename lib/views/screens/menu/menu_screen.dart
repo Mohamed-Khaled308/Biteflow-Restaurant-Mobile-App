@@ -1,6 +1,8 @@
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/category.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
+import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../../viewmodels/menu_view_model.dart';
@@ -59,6 +61,13 @@ class _MenuScreenState extends State<MenuScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Menu'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                getIt<NavigationService>().navigateTo(const CartView());
+              },
+              icon: const Icon(Icons.shopping_cart_sharp)),
+        ],
       ),
       body: CustomScrollView(
         controller: _scrollController,
