@@ -1,6 +1,7 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/signup_view_model.dart';
 import 'package:biteflow/views/screens/signup/components/signup_form.dart';
+import 'package:biteflow/views/widgets/auth/components/auth_subtitle.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_title.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_button.dart';
 import 'package:biteflow/views/widgets/auth/components/divider_with_text.dart';
@@ -78,7 +79,18 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const AuthTitle(title: 'Sign up'),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: !viewModel.isInputActive
+                          ? Column(
+                              children: [
+                                const AuthTitle(title: 'Sign up'),
+                                verticalSpaceTiny,
+                              ],
+                            )
+                          : verticalSpaceSmall,
+                    ),
+                    const AuthSubtitle(subtitle: 'Create a new account'),
                     verticalSpaceMedium,
                     SignupForm(
                         formKey: _formKey,
@@ -106,23 +118,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             )
                           : const Text('Sign up'),
                     ),
+                    verticalSpaceMassive,
                     verticalSpaceSmall,
-                    const DividerWithText(text: 'Or'),
-                    verticalSpaceSmall,
-                    SocialLoginButton(
-                      icon: 'assets/icons/google.svg',
-                      onPressed: () {
-                        // Handle Google login
-                      },
-                    ),
-                    verticalSpaceSmall,
-                    SocialLoginButton(
-                      icon: 'assets/icons/facebook.svg',
-                      onPressed: () {
-                        // Handle Facebook login
-                      },
-                    ),
-                    verticalSpaceMedium,
                     verticalSpaceTiny,
                     GestureDetector(
                       onTap: viewModel.navigateToLogin,
