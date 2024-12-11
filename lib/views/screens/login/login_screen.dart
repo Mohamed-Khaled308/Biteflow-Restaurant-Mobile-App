@@ -216,10 +216,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  void _showError(String errorMessage) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(errorMessage)),
-    );
-  }
 }

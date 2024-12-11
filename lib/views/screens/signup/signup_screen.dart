@@ -4,8 +4,6 @@ import 'package:biteflow/views/screens/signup/components/signup_form.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_subtitle.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_title.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_button.dart';
-import 'package:biteflow/views/widgets/auth/components/divider_with_text.dart';
-import 'package:biteflow/views/widgets/auth/components/social_login_button.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
