@@ -44,7 +44,8 @@ class MyApp extends StatelessWidget {
       builder: (_, child) => MaterialApp(
         title: 'Biteflow',
         theme: AppTheme.lightTheme(context),
-        themeMode: ThemeMode.light,
+        darkTheme: AppTheme.darkTheme(context),
+        themeMode: ThemeMode.dark,
         navigatorKey: getIt<NavigationService>().navigationKey,
         home: AnimatedSplashScreen(nextScreen: EntryPointView()),
         builder: (context, widget) {
