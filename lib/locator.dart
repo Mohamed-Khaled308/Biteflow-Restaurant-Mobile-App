@@ -1,14 +1,17 @@
 import 'package:biteflow/services/auth_service.dart';
 import 'package:biteflow/services/firestore/category_service.dart';
 import 'package:biteflow/services/firestore/menu_item_service.dart';
+import 'package:biteflow/services/firestore/promotional_offer_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/services/firestore/order_service.dart';
+import 'package:biteflow/services/image_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
+import 'package:biteflow/viewmodels/manager_promotional_offers_view_model.dart';
 import 'package:biteflow/viewmodels/rating_view_model.dart';
 import 'package:biteflow/viewmodels/restaurant_onboarding_view_model.dart';
 import 'package:biteflow/viewmodels/signup_view_model.dart';
@@ -52,4 +55,16 @@ void setupLocator() {
   getIt.registerFactory<ManagerOrdersDetailsViewModel>(() => ManagerOrdersDetailsViewModel());
   getIt.registerLazySingleton<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
   getIt.registerLazySingleton<ManagerMenuViewModel>(() => ManagerMenuViewModel());
+
+   getIt.registerFactory<ManagerPromotionalOffersViewModel>(
+    () => ManagerPromotionalOffersViewModel()
+  );
+
+  getIt.registerLazySingleton<PromotionalOfferService>(
+    () => PromotionalOfferService()
+  );
+
+  getIt.registerLazySingleton<ImageService>(
+    () => ImageService()
+  );
 }
