@@ -44,8 +44,9 @@ void main() async {
   });
 }
 
+// ignore: non_constant_identifier_names
 Future<void> My_fm_BackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
+  // print("Handling a background message: ${message.messageId}");
   // Handle background message logic
 }
 

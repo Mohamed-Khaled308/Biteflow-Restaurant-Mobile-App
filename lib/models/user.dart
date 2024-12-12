@@ -4,6 +4,7 @@ abstract class User {
   final String email;
   final String role;
   final String fcmToken;
+  final int unseenOfferCount;
 
   const User({
     required this.id,
@@ -11,6 +12,7 @@ abstract class User {
     required this.email,
     required this.role,
     this.fcmToken = '',
+    this.unseenOfferCount = 0, 
   });
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ abstract class User {
       'email': email,
       'role': role,
       'fcmToken': fcmToken,
+      'unseenOfferCount': unseenOfferCount,
     };
   }
 }
@@ -32,5 +35,6 @@ class UserModel extends User {
     required super.email,
     required super.role,
     super.fcmToken,
+    super.unseenOfferCount = 0,
   });
 }

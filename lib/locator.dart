@@ -1,4 +1,3 @@
-import 'package:biteflow/models/offer_notification.dart';
 import 'package:biteflow/services/auth_service.dart';
 import 'package:biteflow/services/firestore/category_service.dart';
 import 'package:biteflow/services/firestore/menu_item_service.dart';

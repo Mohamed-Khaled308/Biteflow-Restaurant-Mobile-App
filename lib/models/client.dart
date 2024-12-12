@@ -9,6 +9,7 @@ class Client extends User {
     required super.email,
     super.fcmToken,
     this.orderIds = const [],
+    super.unseenOfferCount = 0,
   }) : super(role: 'Client');
 
   factory Client.fromData(Map<String, dynamic> data) {
@@ -20,6 +21,7 @@ class Client extends User {
       orderIds: (data['orderIds'] != null && data['orderIds'] is List)
           ? List<String>.from(data['orderIds'] as List)
           : [],
+      unseenOfferCount: data['unseenOfferCount'] ?? 0,
     );
   }
 
@@ -33,6 +35,6 @@ class Client extends User {
 
   @override
   String toString() {
-    return 'Client{id: $id, name: $name, email: $email, fcmToken: $fcmToken, orderIds: $orderIds}';
+    return 'Client{id: $id, name: $name, email: $email, fcmToken: $fcmToken, orderIds: $orderIds, unseenOfferCount: $unseenOfferCount}';
   }
 }

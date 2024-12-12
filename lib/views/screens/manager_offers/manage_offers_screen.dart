@@ -32,10 +32,12 @@ class _ManagerOffersScreenState extends State<ManagerOffersScreen> {
 
       if (result.error == null) {
         _offerController.clear();
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Offer added successfully!')),
         );
       } else {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: ${result.error}')),
         );
