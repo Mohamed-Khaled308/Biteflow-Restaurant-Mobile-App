@@ -8,5 +8,5 @@ CheckboxThemeData checkboxThemeData = CheckboxThemeData(
       Radius.circular(ThemeConstants.defaultBorderRadious / 2),
     ),
   ),
-  side: const BorderSide(color: ThemeConstants.whileColor40),
+  side: const BorderSide(color: ThemeConstants.whiteColor40),
 );

@@ -6,13 +6,11 @@ import 'package:biteflow/views/screens/manager_menu/manager_menu_view.dart';
 import 'package:biteflow/views/screens/manager_orders/manager_orders_view.dart';
 
 class NavbarConstants {
-
   static final List<Map<String, dynamic>> clientNavItems = [
     {'icon': 'assets/icons/home.svg', 'title': 'Home'},
     {'icon': 'assets/icons/order.svg', 'title': 'Orders'},
     {'icon': 'assets/icons/profile.svg', 'title': 'Profile'},
   ];
-
 
   static final List<Widget> clientScreens = [
     const HomeView(),
