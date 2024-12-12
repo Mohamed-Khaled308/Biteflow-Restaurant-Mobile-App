@@ -10,6 +10,7 @@ import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
+import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:biteflow/viewmodels/rating_view_model.dart';
 import 'package:biteflow/viewmodels/restaurant_onboarding_view_model.dart';
 import 'package:biteflow/viewmodels/signup_view_model.dart';
@@ -49,9 +50,11 @@ void setupLocator() {
       () => RestaurantOnboardingViewModel());
   getIt.registerFactory<OrderViewModel>(() => OrderViewModel());
   getIt.registerFactory<MenuViewModel>(() => MenuViewModel());
+  getIt.registerLazySingleton<ModeViewModel>(() => ModeViewModel());
 
   getIt.registerFactory<ManagerCreateItemViewModel>(() => ManagerCreateItemViewModel());
   getIt.registerFactory<ManagerOrdersDetailsViewModel>(() => ManagerOrdersDetailsViewModel());
   getIt.registerLazySingleton<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
   getIt.registerLazySingleton<ManagerMenuViewModel>(() => ManagerMenuViewModel());
+  
 }

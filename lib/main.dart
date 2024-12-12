@@ -2,6 +2,7 @@ import 'package:biteflow/animated_splash_screen.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
+import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:provider/provider.dart';
 import 'views/screens/entry_point/entry_point_view.dart';
 import 'package:flutter/material.dart';
@@ -26,33 +27,39 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => getIt<UserProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<CartViewModel>()),
+        ChangeNotifierProvider(create: (_) => getIt<ModeViewModel>()),
       ],
-      child: const MyApp(),
+      child:  MyApp(),
     ));
   });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   MyApp({super.key});
+  final _viewModel = getIt<ModeViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(392, 851),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, child) => MaterialApp(
-        title: 'Biteflow',
-        theme: AppTheme.lightTheme(context),
-        darkTheme: AppTheme.darkTheme(context),
-        themeMode: ThemeMode.dark,
-        navigatorKey: getIt<NavigationService>().navigationKey,
-        home: AnimatedSplashScreen(nextScreen: EntryPointView()),
-        builder: (context, widget) {
-          ScreenUtil.init(context);
-          return widget!;
-        },
-      ),
+    return Consumer<ModeViewModel>(
+      builder: (context , modeViewModel , child) {
+        return ScreenUtilInit(
+          designSize: const Size(392, 851),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (_, child) => MaterialApp(
+            title: 'Biteflow',
+            theme: AppTheme.lightTheme(context),
+            darkTheme: AppTheme.darkTheme(context),
+            themeMode: _viewModel.themeMode,
+            navigatorKey: getIt<NavigationService>().navigationKey,
+            home: AnimatedSplashScreen(nextScreen: EntryPointView()),
+            builder: (context, widget) {
+              ScreenUtil.init(context);
+              return widget!;
+            },
+          ),
+        );
+      }
     );
   }
 }

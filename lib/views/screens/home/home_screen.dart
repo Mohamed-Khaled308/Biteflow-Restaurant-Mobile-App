@@ -1,6 +1,7 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
+import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:biteflow/views/screens/menu/menu_view.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatelessWidget {
     final viewModel = context.watch<HomeViewModel>();
     final cartViewModel = context.read<CartViewModel>();
     final NavigationService navigationService = getIt<NavigationService>();
+    final modeViewModel = getIt<ModeViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -43,6 +45,21 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.light_mode_sharp
+                  : Icons.dark_mode_sharp,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
+            onPressed: () {
+              modeViewModel.toggleThemeMode();
+              
+            },
+          ),
+          
           IconButton(
               onPressed: () {
                 showDialog(
