@@ -1,6 +1,6 @@
 import 'package:biteflow/core/providers/user_provider.dart';
+import 'package:biteflow/models/client.dart';
 import 'package:biteflow/models/offer_notification.dart';
-import 'package:biteflow/models/user.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,12 +24,12 @@ class _ClientOffersScreenState extends State<ClientOffersScreen> {
       final user = userProvider.user;
 
       if (user != null) {
-          final updatedUser = UserModel(
+          final updatedUser = Client(
                   id: user.id,
                   name: user.name,
                   email: user.email,
-                  role: user.role,
                   fcmToken: user.fcmToken,
+                  orderIds: (user as Client).orderIds,
                   unseenOfferCount: 0,
                 );        
           await UserService().updateUser(updatedUser);

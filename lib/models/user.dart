@@ -12,7 +12,7 @@ abstract class User {
     required this.email,
     required this.role,
     this.fcmToken = '',
-    this.unseenOfferCount = 0, 
+    this.unseenOfferCount = 0,
   });
 
   Map<String, dynamic> toJson() {
@@ -27,14 +27,14 @@ abstract class User {
   }
 }
 
-class UserModel extends User {
+// class UserModel extends User {
 
-  const UserModel({
-    required super.id,
-    required super.name,
-    required super.email,
-    required super.role,
-    super.fcmToken,
-    super.unseenOfferCount = 0,
-  });
-}
+//   const UserModel({
+//     required super.id,
+//     required super.name,
+//     required super.email,
+//     required super.role,
+//     super.fcmToken,
+//     super.unseenOfferCount = 0,
+//   });
+// }

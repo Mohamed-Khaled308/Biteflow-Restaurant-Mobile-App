@@ -1,11 +1,11 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/models/client.dart';
 import 'package:biteflow/models/user.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 
-class FirebaseNotifications {
+class FirebaseNotifications with WidgetsBindingObserver {
   static final FirebaseNotifications _instance =
       FirebaseNotifications._internal();
 
@@ -14,81 +14,90 @@ class FirebaseNotifications {
   final GlobalKey<ScaffoldMessengerState> messengerKey =
       GlobalKey<ScaffoldMessengerState>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  bool _isListenerSetUp = false; // Flag to check if the listener is set
+
+  String? _notificationTitle;
+  String? _notificationBody;
 
   FirebaseNotifications._internal();
 
   Future<void> initNotifications(User user) async {
-    // print("USERTOKEN: ${user.fcmToken}");
-
     await _firebaseMessaging.requestPermission();
     String? token = await _firebaseMessaging.getToken();
 
-    // print("GeneratedTOKEN: $token");
-
     if (user.fcmToken == '' || user.fcmToken != token) {
-      // print("Token Update: $token");
-
       if (token != null) {
-        final updatedUser = UserModel(
+        final updatedUser = Client(
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role,
           fcmToken: token,
+          orderIds: (user as Client).orderIds,
+          unseenOfferCount: user.unseenOfferCount,
         );
-
         await UserService().updateUser(updatedUser);
-
-        // if (result.data ?? false) {
-        //   print("User updated successfully");
-        // } else {
-        //   print("Error updating user: ${result.error}");
-        // }
       }
     }
 
-    // Set up handlers for notifications
-    setupNotificationHandlers();
+    // Set up notification handlers only once
+    if (!_isListenerSetUp) {
+      setupNotificationHandlers();
+      _isListenerSetUp = true;
+    }
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null && message.data['type'] == 'split_request') {
+        // Save the notification details to show when the app is fully initialized
+        _notificationTitle = message.notification?.title;
+        _notificationBody = message.notification?.body;
+      }
+    });
   }
 
   void setupNotificationHandlers() {
-    // Foreground
+    // Foreground notifications
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // print("Foreground Notification: ${message.notification?.title}");
-      _showForegroundNotification(
-        title: message.notification?.title,
-        body: message.notification?.body,
-      );
+      _handleForegroundNotification(message);
     });
 
-    // Background
-    FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
-
-    // Terminated
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      // if (message != null) {
-      //   print(
-      //       'Notification while app was terminated: ${message.notification?.title}');
-      // }
+    // Handle when a notification is tapped while the app is in the background
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      _handleBackgroundNotification(message);
     });
   }
 
-  Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
-    // print('Handling background message: ${message.messageId}');
+  void _handleForegroundNotification(RemoteMessage message) {
+    final notificationType = message.data['type']; // 'offer' or 'split_request'
+
+    if (notificationType == 'offer') {
+      _showOfferNotification(
+          message.notification?.title, message.notification?.body);
+    } else if (notificationType == 'split_request') {
+      _showSplitRequestNotification(
+          message.notification?.title, message.notification?.body);
+    }
   }
 
-  void _showForegroundNotification({String? title, String? body}) {
+  void _handleBackgroundNotification(RemoteMessage message) {
+    if (message.data['type'] == 'split_request') {
+      // Save the notification details to be shown when the app is resumed
+      _notificationTitle = message.notification?.title;
+      _notificationBody = message.notification?.body;
+      // print('Saved notification opened!');
+      _showSplitRequestNotification(_notificationTitle, _notificationBody);
+    }
+  }
+
+  void _showOfferNotification(String? title, String? body) {
     if (title != null && body != null) {
       messengerKey.currentState?.showSnackBar(
         SnackBar(
-          backgroundColor: ThemeConstants.successColor, // Use primary color
-          behavior:
-              SnackBarBehavior.floating, // Floating style for better appearance
+          backgroundColor: ThemeConstants.successColor,
+          behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10), // Rounded corners
+            borderRadius: BorderRadius.circular(10),
           ),
-          margin: const EdgeInsets.symmetric(
-              horizontal: 16, vertical: 10), // Add some margins
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +107,7 @@ class FirebaseNotifications {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Colors.white, // Text color for the title
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 4),
@@ -106,8 +115,7 @@ class FirebaseNotifications {
                 body,
                 style: const TextStyle(
                   fontSize: 14,
-                  color:
-                      Colors.white70, // Slightly muted text color for the body
+                  color: Colors.white70,
                 ),
               ),
             ],
@@ -115,6 +123,92 @@ class FirebaseNotifications {
           duration: const Duration(seconds: 5),
         ),
       );
+    }
+  }
+
+  void _showSplitRequestNotification(String? title, String? body) {
+    if (title != null && body != null) {
+      messengerKey.currentState?.showSnackBar(
+        SnackBar(
+          backgroundColor: ThemeConstants.primaryMaterialColor.shade300,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                body,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle Accept action for Split Request
+                      // print('Split Request Accepted');
+                      messengerKey.currentState?.hideCurrentSnackBar();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green,
+                    ),
+                    child: const Text('Accept'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle Reject action for Split Request
+                      // print('Split Request Rejected');
+                      messengerKey.currentState?.hideCurrentSnackBar();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text('Reject'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          duration: const Duration(days: 1), // Duration for indefinite display
+        ),
+      );
+    }
+  }
+
+  // App lifecycle observer methods
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Check if there is a saved notification to show when the app is resumed
+      if (_notificationTitle != null && _notificationBody != null) {
+        // Use a slight delay to ensure the app is fully initialized
+        Future.delayed(const Duration(milliseconds: 3000), () {
+          // print('Showing saved notification');
+          _showSplitRequestNotification(_notificationTitle, _notificationBody);
+          // Reset saved notification
+          _notificationTitle = null;
+          _notificationBody = null;
+        });
+      }
     }
   }
 }
