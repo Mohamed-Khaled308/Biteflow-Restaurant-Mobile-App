@@ -58,6 +58,7 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.darkTheme(context),
             themeMode: _viewModel.themeMode,
             navigatorKey: getIt<NavigationService>().navigationKey,
+            scaffoldMessengerKey: FirebaseNotifications().messengerKey,
             home: AnimatedSplashScreen(nextScreen: EntryPointView()),
             builder: (context, widget) {
               ScreenUtil.init(context);
