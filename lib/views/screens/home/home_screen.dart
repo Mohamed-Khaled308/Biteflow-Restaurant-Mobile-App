@@ -1,14 +1,18 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/firebase_notifications.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/views/screens/client_offers/client_offers_view.dart';
+import 'package:biteflow/viewmodels/mode_view_model.dart';
+import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:biteflow/views/screens/menu/menu_view.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_list_tile.dart';
 import 'package:biteflow/views/widgets/home/section_title.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/locator.dart';
@@ -66,7 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeViewModel>();
+    final cartViewModel = context.read<CartViewModel>();
     final NavigationService navigationService = getIt<NavigationService>();
+    final modeViewModel = getIt<ModeViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -90,6 +96,55 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.light_mode_sharp
+                  : Icons.dark_mode_sharp,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
+            onPressed: () {
+              modeViewModel.toggleThemeMode();
+              
+            },
+          ),
+          
+          IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text(
+                      'Scan QR Code to be added to cart',
+                      textAlign: TextAlign.center,
+                    ),
+                    content: Container(
+                      height: 300,
+                      width: 300,
+                      alignment: Alignment.center,
+                      child: MobileScanner(
+                        controller: MobileScannerController(
+                          detectionSpeed: DetectionSpeed.normal,
+                        ),
+                        onDetect: (capture) {
+                          final List<Barcode> barcodes = capture.barcodes;
+                          for (Barcode barcode in barcodes) {
+                            if (barcode.rawValue != null) {
+                              cartViewModel
+                                  .startListeningToCart(barcode.rawValue!);
+                              getIt<NavigationService>()
+                                  .navigateAndReplace(const CartView());
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.camera_alt_rounded)),
           StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('users')
