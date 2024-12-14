@@ -50,13 +50,13 @@ class PromotionalOfferService {
     }
   }
 
- 
-
   Future<Result<List<PromotionalOffer>>> getAllActiveOffers() async {
     try {
       QuerySnapshot querySnapshot = await _offers
           .where('isActive', isEqualTo: true)
-          .where('endDate', isGreaterThanOrEqualTo: DateTime.now().toIso8601String().split('T')[0])
+          .where('endDate',
+              isGreaterThanOrEqualTo:
+                  DateTime.now().toIso8601String().split('T')[0])
           .get();
 
       List<PromotionalOffer> offers = querySnapshot.docs.map((doc) {
@@ -70,13 +70,12 @@ class PromotionalOfferService {
     }
   }
 
-
   //get the promotional offers for the restaurantID
-  Future<Result<List<PromotionalOffer>>> getRestaurantOffers(String restaurantId) async {
+  Future<Result<List<PromotionalOffer>>> getRestaurantOffers(
+      String restaurantId) async {
     try {
       QuerySnapshot querySnapshot = await _offers
-          .where('restaurantId', isEqualTo: restaurantId)
-          .where('isActive', isEqualTo: true)
+          .where('restaurantId', isEqualTo: restaurantId) 
           .get();
 
       List<PromotionalOffer> offers = querySnapshot.docs.map((doc) {
@@ -86,6 +85,15 @@ class PromotionalOfferService {
       return Result(data: offers);
     } catch (e) {
       _logger.e(e.toString());
+      return Result(error: e.toString());
+    }
+  }
+
+  Future<Result<bool>> updateOffer(PromotionalOffer offer) async {
+    try {
+      await _offers.doc(offer.id).update(offer.toJson());
+      return Result(data: true);
+    } catch (e) {
       return Result(error: e.toString());
     }
   }

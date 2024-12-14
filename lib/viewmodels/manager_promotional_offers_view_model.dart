@@ -4,6 +4,7 @@ import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/manager.dart';
 import 'package:biteflow/models/promotional_offer.dart';
 import 'package:biteflow/models/restaurant.dart';
+import 'package:biteflow/services/firestore/menu_item_service.dart';
 import 'package:biteflow/services/firestore/promotional_offer_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
@@ -31,17 +32,19 @@ class ManagerPromotionalOffersViewModel extends BaseModel {
           await _restaurantService.getRestaurantById(manager.restaurantId);
       if (restaurantResult.error == null) {
         restaurant = restaurantResult.data;
-
-        _offerService.getRestaurantOffers(manager.restaurantId).then((result) {
-          if (result.error == null) {
-            offers = result.data!;
-            notifyListeners();
-          }
-        });
+        await _refreshOffers(manager.restaurantId);
       }
 
     }
     setBusy(false);
+  }
+
+  Future<void> _refreshOffers(String restaurantId) async {
+    final result = await _offerService.getRestaurantOffers(restaurantId);
+    if (result.isSuccess && result.data != null) {
+      offers = result.data!;
+      notifyListeners();
+    }
   }
 
   Future<Result<bool>> createOffer({
@@ -50,14 +53,39 @@ class ManagerPromotionalOffersViewModel extends BaseModel {
     required String imageUrl,
     required DateTime startDate,
     required DateTime endDate,
-    required double discount,
+    required double discount, // e.g., 0.2 for 20% off
   }) async {
     if (_userProvider.currentUser?.role != 'Manager') {
       return Result(error: 'Not authorized: User is not a manager');
     }
 
+    setBusy(true);
     final manager = _userProvider.currentUser as Manager;
 
+    // 1. Disable all currently active offers
+    final activeOffersResult = await _offerService.getRestaurantOffers(manager.restaurantId);
+    if (activeOffersResult.isSuccess && activeOffersResult.data != null) {
+      for (var activeOffer in activeOffersResult.data!) {
+        if (activeOffer.isActive) {
+          // Set isActive = false
+          var updatedOffer = PromotionalOffer(
+            id: activeOffer.id,
+            restaurantId: activeOffer.restaurantId,
+            restaurantName: activeOffer.restaurantName,
+            title: activeOffer.title,
+            description: activeOffer.description,
+            imageUrl: activeOffer.imageUrl,
+            startDate: activeOffer.startDate,
+            endDate: activeOffer.endDate,
+            discount: activeOffer.discount,
+            isActive: false,
+          );
+          await _offerService.updateOffer(updatedOffer);
+        }
+      }
+    }
+
+    // 2. Create the new active offer
     final offer = PromotionalOffer(
       id: _offerService.generateId(),
       restaurantId: manager.restaurantId,
@@ -68,11 +96,28 @@ class ManagerPromotionalOffersViewModel extends BaseModel {
       startDate: startDate,
       endDate: endDate,
       discount: discount,
+      isActive: true,
     );
 
-    offers.add(offer);
-    notifyListeners();
+    // 3. Update all menu items with the new discount
+    final menuItemService = getIt<MenuItemService>();
+    final menuItemsResult = await menuItemService.getMenuItems(manager.restaurantId);
+    if (menuItemsResult.isSuccess && menuItemsResult.data != null) {
+      for (var item in menuItemsResult.data!) {
+        // Keep price same, just set discountPercentage
+        final updatedItem = item.copyWith(discountPercentage: discount);
+        await menuItemService.updateMenuItem(updatedItem);
+      }
+    }
 
-    return await _offerService.createOffer(offer);
+    // 4. Save the new offer to the database
+    final result = await _offerService.createOffer(offer);
+    if (result.isSuccess) {
+      // Re-fetch the offers to ensure UI is updated with the latest data
+      await _refreshOffers(manager.restaurantId);
+    }
+
+    setBusy(false);
+    return result;
   }
 }

@@ -1,14 +1,10 @@
-import 'package:biteflow/locator.dart';
-import 'package:biteflow/viewmodels/manager_promotional_offers_view_model.dart';
 import 'package:biteflow/views/screens/manager_promotional_offers/manager_promotional_offers_view.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/views/screens/home/home_view.dart';
 import 'package:biteflow/views/screens/order_details/order_details_view.dart';
 import 'package:biteflow/views/screens/profile/profile_view.dart';
 import 'package:biteflow/views/screens/manager_menu/manager_menu_view.dart';
-import 'package:biteflow/views/screens/manager_orders/manager_orders_view.dart';
-import 'package:provider/provider.dart';
-
+import 'package:biteflow/views/screens/manager_orders/manager_orders_view.dart'; 
 class NavbarConstants {
   static final List<Map<String, dynamic>> clientNavItems = [
     {'icon': 'assets/icons/home.svg', 'title': 'Home'},
@@ -32,7 +28,7 @@ class NavbarConstants {
   static final List<Widget> managerScreens = [
     const ManagerMenuView(),
     const ManagerOrdersView(),
-    ManagerPromotionalOffersView(),
+    const ManagerPromotionalOffersView(),
     const ProfileView(),
   ];
 }

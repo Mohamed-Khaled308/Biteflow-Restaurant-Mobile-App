@@ -50,7 +50,7 @@ class PromotionalOfferCard extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) => Container(
                           height: 90.h,  // Increased from 60.h
                           width: double.infinity,
-                          color: theme.colorScheme.surfaceVariant,
+                          color: theme.colorScheme.surfaceContainerHighest,
                           child: Icon(
                             Icons.image_not_supported_outlined,
                             size: 24.sp,  // Increased from 20.sp

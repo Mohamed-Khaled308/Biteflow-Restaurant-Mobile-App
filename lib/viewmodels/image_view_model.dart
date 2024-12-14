@@ -23,7 +23,7 @@ class ImageViewModel extends ChangeNotifier {
         _imageUrl = uploadedUrl;
       }
     } catch (e) {
-      print('Error uploading image: $e');
+      // print('Error uploading image: $e');
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+ 
 
 class AddPromotionalOfferScreen extends StatefulWidget {
   const AddPromotionalOfferScreen({super.key});
@@ -18,9 +19,11 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _discountController = TextEditingController();
-  // final _imageService = getIt<ImageService>();
-
   late final ImageViewModel _viewModel;
+
+  DateTime? _startDate;
+  DateTime? _endDate;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -32,6 +35,9 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
   @override
   void dispose() {
     _viewModel.removeListener(_updateUI);
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _discountController.dispose();
     super.dispose();
   }
 
@@ -62,148 +68,6 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
     }
   }
 
-  DateTime? _startDate;
-  DateTime? _endDate;
-  // String? _imageUrl;
-  bool _isLoading = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.watch<ManagerPromotionalOffersViewModel>();
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add New Offer'),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => _pickImage(),
-                      child: Container(
-                        height: 200,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: _viewModel.imageUrl != null
-                            ? Image.network(_viewModel.imageUrl!,
-                                fit: BoxFit.cover)
-                            : const Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.add_photo_alternate, size: 48),
-                                    Text('Add Image'),
-                                  ],
-                                ),
-                              ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Title',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) =>
-                          value?.isEmpty ?? true ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _descriptionController,
-                      decoration: const InputDecoration(
-                        labelText: 'Description',
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 3,
-                      validator: (value) =>
-                          value?.isEmpty ?? true ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _discountController,
-                      decoration: const InputDecoration(
-                        labelText: 'Discount %',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) return 'Required';
-                        final number = double.tryParse(value!);
-                        if (number == null) return 'Invalid number';
-                        if (number <= 0 || number > 100) {
-                          return 'Discount must be between 0 and 100';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Start Date',
-                              border: OutlineInputBorder(),
-                            ),
-                            controller: TextEditingController(
-                              text: _startDate != null
-                                  ? DateFormat('MMM dd, yyyy')
-                                      .format(_startDate!)
-                                  : '',
-                            ),
-                            onTap: () => _selectDate(true),
-                            validator: (value) =>
-                                _startDate == null ? 'Required' : null,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                              labelText: 'End Date',
-                              border: OutlineInputBorder(),
-                            ),
-                            controller: TextEditingController(
-                              text: _endDate != null
-                                  ? DateFormat('MMM dd, yyyy').format(_endDate!)
-                                  : '',
-                            ),
-                            onTap: () => _selectDate(false),
-                            validator: (value) =>
-                                _endDate == null ? 'Required' : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () => _submitForm(viewModel),
-                        child: const Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text('Create Offer'),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-    );
-  }
-
   Future<void> _selectDate(bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -223,8 +87,7 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
     }
   }
 
-  Future<void> _submitForm(ManagerPromotionalOffersViewModel view) async {
-    final viewModel = view;
+  Future<void> _submitForm(ManagerPromotionalOffersViewModel viewModel) async {
     if (!_formKey.currentState!.validate()) return;
     if (_viewModel.imageUrl == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -245,15 +108,13 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
         discount: double.parse(_discountController.text),
       );
 
-      // print(result.error);
-
       if (!mounted) return;
 
       if (result.error == null) {
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errorrr: ${result.error}')),
+          SnackBar(content: Text('Error: ${result.error}')),
         );
       }
     } catch (e) {
@@ -267,4 +128,220 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
       }
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = context.watch<ManagerPromotionalOffersViewModel>();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add New Promotional Offer'),
+        centerTitle: true,
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Offer Image',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: Container(
+                        height: 200,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Stack(
+                          children: [
+                            if (_viewModel.imageUrl != null)
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  _viewModel.imageUrl!,
+                                  height: 200,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            else
+                              Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.add_photo_alternate, size: 48),
+                                    SizedBox(height: 8),
+                                    Text('Tap to add image'),
+                                  ],
+                                ),
+                              ),
+                            if (_viewModel.imageUrl != null)
+                              Positioned(
+                                right: 8,
+                                bottom: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: const Text(
+                                    'Change Image',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Offer Details',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildTextField(
+                      controller: _titleController,
+                      label: 'Title',
+                      hintText: 'Enter offer title (e.g. "Summer Special")',
+                      validatorMsg: 'Title is required',
+                      icon: Icons.title,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: _descriptionController,
+                      label: 'Description',
+                      hintText: 'Describe the offer in detail...',
+                      validatorMsg: 'Description is required',
+                      icon: Icons.description,
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: _discountController,
+                      label: 'Discount',
+                      hintText: 'Enter discount percentage (e.g. 20)',
+                      validatorMsg: 'Discount is required',
+                      icon: Icons.percent,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Offer Validity',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildDateField(
+                            context: context,
+                            label: 'Start Date',
+                            selectedDate: _startDate,
+                            onTap: () => _selectDate(true),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: _buildDateField(
+                            context: context,
+                            label: 'End Date',
+                            selectedDate: _endDate,
+                            onTap: () => _selectDate(false),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.check),
+                        label: const Text(
+                          'Create Offer',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () => _submitForm(viewModel),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hintText,
+    required String validatorMsg,
+    IconData? icon,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
+    return TextFormField(
+      controller: controller,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
+      validator: (value) => (value == null || value.isEmpty) ? validatorMsg : null,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hintText,
+        prefixIcon: icon != null ? Icon(icon) : null,
+        border: const OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _buildDateField({
+    required BuildContext context,
+    required String label,
+    required DateTime? selectedDate,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+          suffixIcon: const Icon(Icons.calendar_today),
+        ),
+        child: Text(
+          selectedDate == null
+              ? ''
+              : DateFormat('MMM dd, yyyy').format(selectedDate),
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ),
+    );
+  }
 }
+
