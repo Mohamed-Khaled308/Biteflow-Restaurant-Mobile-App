@@ -7,6 +7,7 @@ import 'package:biteflow/services/firestore/order_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/services/payment_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
+import 'package:biteflow/viewmodels/client_orders_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
@@ -56,4 +57,5 @@ void setupLocator() {
   getIt.registerFactory<ManagerOrdersDetailsViewModel>(() => ManagerOrdersDetailsViewModel());
   getIt.registerLazySingleton<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
   getIt.registerLazySingleton<ManagerMenuViewModel>(() => ManagerMenuViewModel());
+  getIt.registerLazySingleton<ClientOrdersViewModel>(() => ClientOrdersViewModel());
 }
