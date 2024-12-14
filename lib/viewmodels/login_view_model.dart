@@ -16,7 +16,11 @@ class LoginViewModel extends BaseModel {
   bool _isInputActive = false;
   bool get isInputActive => _isInputActive;
 
+  String _emailError = '';
+  String _passwordError = '';
   String _generalError = '';
+  String get emailError => _emailError;
+  String get passwordError => _passwordError;
   String get errorMessage => _generalError;
 
   String? validateEmail(String email) {
@@ -32,9 +36,33 @@ class LoginViewModel extends BaseModel {
     notifyListeners();
   }
 
-  void login({required String email, required String password}) async {
+  void clearError() {
     _generalError = '';
     notifyListeners();
+  }
+
+  void login({required String email, required String password}) async {
+    _emailError = '';
+    _passwordError = '';
+    _generalError = '';
+    notifyListeners();
+
+    bool hasError = false;
+    final emailValidation = validateEmail(email);
+    final passwordValidation = validatePassword(password);
+
+    if (emailValidation != null) {
+      _emailError = emailValidation;
+      hasError = true;
+    }
+    if (passwordValidation != null) {
+      _passwordError = passwordValidation;
+      hasError = true;
+    }
+    if (hasError) {
+      notifyListeners();
+      return;
+    }
 
     setBusy(true);
     Result result = await _authProvider.login(email, password);
@@ -50,7 +78,40 @@ class LoginViewModel extends BaseModel {
     setBusy(false);
   }
 
+  void signInWithGoogle() async {
+    setBusy(true);
+    final result = await _authProvider.loginWithGoogle();
+
+    if (result.isSuccess && result.data!) {
+      _navigateToEntryPoint();
+    } else {
+      _generalError = result.error ?? 'Google sign-in failed. try again!';
+      _logger.e(_generalError);
+      notifyListeners();
+    }
+    setBusy(false);
+  }
+
+  void signInWithFacebook() async {
+    setBusy(true);
+    final result = await _authProvider.loginWithFacebook();
+
+    if (result.isSuccess) {
+      _navigateToEntryPoint();
+    } else {
+      _generalError =
+          result.error ?? 'Facebook sign-in failed. Please try again.';
+      _logger.e(_generalError);
+      notifyListeners();
+    }
+    setBusy(false);
+  }
+
   void navigateToSignup() => _navigationService.navigateTo(const SignupView());
-  void _navigateToEntryPoint() =>
+  void navigateToEntryPoint() =>
       _navigationService.replaceWith(EntryPointView());
+
+  void _navigateToEntryPoint() {
+    navigateToEntryPoint();
+  }
 }

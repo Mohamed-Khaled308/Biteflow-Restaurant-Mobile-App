@@ -1,3 +1,4 @@
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/views/screens/restaurant_onboarding/components/restaurant_onboarding_form.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_subtitle.dart';
@@ -46,10 +47,18 @@ class RestaurantOnboardingScreen extends StatelessWidget {
                       descriptionController: _descriptionController),
                   verticalSpaceLarge,
                   CustomButton(
-                    text: viewModel.busy ? 'Saving...' : 'Save and Continue',
                     onPressed: viewModel.busy
                         ? null
                         : _handleSaveRestaurant(viewModel),
+                    child: viewModel.busy
+                        ? SizedBox(
+                            width: 16.w,
+                            height: 16.h,
+                            child: const CircularProgressIndicator(
+                                color: ThemeConstants.primaryColor,
+                              ),
+                          )
+                        : const Text('Save and Continue'),
                   ),
                   verticalSpaceRegular,
                 ],

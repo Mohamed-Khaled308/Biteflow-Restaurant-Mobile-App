@@ -6,6 +6,9 @@ import 'package:biteflow/views/screens/order_details/order_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/viewmodels/payment_view_model.dart';
 
 class ClientsOrdersList extends StatefulWidget {
   const ClientsOrdersList({super.key});
@@ -15,9 +18,12 @@ class ClientsOrdersList extends StatefulWidget {
 }
 
 class _ClientsOrdersListState extends State<ClientsOrdersList> {
+  double totalAmount = 0;
+  
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ClientOrdersViewModel>();
+    final paymentViewModel = context.watch<PaymentViewModel>();
     return Expanded(
       child: viewModel.orders!.isEmpty
           ? const Center(
@@ -53,19 +59,20 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
-                        double totalAmount = 0;
-                        for (final OrderClientsPayment orderClientsPayment in order.orderClientsPayment) {
-                          if (orderClientsPayment.userId == viewModel.clientLogged.id) {
-                            totalAmount = orderClientsPayment.amount;
                         
+                        for (final OrderClientsPayment orderClientsPayment
+                            in order.orderClientsPayment) {
+                          if (orderClientsPayment.userId ==
+                              viewModel.clientLogged.id) {
+                            totalAmount = orderClientsPayment.amount;
                           }
                         }
                         getIt<NavigationService>().navigateTo(
-                                 OrderDetailsView(
-                                   items: order.items,
-                                   totalAmount: totalAmount,
-                                 ),
-                                );
+                          OrderDetailsView(
+                            items: order.items,
+                            totalAmount: totalAmount,
+                          ),
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -76,13 +83,15 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                               children: [
                                 Icon(
                                   StatusIconColor.getStatusIcon(order.status),
-                                  color: StatusIconColor.getStatusColor(order.status),
+                                  color: StatusIconColor.getStatusColor(
+                                      order.status),
                                   size: 36,
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Order #${order.orderNumber}',
@@ -103,16 +112,20 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
                                   decoration: BoxDecoration(
-                                    color: StatusIconColor.getStatusColor(order.status).withOpacity(0.1),
+                                    color: StatusIconColor.getStatusColor(
+                                            order.status)
+                                        .withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
                                     order.status.toUpperCase(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: StatusIconColor.getStatusColor(order.status),
+                                      color: StatusIconColor.getStatusColor(
+                                          order.status),
                                       fontSize: 13,
                                     ),
                                   ),
@@ -126,7 +139,8 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                       viewModel.clientLogged.id &&
                                   order.status == 'accepted')
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       orderClientsPayment.isPaid == false
@@ -134,25 +148,66 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                           : 'Payment completed',
                                       style: TextStyle(
                                         fontSize: 16,
-                                        color: orderClientsPayment.isPaid == false 
-                                            ? Colors.orange 
-                                            : Colors.green,
+                                        color:
+                                            orderClientsPayment.isPaid == false
+                                                ? Colors.orange
+                                                : Colors.green,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     if (orderClientsPayment.isPaid == false)
                                       ElevatedButton(
-                                        onPressed: () {
-                                          // hosseiny code
-                                          
-                                        },
+                                        onPressed: paymentViewModel.busy
+                                            ? null
+                                            : () async {
+                                                // await paymentViewModel
+                                                //     .initiatePayment(totalAmount);
+                                                // Stripe.instance
+                                                //     .presentPaymentSheet()
+                                                //     .then((value) {
+                                                //   paymentViewModel
+                                                //       .setBusy(false);
+                                                //   if (context.mounted) {
+                                                //     ScaffoldMessenger.of(
+                                                //             context)
+                                                //         .showSnackBar(
+                                                //       const SnackBar(
+                                                //         content: Text(
+                                                //             'Payment Successful'),
+                                                //         backgroundColor:
+                                                //             ThemeConstants
+                                                //                 .successColor,
+                                                //       ),
+                                                //     );
+                                                //   }
+                                                //   /***  here we can make the required updates to the UI and db ***/
+                                                // }).catchError((e) {
+                                                //   paymentViewModel
+                                                //       .setBusy(false);
+                                                //   if (context.mounted) {
+                                                //     ScaffoldMessenger.of(
+                                                //             context)
+                                                //         .showSnackBar(
+                                                //       const SnackBar(
+                                                //         content: Text(
+                                                //             'Payment process was interrupted. Please try again.'),
+                                                //         backgroundColor:
+                                                //             ThemeConstants
+                                                //                 .errorColor,
+                                                //       ),
+                                                //     );
+                                                //   }
+                                                // });
+                                              },
                                         style: ElevatedButton.styleFrom(
                                           foregroundColor: Colors.white,
                                           backgroundColor: Colors.blue,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                           ),
-                                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 8),
                                         ),
                                         child: const Text(
                                           'Pay Now',

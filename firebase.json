@@ -1,1 +1,41 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"biteflow-e1515","appId":"1:206872951763:android:47938f1a0fe265f163cd26","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"biteflow-e1515","configurations":{"android":"1:206872951763:android:47938f1a0fe265f163cd26","ios":"1:206872951763:ios:c841adad3f17660a63cd26","macos":"1:206872951763:ios:c841adad3f17660a63cd26","web":"1:206872951763:web:5e3b4de42658e34963cd26","windows":"1:206872951763:web:5af628ce9bd8731963cd26"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "biteflow-e1515",
+          "appId": "1:206872951763:android:47938f1a0fe265f163cd26",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "biteflow-e1515",
+          "configurations": {
+            "android": "1:206872951763:android:47938f1a0fe265f163cd26",
+            "ios": "1:206872951763:ios:c841adad3f17660a63cd26",
+            "macos": "1:206872951763:ios:c841adad3f17660a63cd26",
+            "web": "1:206872951763:web:5e3b4de42658e34963cd26",
+            "windows": "1:206872951763:web:5af628ce9bd8731963cd26"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ]
+    }
+  ]
+}

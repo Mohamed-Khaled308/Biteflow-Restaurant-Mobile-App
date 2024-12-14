@@ -1,8 +1,10 @@
+import 'package:biteflow/viewmodels/login_view_model.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_textfield.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:provider/provider.dart';
 
 class LoginForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -22,6 +24,8 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<LoginViewModel>();
+
     return Form(
       key: formKey,
       child: Column(
@@ -29,13 +33,19 @@ class LoginForm extends StatelessWidget {
           verticalSpaceLarge,
           CustomTextField(
             controller: emailController,
+            labelText: 'Email *',
             hintText: 'Enter your email',
+            validator: (value) => viewModel.validateEmail(value ?? ''),
+            errorText: viewModel.emailError,
             focusNode: emailFocusNode,
           ),
           verticalSpaceRegular,
           CustomTextField(
             controller: passwordController,
+            labelText: 'Password *',
             hintText: 'Enter your password',
+            validator: (value) => viewModel.validatePassword(value ?? ''),
+            errorText: viewModel.passwordError,
             obscureText: true,
             focusNode: passwordFocusNode,
           ),
