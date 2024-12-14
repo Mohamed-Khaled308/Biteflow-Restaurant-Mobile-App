@@ -16,7 +16,7 @@ class ImageService {
       // Create file name
       final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       final String extension = path.extension(pickedFile.path);
-      final String fullPath = 'offers/$fileName$extension';
+      final String fullPath = 'uploads/$fileName$extension';
 
       // Upload file
       final Reference ref = _storage.ref().child(fullPath);
@@ -32,4 +32,8 @@ class ImageService {
       return null;
     }
   }
+
+
+
+  
 }

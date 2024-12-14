@@ -10,6 +10,7 @@ import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
+import 'package:biteflow/viewmodels/image_view_model.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
 import 'package:biteflow/viewmodels/manager_promotional_offers_view_model.dart';
 import 'package:biteflow/viewmodels/rating_view_model.dart';
@@ -67,4 +68,6 @@ void setupLocator() {
   getIt.registerLazySingleton<ImageService>(
     () => ImageService()
   );
+
+  getIt.registerFactory<ImageViewModel>(() => ImageViewModel(getIt<ImageService>()));
 }

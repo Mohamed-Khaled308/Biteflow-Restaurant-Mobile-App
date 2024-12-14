@@ -1,13 +1,23 @@
 import 'package:biteflow/locator.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/manager_promotional_offers_view_model.dart';
 import 'package:biteflow/views/screens/manager_promotional_offers/add_promotional_offer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ManagerPromotionalOffersScreen extends StatelessWidget {
-  const ManagerPromotionalOffersScreen({super.key});
+class ManagerPromotionalOffersScreen extends StatefulWidget {
+  ManagerPromotionalOffersScreen({super.key});
 
+  final navservice = getIt<NavigationService>();
+
+  @override
+  State<ManagerPromotionalOffersScreen> createState() =>
+      _ManagerPromotionalOffersScreenState();
+}
+
+class _ManagerPromotionalOffersScreenState
+    extends State<ManagerPromotionalOffersScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ManagerPromotionalOffersViewModel>();
@@ -21,8 +31,8 @@ class ManagerPromotionalOffersScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider(
-                create: (_) => getIt<ManagerPromotionalOffersViewModel>(),
+              builder: (context) => ChangeNotifierProvider.value(
+                value: viewModel,
                 child: const AddPromotionalOfferScreen(),
               ),
             ),

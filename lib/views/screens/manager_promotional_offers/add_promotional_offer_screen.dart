@@ -1,7 +1,7 @@
-import 'package:biteflow/locator.dart';
-import 'package:biteflow/services/image_service.dart';
-import 'package:biteflow/viewmodels/manager_promotional_offers_view_model.dart'; 
+import 'package:biteflow/viewmodels/image_view_model.dart';
+import 'package:biteflow/viewmodels/manager_promotional_offers_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,15 +18,58 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _discountController = TextEditingController();
-  final _imageService = getIt<ImageService>();
+  // final _imageService = getIt<ImageService>();
+
+  late final ImageViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = GetIt.I<ImageViewModel>();
+    _viewModel.addListener(_updateUI);
+  }
+
+  @override
+  void dispose() {
+    _viewModel.removeListener(_updateUI);
+    super.dispose();
+  }
+
+  void _updateUI() {
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      await _viewModel.pickAndUploadImage();
+
+      if (!mounted) return;
+
+      if (_viewModel.imageUrl != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image uploaded successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to upload image.')),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading image: $e')),
+      );
+    }
+  }
 
   DateTime? _startDate;
   DateTime? _endDate;
-  String? _imageUrl;
+  // String? _imageUrl;
   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<ManagerPromotionalOffersViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add New Offer'),
@@ -41,7 +84,7 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GestureDetector(
-                      onTap: _pickImage,
+                      onTap: () => _pickImage(),
                       child: Container(
                         height: 200,
                         width: double.infinity,
@@ -49,8 +92,9 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: _imageUrl != null
-                            ? Image.network(_imageUrl!, fit: BoxFit.cover)
+                        child: _viewModel.imageUrl != null
+                            ? Image.network(_viewModel.imageUrl!,
+                                fit: BoxFit.cover)
                             : const Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -146,7 +190,7 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _submitForm,
+                        onPressed: () => _submitForm(viewModel),
                         child: const Padding(
                           padding: EdgeInsets.all(16),
                           child: Text('Create Offer'),
@@ -158,37 +202,6 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
               ),
             ),
     );
-  }
-
-  Future<void> _pickImage() async {
-    try {
-      setState(() => _isLoading = true);
-      final imageUrl = await _imageService.pickAndUploadImage();
-
-      if (!mounted) return;
-
-      if (imageUrl != null) {
-        setState(() => _imageUrl = imageUrl);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image uploaded successfully')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                  'Failed to upload image. Please check your authentication status.')),
-        );
-      }
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error uploading image: $e')),
-      );
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
   }
 
   Future<void> _selectDate(bool isStartDate) async {
@@ -210,9 +223,10 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
     }
   }
 
-  Future<void> _submitForm() async {
+  Future<void> _submitForm(ManagerPromotionalOffersViewModel view) async {
+    final viewModel = view;
     if (!_formKey.currentState!.validate()) return;
-    if (_imageUrl == null) {
+    if (_viewModel.imageUrl == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please add an image')),
       );
@@ -221,12 +235,11 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
 
     setState(() => _isLoading = true);
 
-    try { 
-      final viewModel = context.read<ManagerPromotionalOffersViewModel>();
+    try {
       final result = await viewModel.createOffer(
         title: _titleController.text,
         description: _descriptionController.text,
-        imageUrl: _imageUrl!,
+        imageUrl: _viewModel.imageUrl!,
         startDate: _startDate!,
         endDate: _endDate!,
         discount: double.parse(_discountController.text),
@@ -234,12 +247,11 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
 
       // print(result.error);
 
-
       if (!mounted) return;
 
       if (result.error == null) {
         Navigator.pop(context);
-      } else { 
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Errorrr: ${result.error}')),
         );

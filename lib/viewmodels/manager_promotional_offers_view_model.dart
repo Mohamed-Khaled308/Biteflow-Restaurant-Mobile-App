@@ -6,7 +6,7 @@ import 'package:biteflow/models/promotional_offer.dart';
 import 'package:biteflow/models/restaurant.dart';
 import 'package:biteflow/services/firestore/promotional_offer_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
-import 'package:biteflow/viewmodels/base_model.dart'; 
+import 'package:biteflow/viewmodels/base_model.dart';
 
 class ManagerPromotionalOffersViewModel extends BaseModel {
   final _offerService = getIt<PromotionalOfferService>();
@@ -19,25 +19,29 @@ class ManagerPromotionalOffersViewModel extends BaseModel {
     _initializeData();
   }
 
-  bool get isBusy => busy; 
-
+  bool get isBusy => busy;
 
   Future<void> _initializeData() async {
+    setBusy(true);
     if (_userProvider.currentUser?.role == 'Manager') {
       final manager = _userProvider.currentUser as Manager;
-      
+
       // Load restaurant data
-      final restaurantResult = await _restaurantService.getRestaurantById(manager.restaurantId);
+      final restaurantResult =
+          await _restaurantService.getRestaurantById(manager.restaurantId);
       if (restaurantResult.error == null) {
         restaurant = restaurantResult.data;
-        
-        // Subscribe to real-time offers updates
-        _offerService.subscribeToRestaurantOffers(manager.restaurantId).listen((updatedOffers) {
-          offers = updatedOffers;
-          notifyListeners();
+
+        _offerService.getRestaurantOffers(manager.restaurantId).then((result) {
+          if (result.error == null) {
+            offers = result.data!;
+            notifyListeners();
+          }
         });
       }
+
     }
+    setBusy(false);
   }
 
   Future<Result<bool>> createOffer({
@@ -53,7 +57,7 @@ class ManagerPromotionalOffersViewModel extends BaseModel {
     }
 
     final manager = _userProvider.currentUser as Manager;
-    
+
     final offer = PromotionalOffer(
       id: _offerService.generateId(),
       restaurantId: manager.restaurantId,
@@ -65,7 +69,10 @@ class ManagerPromotionalOffersViewModel extends BaseModel {
       endDate: endDate,
       discount: discount,
     );
-    
+
+    offers.add(offer);
+    notifyListeners();
+
     return await _offerService.createOffer(offer);
   }
 }

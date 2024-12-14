@@ -26,19 +26,19 @@ class PromotionalOfferService {
   //   });
   // }
 
-  Stream<List<PromotionalOffer>> subscribeToRestaurantOffers(
-      String restaurantId) {
-    return _offers
-        .where('restaurantId', isEqualTo: restaurantId)
-        .where('isActive', isEqualTo: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) =>
-              PromotionalOffer.fromData(doc.data() as Map<String, dynamic>))
-          .toList();
-    });
-  }
+  // Stream<List<PromotionalOffer>> subscribeToRestaurantOffers(
+  //     String restaurantId) {
+  //   return _offers
+  //       .where('restaurantId', isEqualTo: restaurantId)
+  //       .where('isActive', isEqualTo: true)
+  //       .snapshots()
+  //       .map((snapshot) {
+  //     return snapshot.docs
+  //         .map((doc) =>
+  //             PromotionalOffer.fromData(doc.data() as Map<String, dynamic>))
+  //         .toList();
+  //   });
+  // }
 
   Future<Result<bool>> createOffer(PromotionalOffer offer) async {
     try {
@@ -56,7 +56,27 @@ class PromotionalOfferService {
     try {
       QuerySnapshot querySnapshot = await _offers
           .where('isActive', isEqualTo: true)
-          .where('endDate', isGreaterThan: DateTime.now().toIso8601String())
+          .where('endDate', isGreaterThanOrEqualTo: DateTime.now().toIso8601String().split('T')[0])
+          .get();
+
+      List<PromotionalOffer> offers = querySnapshot.docs.map((doc) {
+        return PromotionalOffer.fromData(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      return Result(data: offers);
+    } catch (e) {
+      _logger.e(e.toString());
+      return Result(error: e.toString());
+    }
+  }
+
+
+  //get the promotional offers for the restaurantID
+  Future<Result<List<PromotionalOffer>>> getRestaurantOffers(String restaurantId) async {
+    try {
+      QuerySnapshot querySnapshot = await _offers
+          .where('restaurantId', isEqualTo: restaurantId)
+          .where('isActive', isEqualTo: true)
           .get();
 
       List<PromotionalOffer> offers = querySnapshot.docs.map((doc) {
