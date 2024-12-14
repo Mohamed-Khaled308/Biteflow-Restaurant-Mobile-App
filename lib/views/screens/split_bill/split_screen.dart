@@ -9,10 +9,10 @@ class SplitScreen extends StatefulWidget {
   const SplitScreen({super.key});
 
   @override
-  _SplitScreenState createState() => _SplitScreenState();
+  SplitScreenState createState() => SplitScreenState();
 }
 
-class _SplitScreenState extends State<SplitScreen> {
+class SplitScreenState extends State<SplitScreen> {
   String? _selectedMethod = 'equally';
 
   @override
@@ -52,7 +52,7 @@ class _SplitScreenState extends State<SplitScreen> {
                   setState(() {
                     _selectedMethod = value;
                   });
-                  print('Split Equally selected');
+                  // print('Split Equally selected');
                 },
               ),
             ),
@@ -68,7 +68,7 @@ class _SplitScreenState extends State<SplitScreen> {
                   setState(() {
                     _selectedMethod = value;
                   });
-                  print('Item Based Splitting selected');
+                  // print('Item Based Splitting selected');
                 },
               ),
             ),
@@ -78,12 +78,13 @@ class _SplitScreenState extends State<SplitScreen> {
             ElevatedButton(
               onPressed: () {
                 viewModel.placeOrder();
-                print('Order Placed');
+                // print('Order Placed');
               },
-              child: const Text('Place Order'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50), // Full width button
+                minimumSize:
+                    const Size(double.infinity, 50), // Full width button
               ),
+              child: const Text('Place Order'),
             ),
           ],
         ),

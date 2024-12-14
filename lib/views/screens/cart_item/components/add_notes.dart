@@ -11,10 +11,10 @@ class AddNotes extends StatefulWidget {
   const AddNotes({super.key, this.initialNote = ''});
 
   @override
-  _AddNotesState createState() => _AddNotesState();
+  AddNotesState createState() => AddNotesState();
 }
 
-class _AddNotesState extends State<AddNotes> {
+class AddNotesState extends State<AddNotes> {
   late TextEditingController _controller;
   final FocusNode _focusNode = FocusNode();
 
