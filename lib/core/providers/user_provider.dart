@@ -22,6 +22,8 @@ class UserProvider extends ChangeNotifier {
   User? get user => _user;
   String? get errorMessage => _errorMessage;
 
+  User? get currentUser => _user; 
+
   set setUser(User? user) {
     _user = user;
     notifyListeners();
