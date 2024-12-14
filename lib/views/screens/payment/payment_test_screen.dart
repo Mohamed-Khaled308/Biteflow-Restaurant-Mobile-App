@@ -19,7 +19,7 @@ class _PaymentTestScreenState extends State<PaymentTestScreen> {
 
     @override
     Widget build(BuildContext context) {
-      final viewModel = context.watch<PaymentViewModel>();
+      final paymentViewModel = context.watch<PaymentViewModel>();
 
       return Scaffold(
           appBar: AppBar(
@@ -27,9 +27,10 @@ class _PaymentTestScreenState extends State<PaymentTestScreen> {
           ),
           body: Center(
               child: ElevatedButton(
-                  onPressed: () async{
-                      await viewModel.initiatePayment(amount);
+                  onPressed: paymentViewModel.busy? null : () async{
+                      await paymentViewModel.initiatePayment(amount);
                       Stripe.instance.presentPaymentSheet().then((value){
+                        paymentViewModel.setBusy(false);
                         if(context.mounted){
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -41,6 +42,7 @@ class _PaymentTestScreenState extends State<PaymentTestScreen> {
                         /***  here we can make the required updates to the UI and db ***/
 
                       }).catchError((e){
+                        paymentViewModel.setBusy(false);
                         if(context.mounted){
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

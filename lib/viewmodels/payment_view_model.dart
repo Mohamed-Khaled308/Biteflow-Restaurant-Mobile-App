@@ -13,7 +13,8 @@ class PaymentViewModel extends BaseModel {
   final Logger _logger = getIt<Logger>();
 
   Future<void> initiatePayment(double amount) async { // creates payment intent and payment sheet
-    
+    setBusy(true);
+
     int amountInCents = PriceCalculator.calculateAmountInCents(amount);
     Result<String> result = await _paymentService.createPaymentIntent(amountInCents);
 
