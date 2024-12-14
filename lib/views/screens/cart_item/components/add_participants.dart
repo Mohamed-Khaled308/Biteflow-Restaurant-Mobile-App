@@ -4,6 +4,7 @@ import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/screens/cart_item/components/participants_list_screen.dart';
 import 'package:biteflow/views/widgets/user/user_avatar.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,8 @@ class AddParticipants extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartItemViewModel>();
+    context.watch<CartViewModel>();
 
-    // Filter participants with "done" status
     final doneParticipants = viewModel.cartItem.participants
         .where((participant) => participant.status == ParticipantStatus.done)
         .toList();
@@ -50,13 +51,13 @@ class AddParticipants extends StatelessWidget {
             ),
             Expanded(child: Container()),
             SizedBox(
-              width: 15.w * min(doneParticipants.length, 5) + 30.w,
+              width: 10.w * min(doneParticipants.length, 5) + 30.w,
               height: 30.h,
               child: Stack(
                 children: [
                   for (int i = 0; i < doneParticipants.length && i < 5; i++)
                     Positioned(
-                      left: i * 15.w,
+                      left: i * 10.w,
                       child: UserAvatar(
                         userId: doneParticipants[i].id,
                         userName: doneParticipants[i].name,
@@ -64,7 +65,7 @@ class AddParticipants extends StatelessWidget {
                     ),
                   if (doneParticipants.length > 5)
                     Positioned(
-                      left: 75.w,
+                      left: 10.w * 5,
                       child: SizedBox(
                         width: 30.w,
                         height: 30.h,

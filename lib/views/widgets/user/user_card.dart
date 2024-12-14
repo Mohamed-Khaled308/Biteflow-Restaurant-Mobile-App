@@ -19,12 +19,12 @@ class UserCard extends StatelessWidget {
       child: Row(
         children: [
           UserAvatar(userId: id, userName: name),
-          const SizedBox(width: 16),
+          SizedBox(width: 12.w),
           Expanded(
             child: Text(
               name,
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
               ),

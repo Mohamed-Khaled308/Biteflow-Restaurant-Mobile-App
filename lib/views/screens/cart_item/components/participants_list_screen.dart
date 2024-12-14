@@ -1,5 +1,7 @@
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
 import 'package:biteflow/views/widgets/user/user_avatar.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
@@ -12,9 +14,10 @@ class ParticipantsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = context.read<CartViewModel>();
+    getIt<Logger>().d('rebuild');
+    final cartViewModel = context.watch<CartViewModel>();
     final cartItemViewModel = context.watch<CartItemViewModel>();
-    final cartParticipants = cartViewModel.cart!.participants;
+    final cartParticipants = cartViewModel.cart.participants;
     final itemParticipants = cartItemViewModel.cartItem.participants;
     final currentUserId = cartItemViewModel.cartItem.userId;
 
@@ -50,6 +53,12 @@ class ParticipantsListScreen extends StatelessWidget {
                 item.status == ParticipantStatus.done);
 
             return ListTile(
+              onTap: () {
+                final isSelected = cartItemViewModel.selectedParticipants
+                    .contains(participant);
+                cartItemViewModel.toggleParticipantSelection(
+                    participant, !isSelected);
+              },
               leading: UserAvatar(
                   userId: participant.id, userName: participant.name),
               title: Text(
@@ -108,10 +117,12 @@ class ParticipantsListScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          cartItemViewModel.sendInvitations();
-        },
-        backgroundColor: ThemeConstants.primaryColor,
+        onPressed: cartItemViewModel.selectedParticipants.isEmpty
+            ? null
+            : cartItemViewModel.sendInvitations,
+        backgroundColor: cartItemViewModel.selectedParticipants.isEmpty
+            ? ThemeConstants.greyColor 
+            : ThemeConstants.primaryColor,
         child: const Icon(
           Icons.send,
           color: ThemeConstants.whiteColor,
@@ -132,7 +143,6 @@ class ParticipantsListScreen extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                // Dismiss the dialog
                 Navigator.of(context).pop();
               },
               child: const Text('Cancel'),

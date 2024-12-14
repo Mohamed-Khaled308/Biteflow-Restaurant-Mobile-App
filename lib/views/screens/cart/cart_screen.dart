@@ -4,7 +4,6 @@ import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/views/screens/menu/menu_view.dart';
 import 'package:biteflow/views/widgets/user/user_card.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:biteflow/models/cart.dart';
@@ -30,7 +29,14 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Cart'),
+        title: const Text(
+          'Cart',
+          style: TextStyle(color: ThemeConstants.whiteColor),
+        ),
+        backgroundColor: ThemeConstants.primaryColor,
+        iconTheme: const IconThemeData(
+          color: ThemeConstants.whiteColor,
+        ),
         actions: [
           IconButton(
             icon: const Icon(
@@ -38,46 +44,63 @@ class _CartScreenState extends State<CartScreen> {
             ),
             onPressed: () async {
               final selectedFilter = await showMenu<String>(
+                menuPadding:
+                    EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
                 context: context,
                 position: RelativeRect.fromLTRB(
-                  MediaQuery.of(context).size.width - 50.w, // X position
-                  kToolbarHeight, // Y position
+                  MediaQuery.of(context).size.width - 50.w,
+                  kToolbarHeight,
                   0.0,
                   0.0,
                 ),
                 items: [
-                  // "All Participants" option (null filter)
                   PopupMenuItem<String>(
+                    padding: const EdgeInsets.all(0),
                     value: null,
                     child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
                       color: viewModel.filterUserId == null
-                          ? Colors.blue.withOpacity(
-                              0.2) // Highlight if "All Participants" is selected
+                          ? ThemeConstants.greyColor.withOpacity(
+                              0.5) // Highlight if "All Participants" is selected
                           : null,
                       child: Row(
                         children: [
-                          const CircleAvatar(child: Icon(Icons.group)),
-                          SizedBox(width: 8.w),
-                          const Text('All Participants'),
+                          SizedBox(
+                            width: 30.w,
+                            height: 30.h,
+                            child: CircleAvatar(
+                              radius: 15.r,
+                              child: const Icon(Icons.group),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Text(
+                            'All Members',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  ...viewModel.cart?.participants.map((participant) {
-                        final isSelected =
-                            viewModel.filterUserId == participant.id;
-                        return PopupMenuItem<String>(
-                          value: participant.id,
-                          child: Container(
-                              color: isSelected
-                                  ? Colors.blue.withOpacity(
-                                      0.2) // Highlight selected item
-                                  : null,
-                              child: UserCard(
-                                  name: participant.name, id: participant.id)),
-                        );
-                      }).toList() ??
-                      [],
+                  ...viewModel.cart.participants.map((participant) {
+                    final isSelected = viewModel.filterUserId == participant.id;
+                    return PopupMenuItem<String>(
+                      padding: const EdgeInsets.all(0),
+                      value: participant.id,
+                      child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          color: isSelected
+                              ? ThemeConstants.greyColor.withOpacity(0.5)
+                              : null,
+                          child: UserCard(
+                              name: participant.name, id: participant.id)),
+                    );
+                  })
                 ],
               );
               if (selectedFilter != null) {
@@ -103,7 +126,7 @@ class _CartScreenState extends State<CartScreen> {
                     width: 200,
                     alignment: Alignment.center,
                     child: QrImageView(
-                      data: viewModel.cart!.id,
+                      data: viewModel.cart.id,
                       version: QrVersions.auto,
                       size: 200.0,
                     ),
@@ -118,12 +141,12 @@ class _CartScreenState extends State<CartScreen> {
           TextButton(
               onPressed: () {
                 getIt<NavigationService>().navigateTo(
-                  MenuView(restaurantId: viewModel.cart!.restaurantId),
+                  MenuView(restaurantId: viewModel.cart.restaurantId),
                 );
               },
               child: const Text(
                 'Add Items',
-                style: TextStyle(color: ThemeConstants.primaryColor),
+                style: TextStyle(color: ThemeConstants.whiteColor),
               ))
         ],
       ),
@@ -148,7 +171,6 @@ class _CartScreenState extends State<CartScreen> {
           viewModel.setCart = snapshot.data!;
           final filteredItems = newList;
           viewModel.setFilteredItems = filteredItems;
-
           return Column(
             children: [
               Expanded(
@@ -183,13 +205,10 @@ class _CartScreenState extends State<CartScreen> {
         currentItems.map((e) => '${e.menuItem.id}, ${e.userId}').toList();
     final newIds =
         newItems.map((e) => '${e.menuItem.id}, ${e.userId}').toList();
-    getIt<Logger>().d(currentIds);
-    getIt<Logger>().d(newIds);
 
     // Identify additions
     for (int i = 0; i < newIds.length; i++) {
       if (!currentIds.contains(newIds[i])) {
-        getIt<Logger>().d('HELLOOOOOOOOOOOOOOOOO');
         _listKey.currentState
             ?.insertItem(i, duration: const Duration(milliseconds: 300));
       }
@@ -198,7 +217,6 @@ class _CartScreenState extends State<CartScreen> {
     // Identify removals
     for (int i = currentIds.length - 1; i >= 0; i--) {
       if (!newIds.contains(currentIds[i])) {
-        getIt<Logger>().d('WHYYYYYYYYYYYYYYYYYYYYYYY');
         _listKey.currentState?.removeItem(i, (context, animation) {
           return FadeTransition(
             opacity: animation,

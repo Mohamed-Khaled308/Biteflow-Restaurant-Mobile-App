@@ -97,7 +97,6 @@ class SignupViewModel extends BaseModel {
     );
 
     if (result.isSuccess) {
-      _logger.d(_userProvider.user);
       if (_userProvider.user!.role == AuthHelper.clientRole) {
         _navigationService.replaceWith(EntryPointView());
       } else {

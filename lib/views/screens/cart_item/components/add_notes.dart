@@ -46,7 +46,7 @@ class _AddNotesState extends State<AddNotes> {
               });
 
               return Padding(
-                padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -111,9 +111,9 @@ class _AddNotesState extends State<AddNotes> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (viewModel.cartItem.notes.isNotEmpty)
+                  if (viewModel.notes.isNotEmpty)
                     Text(
-                      viewModel.cartItem.notes,
+                      viewModel.notes,
                       style: TextStyle(
                         color: ThemeConstants.blackColor60,
                         fontSize: 14.sp,
@@ -128,7 +128,7 @@ class _AddNotesState extends State<AddNotes> {
             TextButton(
               onPressed: () => _openNoteBottomSheet(context),
               child: Text(
-                viewModel.cartItem.notes.isNotEmpty ? 'Edit' : 'Add note',
+                viewModel.notes.isNotEmpty ? 'Edit' : 'Add note',
                 style: TextStyle(
                   color: ThemeConstants.primaryColor,
                   fontSize: 14.sp,

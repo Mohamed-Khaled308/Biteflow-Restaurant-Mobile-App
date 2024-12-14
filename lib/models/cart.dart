@@ -3,12 +3,14 @@ import 'package:biteflow/models/menu_item.dart';
 class Cart {
   final String id;
   final String restaurantId;
+  final String creatorId; // New field for the user who created the cart
   final List<CartParticipant> participants;
   final List<CartItem> items;
 
   Cart({
     required this.id,
     required this.restaurantId,
+    required this.creatorId,  // Accept creatorId in the constructor
     this.participants = const [],
     this.items = const [],
   });
@@ -17,6 +19,7 @@ class Cart {
     return Cart(
       id: data['id'],
       restaurantId: data['restaurantId'],
+      creatorId: data['creatorId'], // Extract creatorId from the data
       participants: (data['participants'] as List<dynamic>?)
               ?.map((participant) =>
                   CartParticipant.fromData(participant as Map<String, dynamic>))
@@ -33,6 +36,7 @@ class Cart {
     return {
       'id': id,
       'restaurantId': restaurantId,
+      'creatorId': creatorId, // Include creatorId in the JSON representation
       'participants': participants.map((p) => p.toJson()).toList(),
       'items': items.map((i) => i.toJson()).toList(),
     };

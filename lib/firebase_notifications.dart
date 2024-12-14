@@ -1,7 +1,9 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/client.dart';
 import 'package:biteflow/models/user.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +20,7 @@ class FirebaseNotifications with WidgetsBindingObserver {
 
   String? _notificationTitle;
   String? _notificationBody;
+  String? _notificationData;
 
   FirebaseNotifications._internal();
 
@@ -68,11 +71,11 @@ class FirebaseNotifications with WidgetsBindingObserver {
 
   void _handleForegroundNotification(RemoteMessage message) {
     final notificationType = message.data['type']; // 'offer' or 'split_request'
-
     if (notificationType == 'offer') {
       _showOfferNotification(
           message.notification?.title, message.notification?.body);
     } else if (notificationType == 'split_request') {
+      _notificationData = message.data['itemId'];
       _showSplitRequestNotification(
           message.notification?.title, message.notification?.body);
     }
@@ -83,6 +86,8 @@ class FirebaseNotifications with WidgetsBindingObserver {
       // Save the notification details to be shown when the app is resumed
       _notificationTitle = message.notification?.title;
       _notificationBody = message.notification?.body;
+      _notificationData = message.data['itemId'];
+
       // print('Saved notification opened!');
       _showSplitRequestNotification(_notificationTitle, _notificationBody);
     }
@@ -162,8 +167,8 @@ class FirebaseNotifications with WidgetsBindingObserver {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Handle Accept action for Split Request
-                      // print('Split Request Accepted');
+                      getIt<CartViewModel>()
+                          .acceptInvitation(_notificationData!);
                       messengerKey.currentState?.hideCurrentSnackBar();
                     },
                     style: ElevatedButton.styleFrom(
@@ -174,8 +179,8 @@ class FirebaseNotifications with WidgetsBindingObserver {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Handle Reject action for Split Request
-                      // print('Split Request Rejected');
+                      getIt<CartViewModel>()
+                          .cancelInvitation(_notificationData!);
                       messengerKey.currentState?.hideCurrentSnackBar();
                     },
                     style: ElevatedButton.styleFrom(

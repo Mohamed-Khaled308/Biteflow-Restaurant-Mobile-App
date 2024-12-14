@@ -38,12 +38,12 @@ class BottomBar extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: viewModel.cartItem.quantity > 1
+                  onPressed: viewModel.itemQuantity > 1
                       ? () => viewModel.updateItemQuantity(-1)
                       : null,
                   icon: Icon(
                     Icons.remove,
-                    color: viewModel.cartItem.quantity > 1
+                    color: viewModel.itemQuantity > 1
                         ? ThemeConstants.blackColor
                         : ThemeConstants.greyColor,
                   ),
@@ -51,7 +51,7 @@ class BottomBar extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Text(
-                    viewModel.cartItem.quantity.toString(),
+                    viewModel.itemQuantity.toString(),
                     style: TextStyle(
                       color: ThemeConstants.blackColor,
                       fontWeight: FontWeight.bold,
@@ -60,12 +60,12 @@ class BottomBar extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: viewModel.cartItem.quantity < 99
+                  onPressed: viewModel.itemQuantity < 99
                       ? () => viewModel.updateItemQuantity(1)
                       : null,
                   icon: Icon(
                     Icons.add,
-                    color: viewModel.cartItem.quantity < 99
+                    color: viewModel.itemQuantity < 99
                         ? ThemeConstants.blackColor
                         : ThemeConstants.greyColor,
                   ),

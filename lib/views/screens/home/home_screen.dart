@@ -16,7 +16,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/locator.dart';
-import 'package:cloud_functions/cloud_functions.dart'; // Import Cloud Functions
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,30 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
         FirebaseNotifications().initNotifications(user);
       }
     });
-  }
-
-  // Function to trigger the callable function for split request notifications
-  Future<void> sendSplitRequestNotification(
-      List<String> userIds, String title, String message) async {
-    try {
-      final HttpsCallable callable = FirebaseFunctions.instance
-          .httpsCallable('sendSplitRequestNotification');
-      await callable.call({
-        'userIds': userIds, // List of user IDs to send notification to
-        'title': title, // Title of the notification
-        'message': message, // Message of the notification
-      });
-
-      // Handle the result
-      // if (result.data['success']) {
-      //   print('Split request notification sent successfully');
-      // } else {
-      //   print(
-      //       'Failed to send split request notification: ${result.data['message']}');
-      // }
-    } catch (e) {
-      // print('Error calling the Firebase function: $e');
-    }
   }
 
   @override

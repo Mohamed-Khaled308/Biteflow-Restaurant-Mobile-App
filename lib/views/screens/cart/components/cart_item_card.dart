@@ -35,8 +35,8 @@ class CartItemCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            getIt<NavigationService>().navigateTo(
-                CartItemView(cartItem: CartItem.fromData(cartItem.toJson())));
+            getIt<NavigationService>()
+                .navigateTo(CartItemView(itemId: cartItem.menuItem.id));
           },
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),

@@ -174,4 +174,33 @@ class CartService {
       return Result(error: 'Error removing item: $e');
     }
   }
+
+  Future<Result<bool>> updateParticipantStatus(
+      String cartId, String userId, ParticipantStatus status) async {
+    try {
+      DocumentSnapshot snapshot = await _carts.doc(cartId).get();
+      if (!snapshot.exists) {
+        throw Exception('Cart not found');
+      }
+
+      Map<String, dynamic> cartData = snapshot.data() as Map<String, dynamic>;
+      List<CartParticipant> participants = (cartData['participants'] as List)
+          .map((participantData) => CartParticipant.fromData(participantData))
+          .toList();
+
+      CartParticipant? participant = participants.firstWhere(
+        (p) => p.id == userId,
+      );
+
+      participant.status = status;
+
+      await _carts.doc(cartId).update({
+        'participants': participants.map((p) => p.toJson()).toList(),
+      });
+
+      return Result(data: true);
+    } catch (e) {
+      return Result(error: 'Error updating participant status: $e');
+    }
+  }
 }

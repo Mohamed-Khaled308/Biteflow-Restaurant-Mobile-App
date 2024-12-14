@@ -1,4 +1,5 @@
 import 'package:biteflow/animated_splash_screen.dart';
+import 'package:biteflow/core/providers/notification_provider.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/services/navigation_service.dart';
@@ -14,12 +15,10 @@ import 'package:biteflow/views/theme/app_theme.dart';
 import 'firebase_options.dart';
 import 'locator.dart';
 
-
 void main() async {
   setupLocator();
 
   WidgetsFlutterBinding.ensureInitialized();
-
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -33,40 +32,38 @@ void main() async {
         ChangeNotifierProvider(create: (_) => getIt<UserProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<CartViewModel>()),
         ChangeNotifierProvider(create: (_) => getIt<ModeViewModel>()),
+        ChangeNotifierProvider(create: (_) => getIt<NotificationProvider>()),
       ],
-      child:  MyApp(),
+      child: MyApp(),
     ));
   });
 }
 
-
 class MyApp extends StatelessWidget {
-   MyApp({super.key});
+  MyApp({super.key});
   final _viewModel = getIt<ModeViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ModeViewModel>(
-      builder: (context , modeViewModel , child) {
-        return ScreenUtilInit(
-          designSize: const Size(392, 851),
-          minTextAdapt: true,
-          splitScreenMode: true,
-          builder: (_, child) => MaterialApp(
-            title: 'Biteflow',
-            theme: AppTheme.lightTheme(context),
-            darkTheme: AppTheme.darkTheme(context),
-            themeMode: _viewModel.themeMode,
-            navigatorKey: getIt<NavigationService>().navigationKey,
-            scaffoldMessengerKey: FirebaseNotifications().messengerKey,
-            home: AnimatedSplashScreen(nextScreen: EntryPointView()),
-            builder: (context, widget) {
-              ScreenUtil.init(context);
-              return widget!;
-            },
-          ),
-        );
-      }
-    );
+    return Consumer<ModeViewModel>(builder: (context, modeViewModel, child) {
+      return ScreenUtilInit(
+        designSize: const Size(392, 851),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, child) => MaterialApp(
+          title: 'Biteflow',
+          theme: AppTheme.lightTheme(context),
+          darkTheme: AppTheme.darkTheme(context),
+          themeMode: _viewModel.themeMode,
+          navigatorKey: getIt<NavigationService>().navigationKey,
+          scaffoldMessengerKey: FirebaseNotifications().messengerKey,
+          home: AnimatedSplashScreen(nextScreen: EntryPointView()),
+          builder: (context, widget) {
+            ScreenUtil.init(context);
+            return widget!;
+          },
+        ),
+      );
+    });
   }
 }

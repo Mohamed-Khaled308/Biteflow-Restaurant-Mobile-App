@@ -1,4 +1,4 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/views/screens/cart/components/ready_to_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,6 +6,7 @@ class PaymentSummary extends StatelessWidget {
   const PaymentSummary(this.totalAmount, {super.key});
 
   final double totalAmount;
+  final bool isReady = true;
 
   @override
   Widget build(BuildContext context) {
@@ -28,44 +29,6 @@ class PaymentSummary extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Mark as Ready',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                  ),
-                ),
-                StatefulBuilder(
-                  builder: (context, setState) {
-                    bool isChecked = false;
-                    return Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value ?? false;
-                        });
-                        if (isChecked) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('User marked as ready!'),
-                            ),
-                          );
-                        }
-                      },
-                      activeColor: ThemeConstants.primaryColor,
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-          Divider(height: 24.h),
           Text(
             'Payment Summary',
             style: TextStyle(
@@ -95,6 +58,10 @@ class PaymentSummary extends StatelessWidget {
               ),
             ],
           ),
+          Divider(
+            height: 32.h,
+          ),
+          const ReadyToOrder(),
         ],
       ),
     );

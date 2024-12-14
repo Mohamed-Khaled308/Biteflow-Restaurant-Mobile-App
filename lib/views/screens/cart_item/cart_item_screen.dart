@@ -3,6 +3,7 @@ import 'package:biteflow/viewmodels/cart_item_view_model.dart';
 import 'package:biteflow/views/screens/cart_item/components/add_participants.dart';
 import 'package:biteflow/views/screens/cart_item/components/bottom_bar.dart';
 import 'package:biteflow/views/screens/cart_item/components/add_notes.dart';
+import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,7 @@ class CartItemScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<CartItemViewModel>();
+    final viewModel = context.watch<CartItemViewModel>();
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -69,9 +70,10 @@ class CartItemScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  verticalSpaceMedium,
                   const AddParticipants(),
                   AddNotes(
-                    initialNote: viewModel.cartItem.notes,
+                    initialNote: viewModel.notes,
                   ),
                 ],
               ),
