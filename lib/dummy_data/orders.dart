@@ -1,6 +1,7 @@
 import 'package:biteflow/models/order.dart';
 import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/models/order_clients_payment.dart';
+import 'package:biteflow/models/order_item_participant.dart';
 
 final Order tableOrder = Order(
   id: '1',
@@ -16,7 +17,17 @@ final Order tableOrder = Order(
       description: 'This is a shirt',
       rating: 4.5,
       categoryId: 'c1',
-      restaurantId: 'r1'
+      restaurantId: 'r1',
+      participants: [
+        OrderItemParticipant(
+          userId: '1',
+          userName: 'John Doe',
+        ),
+        OrderItemParticipant(
+          userId: '2',
+          userName: 'Jane Doe',
+        ),
+      ],
     ),
     OrderItem(
       id: '2',
@@ -28,7 +39,17 @@ final Order tableOrder = Order(
       rating: 4.5,
       notes: 'This is a note for pants',
       categoryId: 'c2',
-      restaurantId: 'r1'
+      restaurantId: 'r1',
+      participants: [
+        OrderItemParticipant(
+          userId: '1',
+          userName: 'John Doe',
+        ),
+        OrderItemParticipant(
+          userId: '2',
+          userName: 'Jane Doe',
+        ),
+      ],
     ),
   ],
   orderClientsPayment: [
