@@ -11,6 +11,7 @@ import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_card.dart';
 import 'package:biteflow/views/widgets/cart/payment_summary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:biteflow/views/screens/cart/components/ready_to_order.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -193,6 +194,24 @@ class _CartScreenState extends State<CartScreen> {
                       ),
               ),
               PaymentSummary(viewModel.totalAmount),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: const ReadyToOrder(),
+              ),
             ],
           );
         },

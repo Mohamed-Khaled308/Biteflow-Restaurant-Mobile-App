@@ -1,4 +1,3 @@
-import 'package:biteflow/views/screens/cart/components/ready_to_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,10 +57,6 @@ class PaymentSummary extends StatelessWidget {
               ),
             ],
           ),
-          Divider(
-            height: 32.h,
-          ),
-          const ReadyToOrder(),
         ],
       ),
     );
