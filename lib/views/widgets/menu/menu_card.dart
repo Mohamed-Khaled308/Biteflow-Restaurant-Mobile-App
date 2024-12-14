@@ -142,7 +142,7 @@ class MenuCard extends StatelessWidget {
             // Add to Cart Button
             GestureDetector(
               onTap: () {
-                viewModel.addItemToCart(
+                viewModel.addItem(
                     menuItem: MenuItem(
                         id: DateTime.now().toString(),
                         title: title,

@@ -1,8 +1,8 @@
-import 'dart:convert';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/cart.dart';
+import 'package:biteflow/views/widgets/user/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:crypto/crypto.dart';
 
 class CartItemParticipant extends StatelessWidget {
   const CartItemParticipant({
@@ -12,49 +12,61 @@ class CartItemParticipant extends StatelessWidget {
 
   final CartItem cartItem;
 
-  Color _getAvatarColor(String userId) {
-    var bytes = utf8.encode(userId);
-    var digest = sha256.convert(bytes);
-
-    String hexColor = digest.toString().substring(0, 6);
-
-    return Color(int.parse('0xFF$hexColor'));
-  }
-
-  String _getAvatarText(String name) {
-    String str = name[0].toUpperCase();
-    List<String> parts = name.split(' ');
-    if (parts.length > 1) {
-      str += parts[1][0].toUpperCase();
-    } else if (parts[0].length > 1) {
-      str += parts[0][1].toUpperCase();
-    }
-    return str;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final avatarColor = _getAvatarColor(cartItem.userId);
-    final avatarText = _getAvatarText(cartItem.userName);
+    // Filter participants with 'done' status
+    final doneParticipants = cartItem.participants
+        .where((participant) => participant.status == ParticipantStatus.done)
+        .toList();
 
     return SizedBox(
       height: 100.h,
+      width: 50.w,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SizedBox(
-            width: 30.w,
+            width: 50.w,
             height: 30.h,
-            child: CircleAvatar(
-              radius: 15.w,
-              backgroundColor: avatarColor,
-              child: Text(
-                avatarText,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Colors.white,
-                ),
-              ),
+            child: Stack(
+              children: [
+                // Display first participant's avatar if available
+                if (doneParticipants.isNotEmpty)
+                  Positioned(
+                    left: 0,
+                    child: UserAvatar(
+                        userId: doneParticipants[0].id,
+                        userName: doneParticipants[0].name),
+                  ),
+                // Display second participant's avatar if available
+                if (doneParticipants.length > 1)
+                  Positioned(
+                    left: 10,
+                    child: UserAvatar(
+                        userId: doneParticipants[1].id,
+                        userName: doneParticipants[1].name),
+                  ),
+                // If there are more than 2 participants, show the "+X" indicator
+                if (doneParticipants.length > 2)
+                  Positioned(
+                    left: 20,
+                    child: SizedBox(
+                      width: 30.w,
+                      height: 30.h,
+                      child: CircleAvatar(
+                        radius: 15.r,
+                        backgroundColor: ThemeConstants.greyColor,
+                        child: Text(
+                          '+${doneParticipants.length - 2}',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ],

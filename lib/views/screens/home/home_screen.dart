@@ -47,33 +47,47 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text(
-                      'Scan QR Code to be added to cart',
-                      textAlign: TextAlign.center,
-                    ),
-                    content: Container(
-                      height: 300,
-                      width: 300,
-                      alignment: Alignment.center,
-                      child: MobileScanner(
-                        controller: MobileScannerController(
-                          detectionSpeed: DetectionSpeed.normal,
-                        ),
-                        onDetect: (capture) {
-                          final List<Barcode> barcodes = capture.barcodes;
-                          for (Barcode barcode in barcodes) {
-                            if (barcode.rawValue != null) {
-                              cartViewModel
-                                  .startListeningToCart(barcode.rawValue!);
-                              getIt<NavigationService>()
-                                  .navigateAndReplace(const CartView());
-                            }
-                          }
-                        },
+                  builder: (ctx) {
+                    final MobileScannerController scannerController =
+                        MobileScannerController(
+                      detectionSpeed: DetectionSpeed.normal,
+                    );
+
+                    return AlertDialog(
+                      title: const Text(
+                        'Scan QR Code to be added to cart',
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
+                      content: Container(
+                        height: 300,
+                        width: 300,
+                        alignment: Alignment.center,
+                        child: MobileScanner(
+                          controller: scannerController,
+                          onDetect: (capture) {
+                            final List<Barcode> barcodes = capture.barcodes;
+                            for (Barcode barcode in barcodes) {
+                              if (barcode.rawValue != null) {
+                                cartViewModel.joinCart(barcode.rawValue!);
+                                scannerController.dispose();
+                                getIt<NavigationService>()
+                                    .navigateAndReplace(const CartView());
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            scannerController.dispose();
+                            Navigator.of(ctx).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
               icon: const Icon(Icons.camera_alt_rounded)),

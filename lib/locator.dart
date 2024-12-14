@@ -1,3 +1,4 @@
+import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/services/auth_service.dart';
 import 'package:biteflow/services/firestore/cart_service.dart';
 import 'package:biteflow/services/firestore/category_service.dart';
@@ -6,6 +7,7 @@ import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/services/firestore/order_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
+import 'package:biteflow/viewmodels/cart_item_view_model.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
@@ -50,8 +52,14 @@ void setupLocator() {
   getIt.registerFactory<OrderViewModel>(() => OrderViewModel());
   getIt.registerFactory<MenuViewModel>(() => MenuViewModel());
 
-  getIt.registerFactory<ManagerCreateItemViewModel>(() => ManagerCreateItemViewModel());
-  getIt.registerFactory<ManagerOrdersDetailsViewModel>(() => ManagerOrdersDetailsViewModel());
-  getIt.registerLazySingleton<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
-  getIt.registerLazySingleton<ManagerMenuViewModel>(() => ManagerMenuViewModel());
+  getIt.registerFactory<ManagerCreateItemViewModel>(
+      () => ManagerCreateItemViewModel());
+  getIt.registerFactory<ManagerOrdersDetailsViewModel>(
+      () => ManagerOrdersDetailsViewModel());
+  getIt.registerLazySingleton<ManagerOrdersViewModel>(
+      () => ManagerOrdersViewModel());
+  getIt.registerLazySingleton<ManagerMenuViewModel>(
+      () => ManagerMenuViewModel());
+  getIt.registerFactoryParam<CartItemViewModel, CartItem, void>(
+      (cartItem, _) => CartItemViewModel(cartItem: cartItem));
 }

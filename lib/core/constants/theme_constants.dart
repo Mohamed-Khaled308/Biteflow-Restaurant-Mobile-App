@@ -48,6 +48,6 @@ class ThemeConstants {
 
   static const Color blueColor = Colors.blue;
 
-  static const double defaultPadding = 16.0;
+  static const double defaultPadding = 20.0;
   static const double defaultBorderRadious = 12.0;
 }

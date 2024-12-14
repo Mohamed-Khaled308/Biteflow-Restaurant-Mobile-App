@@ -9,20 +9,23 @@ class Cart {
   Cart({
     required this.id,
     required this.restaurantId,
-    required this.participants,
-    required this.items,
+    this.participants = const [],
+    this.items = const [],
   });
 
   factory Cart.fromData(Map<String, dynamic> data) {
     return Cart(
       id: data['id'],
       restaurantId: data['restaurantId'],
-      participants: (data['participants'] as List)
-          .map((participant) => CartParticipant.fromData(participant))
-          .toList(),
-      items: (data['items'] as List)
-          .map((item) => CartItem.fromData(item))
-          .toList(),
+      participants: (data['participants'] as List<dynamic>?)
+              ?.map((participant) =>
+                  CartParticipant.fromData(participant as Map<String, dynamic>))
+              .toList() ??
+          [],
+      items: (data['items'] as List<dynamic>?)
+              ?.map((item) => CartItem.fromData(item as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
   }
 
@@ -36,16 +39,26 @@ class Cart {
   }
 }
 
+enum ParticipantStatus { pending, done }
+
 class CartParticipant {
   final String id;
   final String name;
+  ParticipantStatus status;
 
-  CartParticipant({required this.id, required this.name});
+  CartParticipant({
+    required this.id,
+    required this.name,
+    this.status = ParticipantStatus.pending,
+  });
 
   factory CartParticipant.fromData(Map<String, dynamic> data) {
     return CartParticipant(
       id: data['id'],
       name: data['name'],
+      status: data['status'] == 'done'
+          ? ParticipantStatus.done
+          : ParticipantStatus.pending,
     );
   }
 
@@ -53,6 +66,7 @@ class CartParticipant {
     return {
       'id': id,
       'name': name,
+      'status': status == ParticipantStatus.done ? 'done' : 'pending',
     };
   }
 }
@@ -60,25 +74,29 @@ class CartParticipant {
 class CartItem {
   final MenuItem menuItem;
   final String userId;
-  final String userName;
   int quantity;
   String notes;
+  List<CartParticipant> participants;
 
   CartItem({
     required this.menuItem,
     required this.userId,
-    required this.userName,
     this.quantity = 1,
     this.notes = '',
+    this.participants = const [],
   });
 
   factory CartItem.fromData(Map<String, dynamic> data) {
     return CartItem(
       menuItem: MenuItem.fromData(data['menuItem']),
       userId: data['userId'],
-      userName: data['userName'],
       quantity: data['quantity'] ?? 1,
       notes: data['notes'] ?? '',
+      participants: (data['participants'] as List<dynamic>?)
+              ?.map((participant) =>
+                  CartParticipant.fromData(participant as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
   }
 
@@ -86,9 +104,9 @@ class CartItem {
     return {
       'menuItem': menuItem.toJson(),
       'userId': userId,
-      'userName': userName,
       'quantity': quantity,
       'notes': notes,
+      'participants': participants.map((p) => p.toJson()).toList(),
     };
   }
 }

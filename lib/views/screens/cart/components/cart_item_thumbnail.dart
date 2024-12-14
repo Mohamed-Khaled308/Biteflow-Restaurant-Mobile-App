@@ -20,7 +20,7 @@ class CartItemThumbnail extends StatelessWidget {
     final viewModel = context.watch<CartViewModel>();
     final userProvider = context.read<UserProvider>();
     return SizedBox(
-      width: 110.w,
+      width: 126.w,
       child: Stack(
         children: [
           ClipRRect(
@@ -29,8 +29,8 @@ class CartItemThumbnail extends StatelessWidget {
             child: FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
               image: NetworkImage(cartItem.menuItem.imageUrl),
-              width: 110.w, // Image size
-              height: 100.h,
+              width: 126.w, // Image size
+              height: 105.h,
               fit: BoxFit.cover,
               imageErrorBuilder: (context, error, stackTrace) {
                 return Container(
@@ -46,8 +46,8 @@ class CartItemThumbnail extends StatelessWidget {
             ),
           ),
           Container(
-            width: 110.w,
-            height: 100.h,
+            width: 126.w,
+            height: 105.h,
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.2),
               borderRadius:
@@ -55,16 +55,16 @@ class CartItemThumbnail extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 5,
-            left: 5,
-            right: 5,
+            bottom: 5.h,
+            left: 5.w,
+            right: 5.w,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.circular(ThemeConstants.defaultBorderRadious),
                 color: Colors.white.withOpacity(1),
               ),
-              height: 40,
+              height: 40.h,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -85,7 +85,16 @@ class CartItemThumbnail extends StatelessWidget {
                                 ? ThemeConstants.blackColor
                                 : ThemeConstants.greyColor),
                   ),
-                  Text('${cartItem.quantity}'),
+                  Text(
+                    '${cartItem.quantity}',
+                    style: TextStyle(
+                      color: cartItem.userId == userProvider.user!.id
+                          ? ThemeConstants.blackColor
+                          : ThemeConstants.greyColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.sp,
+                    ),
+                  ),
                   IconButton(
                     onPressed: cartItem.userId == userProvider.user!.id
                         ? () {

@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           viewModel.busy ? null : _handleLogin(viewModel),
                       child: viewModel.busy
                           ? SizedBox(
-                              width: 16.w,
+                              width: 18.w,
                               height: 16.h,
                               child: const CircularProgressIndicator(
                                 color: ThemeConstants.primaryColor,
