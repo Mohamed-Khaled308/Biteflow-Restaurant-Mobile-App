@@ -1,11 +1,8 @@
-import 'package:biteflow/locator.dart';
-import 'package:biteflow/models/order_item.dart';
-import 'package:biteflow/services/navigation_service.dart';
+import 'package:biteflow/models/menu_item.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
-import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../theme/app_theme.dart';
+import '../../theme/biteflow_theme.dart';
 import 'package:provider/provider.dart';
 
 class MenuCard extends StatelessWidget {
@@ -33,7 +30,7 @@ class MenuCard extends StatelessWidget {
     final viewModel = context.watch<CartViewModel>();
 
     // Accessing the current theme for colors and text styles
-    final theme = AppTheme.lightTheme(context); // Get light theme from AppTheme
+    final theme = BiteflowTheme.lightTheme(context); // Get light theme from AppTheme
 
     return Card(
       elevation: 5,
@@ -146,19 +143,15 @@ class MenuCard extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 viewModel.addItemToCart(
-                  OrderItem(
-                      id: DateTime.now().toString(),
-                      title: title,
-                      imageUrl: imageUrl,
-                      price: price,
-                      rating: rating,
-                      quantity: 1,
-                      notes: '',
-                      description: description,
-                      categoryId: categoryId,
-                      restaurantId: restaurantId),
-                );
-                getIt<NavigationService>().navigateAndReplace(const CartView());
+                    menuItem: MenuItem(
+                        id: DateTime.now().toString(),
+                        title: title,
+                        price: price,
+                        imageUrl: imageUrl,
+                        description: description,
+                        rating: rating,
+                        categoryId: categoryId,
+                        restaurantId: restaurantId));
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),

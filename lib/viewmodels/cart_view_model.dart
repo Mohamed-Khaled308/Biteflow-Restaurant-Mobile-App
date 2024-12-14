@@ -1,76 +1,137 @@
-import 'package:biteflow/dummy_data/order_list.dart';
-import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
+import 'package:biteflow/locator.dart';
+import 'package:biteflow/models/cart.dart';
+import 'package:biteflow/models/menu_item.dart';
+import 'package:biteflow/services/firestore/cart_service.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
-import 'package:flutter/material.dart';
+import 'package:biteflow/views/screens/cart/cart_view.dart';
+import 'package:logger/logger.dart';
 
 class CartViewModel extends BaseModel {
-  final List<OrderItem> _cartItems = orderList;
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  final TextEditingController _notesController = TextEditingController();
+  final _navigationService = getIt<NavigationService>();
+  final _userProvider = getIt<UserProvider>();
+  final _cartService = getIt<CartService>();
+  final _logger = getIt<Logger>();
 
-  List<OrderItem> get cartItems => _cartItems;
-  GlobalKey<AnimatedListState> get listKey => _listKey;
-  TextEditingController get notesController => _notesController;
+  Stream<Cart>? _cartStream;
+  Stream<Cart>? get cartStream => _cartStream;
 
-  @override
-  void dispose() {
-    _notesController.dispose();
-    super.dispose();
+  Cart? _cart;
+  get cart => _cart;
+  set setCart(cart) {
+    _cart = cart;
+  }
+
+  void Function(int index)? onItemRemoved;
+
+  void startListeningToCart(String cartId) {
+    _logger.d(cartId);
+    _cartStream = _cartService.listenToCartUpdates(cartId);
+    notifyListeners();
+  }
+
+  void addItemToCart({
+    required MenuItem menuItem,
+    int quantity = 1,
+    String note = '',
+  }) async {
+    CartItem cartItem = CartItem(
+      menuItem: menuItem,
+      userId: _userProvider.user!.id,
+      userName: _userProvider.user!.name,
+      quantity: quantity,
+      notes: note,
+    );
+    _navigationService.pop();
+    if (_cart == null) {
+      _createNewCart(cartItem);
+    } else {
+      final result = await _cartService.addItemToCart(_cart!.id, cartItem);
+      if (result.isSuccess) {
+        _navigationService.navigateTo(const CartView());
+      } else {
+        _logger.e(result.error);
+      }
+    }
+  }
+
+  void _createNewCart(CartItem cartItem) async {
+    final cartId = _cartService.generateCartId();
+      final cartParticipant = CartParticipant(
+        id: _userProvider.user!.id,
+        name: _userProvider.user!.name,
+      );
+
+      Cart cart = Cart(
+        id: cartId,
+        restaurantId: cartItem.menuItem.restaurantId,
+        participants: [cartParticipant],
+        items: [cartItem],
+      );
+
+      final result = await _cartService.createCart(cart);
+      if (result.isSuccess) {
+        startListeningToCart(cartId);
+        _navigationService.navigateTo(const CartView());
+      } else {
+        _logger.e(result.error);
+      }
   }
 
   double get totalAmount {
     double total = 0;
-    for (final item in _cartItems) {
-      total += item.price * item.quantity;
+    if (_cart != null) {
+      for (final item in _cart!.items) {
+        total += item.menuItem.price * item.quantity;
+      }
     }
     return total;
   }
 
-
-  void addItemToCart(OrderItem item) {
-    _cartItems.add(item);
-    notifyListeners();
-  }
-  void updateNotes(String id, String notes) {
-    final index = _cartItems.indexWhere((element) => element.id == id);
-    final updatedItem = _cartItems[index].copyWith(updatedNotes: notes);
-    _cartItems[index] = updatedItem;
-    notifyListeners();
-  }
-
-  void incrementItemQuantity(String id) {
-    final index = _cartItems.indexWhere((element) => element.id == id);
-    final updatedItem = _cartItems[index]
-        .copyWith(updatedQuantity: _cartItems[index].quantity + 1);
-    _cartItems[index] = updatedItem;
-    notifyListeners();
-  }
-
-  void decrementItemQuantity(String id) {
-    final index = _cartItems.indexWhere((element) => element.id == id);
-    if (_cartItems[index].quantity == 1) {
-      _listKey.currentState!.removeItem(index, (context, animation) {
-        return SizeTransition(
-          sizeFactor: animation,
-          child: const Card(
-            margin: EdgeInsets.all(16),
-            color: Colors.red,
-            child: ListTile(
-              title: Text(
-                'Item removed from cart',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        );
-      }, duration: const Duration(milliseconds: 1000));
-      _cartItems.removeAt(index);
-      notifyListeners();
+  void updateItemQuantity(String itemId, int quantity) async {
+    if (quantity <= 0) {
+      _removeItem(itemId);
       return;
     }
-    final updatedItem = _cartItems[index]
-        .copyWith(updatedQuantity: _cartItems[index].quantity - 1);
-    _cartItems[index] = updatedItem;
-    notifyListeners();
+
+    CartItem cartItem = _cart!.items.firstWhere((item) =>
+        item.menuItem.id == itemId && item.userId == _userProvider.user!.id);
+
+    CartItem updatedItem = CartItem(
+      menuItem: cartItem.menuItem,
+      userId: cartItem.userId,
+      userName: cartItem.userName,
+      quantity: quantity,
+      notes: cartItem.notes,
+    );
+
+    await _cartService.updateItemQuantityInCart(_cart!.id, updatedItem);
+  }
+
+  void _removeItem(String itemId) async {
+    int index = _cart!.items.indexWhere((item) =>
+        item.menuItem.id == itemId && item.userId == _userProvider.user!.id);
+
+    if (index == -1) return;
+
+    onItemRemoved?.call(index);
+
+    await _cartService.removeItem(_cart!.id, itemId);
+  }
+
+  void updateItemNotes(String itemId, String notes) async {
+    CartItem cartItem = _cart!.items.firstWhere((item) =>
+        item.menuItem.id == itemId && item.userId == _userProvider.user!.id);
+
+    CartItem updatedItem = CartItem(
+      menuItem: cartItem.menuItem,
+      userId: cartItem.userId,
+      userName: _userProvider.user!.name,
+      quantity: cartItem.quantity,
+      notes: notes,
+    );
+
+    await _cartService.updateItemNoteInCart(_cart!.id, updatedItem);
   }
 }

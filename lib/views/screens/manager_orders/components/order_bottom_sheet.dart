@@ -1,6 +1,7 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/views/screens/manager_orders/components/order_details.dart';
 import 'package:biteflow/views/screens/manager_orders/components/order_update_status.dart';
+import 'package:biteflow/views/screens/manager_orders/components/track_payments.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
@@ -24,7 +25,7 @@ class _OrderBottomSheetState extends State<OrderBottomSheet> {
       initialChildSize: 0.6,
       expand: false,
       builder: (_, scrollController) => DefaultTabController(
-        length: 2,
+        length: 3,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -95,6 +96,10 @@ class _OrderBottomSheetState extends State<OrderBottomSheet> {
                   icon: Icon(Icons.info_outline),
                 ),
                 Tab(
+                  text: 'Track Payments',
+                  icon: Icon(Icons.track_changes),
+                ),
+                Tab(
                   text: 'Update Status',
                   icon: Icon(Icons.edit),
                 ),
@@ -110,6 +115,12 @@ class _OrderBottomSheetState extends State<OrderBottomSheet> {
                   SingleChildScrollView(
                     controller: scrollController,
                     child: const OrderDetails()
+                  ),
+
+                  // Track Payments Tab
+                  SingleChildScrollView(
+                    controller: scrollController,
+                    child: const TrackPayments()
                   ),
 
                   // Update Status Tab

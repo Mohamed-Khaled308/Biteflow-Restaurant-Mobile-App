@@ -1,3 +1,4 @@
+// import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/category.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
@@ -14,16 +15,16 @@ class CreateItemCategory extends StatefulWidget {
 }
 
 class _CreateItemCategoryState extends State<CreateItemCategory> {
-  
   // category form
   final categoryFormKey = GlobalKey<FormState>();
   final TextEditingController _categoryNameController = TextEditingController();
-  
+
   // item form
   final itemFormKey = GlobalKey<FormState>();
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _itemPriceController = TextEditingController();
-  final TextEditingController _itemDescriptionController = TextEditingController();
+  final TextEditingController _itemDescriptionController =
+      TextEditingController();
   final TextEditingController _itemImageUrlController = TextEditingController();
 
   @override
@@ -114,6 +115,8 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
   }
 
   Widget _buildCreateItem(ManagerCreateItemViewModel viewModel) {
+    bool categoriesAvailable =
+        widget.categories != null && widget.categories!.isNotEmpty;
     return Padding(
       padding: EdgeInsets.only(
         left: 16,
@@ -127,32 +130,40 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: viewModel.itemCategoryId,
-                hint: const Text('Select a category'),
-                items: widget.categories==null? [] : widget.categories
-                    !.map(
-                      (category) => DropdownMenuItem(
-                        value: category.id,
-                        child: Text(category.title),
+              const SizedBox(height: 16), DropdownButtonFormField<String>(
+                      value: viewModel.itemCategoryId,
+                      hint: categoriesAvailable? const Text('Select a category') : const Text('No categories available.'),
+                      items: widget.categories == null
+                          ? []
+                          : widget.categories!
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category.id,
+                                  child: Text(category.title),
+                                ),
+                              )
+                              .toList(),
+                      onChanged: (value) {
+                        // The value is the id of the selected category
+                        viewModel.itemCategoryId = value;
+                      },
+                      decoration: const InputDecoration(
+                        isDense: false,
+                        
+                        border: OutlineInputBorder(),
                       ),
+                      validator: (value) {
+                        if (categoriesAvailable && value == null) {
+                          return 'Please select a category';
+                        }
+
+                        if (!categoriesAvailable) {
+                          return 'No categories available. Create one first.';
+                        }
+                        return null;
+                      },
                     )
-                    .toList(),
-                onChanged: (value) {
-                  // The value is the id of the selected category
-                  viewModel.itemCategoryId = value;
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select a category';
-                  }
-                  return null;
-                },
-              ),
+                  ,
               const SizedBox(height: 16),
               TextFormField(
                 controller: _itemNameController,
@@ -253,5 +264,4 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
       ),
     );
   }
-
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_theme.dart';
+import '../../theme/biteflow_theme.dart';
 
 class MenuItemGrid extends StatelessWidget {
   final String imageUrl;
@@ -17,7 +17,7 @@ class MenuItemGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.lightTheme(context);
+    final theme = BiteflowTheme.lightTheme(context);
 
     return GestureDetector(
       onTap: onTap,

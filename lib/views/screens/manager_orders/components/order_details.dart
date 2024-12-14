@@ -1,8 +1,8 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/models/order_full_clients_payment.dart';
 import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:biteflow/models/client.dart';
 
 class OrderDetails extends StatefulWidget {
   const OrderDetails({super.key});
@@ -80,8 +80,8 @@ class _OrderDetailsState extends State<OrderDetails> {
               ? const Text('Loading clients...')
               : Column(
                   children: [
-                    ...viewModel.selectedOrderClients!
-                        .map<Widget>((Client client) {
+                    ...viewModel.selectedOrderFullClientsPayment!
+                        .map<Widget>((OrderFullClientsPayment orderFullClientsPayment) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Row(
@@ -90,7 +90,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 size: 20, color: ThemeConstants.blackColor80),
                             const SizedBox(width: 8),
                             Text(
-                              client.name,
+                              orderFullClientsPayment.client.name,
                               style: TextStyle(fontSize: fontSizeMedium),
                             ),
                           ],

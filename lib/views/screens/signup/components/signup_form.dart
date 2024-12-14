@@ -53,6 +53,7 @@ class SignupForm extends StatelessWidget {
           CustomTextField(
             controller: nameController,
             hintText: 'Enter your name',
+            labelText: 'Name *',
             obscureText: false,
             validator: (value) => viewModel.validateName(value ?? ''),
             errorText: viewModel.nameError,
@@ -62,6 +63,7 @@ class SignupForm extends StatelessWidget {
           CustomTextField(
             controller: emailController,
             hintText: 'Enter your email',
+            labelText: 'Email *',
             obscureText: false,
             validator: (value) => viewModel.validateEmail(value ?? ''),
             errorText: viewModel.emailError,
@@ -71,6 +73,7 @@ class SignupForm extends StatelessWidget {
           CustomTextField(
             controller: passwordController,
             hintText: 'Enter your password',
+            labelText: 'Password *',
             obscureText: true,
             validator: (value) => viewModel.validatePassword(value ?? ''),
             errorText: viewModel.passwordError,

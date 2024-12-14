@@ -5,7 +5,7 @@ import 'package:biteflow/core/constants/theme_constants.dart';
 import 'checkbox_themedata.dart';
 import 'theme_data.dart';
 
-class AppTheme {
+class BiteflowTheme {
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
       brightness: Brightness.light,
@@ -29,6 +29,29 @@ class AppTheme {
       dataTableTheme: dataTableLightThemeData,
     );
   }
+  static ThemeData darkTheme(BuildContext context) {
+    return ThemeData(
+      brightness: Brightness.dark,
+      fontFamily: 'Plus Jakarta',
+      primarySwatch: ThemeConstants.primaryMaterialColor,
+      primaryColor: ThemeConstants.primaryColor,
+      scaffoldBackgroundColor: ThemeConstants.blackColor,
+      iconTheme: const IconThemeData(color: ThemeConstants.whiteColor),
+      textTheme: const TextTheme(
+        bodyMedium: TextStyle(color: ThemeConstants.whiteColor40),
+      ),
+      elevatedButtonTheme: elevatedButtonThemeData,
+      textButtonTheme: textButtonThemeData,
+      outlinedButtonTheme: outlinedButtonTheme(),
+      inputDecorationTheme: darkInputDecorationTheme,
+      checkboxTheme: checkboxThemeData.copyWith(
+        side: const BorderSide(color: ThemeConstants.whiteColor40),
+      ),
+      appBarTheme: appBarDarkTheme,
+      scrollbarTheme: scrollbarThemeData,
+      dataTableTheme: dataTableDarkThemeData,
+    );
+  }
 
-  // Dark theme is inclided in the Full template
+
 }
