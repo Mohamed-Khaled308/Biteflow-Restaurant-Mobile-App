@@ -1,5 +1,8 @@
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/order_clients_payment.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/client_orders_view_model.dart';
+import 'package:biteflow/views/screens/order_details/order_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
@@ -50,7 +53,19 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
-                        // Tap logic to show each order details
+                        double totalAmount = 0;
+                        for (final OrderClientsPayment orderClientsPayment in order.orderClientsPayment) {
+                          if (orderClientsPayment.userId == viewModel.clientLogged.id) {
+                            totalAmount = orderClientsPayment.amount;
+                        
+                          }
+                        }
+                        getIt<NavigationService>().navigateTo(
+                                 OrderDetailsView(
+                                   items: order.items,
+                                   totalAmount: totalAmount,
+                                 ),
+                                );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
