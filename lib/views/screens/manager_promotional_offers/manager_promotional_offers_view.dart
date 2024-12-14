@@ -14,7 +14,7 @@ class ManagerPromotionalOffersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => getIt<ManagerPromotionalOffersViewModel>(),
-      child:  ManagerPromotionalOffersScreen(),
+      child:  const ManagerPromotionalOffersScreen(),
     );
   }
 }

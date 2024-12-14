@@ -177,10 +177,10 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
                                 ),
                               )
                             else
-                              Center(
+                              const Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children:   [
                                     Icon(Icons.add_photo_alternate, size: 48),
                                     SizedBox(height: 8),
                                     Text('Tap to add image'),
