@@ -1,20 +1,71 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
+import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
+import 'package:biteflow/views/screens/client_offers/client_offers_view.dart';
 import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:biteflow/views/screens/menu/menu_view.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_list_tile.dart';
 import 'package:biteflow/views/widgets/home/section_title.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/locator.dart';
+import 'package:cloud_functions/cloud_functions.dart'; // Import Cloud Functions
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Delay provider access after widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final user = userProvider.user;
+
+      // print("USER: " + user.toString());
+      // Initialize Firebase notifications with the user ID
+      if (user != null) {
+        FirebaseNotifications().initNotifications(user);
+      }
+    });
+  }
+
+  // Function to trigger the callable function for split request notifications
+  Future<void> sendSplitRequestNotification(
+      List<String> userIds, String title, String message) async {
+    try {
+      final HttpsCallable callable = FirebaseFunctions.instance
+          .httpsCallable('sendSplitRequestNotification');
+      await callable.call({
+        'userIds': userIds, // List of user IDs to send notification to
+        'title': title, // Title of the notification
+        'message': message, // Message of the notification
+      });
+
+      // Handle the result
+      // if (result.data['success']) {
+      //   print('Split request notification sent successfully');
+      // } else {
+      //   print(
+      //       'Failed to send split request notification: ${result.data['message']}');
+      // }
+    } catch (e) {
+      // print('Error calling the Firebase function: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +145,66 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.camera_alt_rounded)),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Filter',
-              style: TextStyle(color: ThemeConstants.whiteColor),
-            ),
+          StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(context
+                    .watch<UserProvider>()
+                    .user
+                    ?.id) // Use the user's ID here
+                .snapshots(),
+            builder: (context, snapshot) {
+              // Handle loading state
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+
+              // Handle errors
+              if (snapshot.hasError) {
+                return const Icon(Icons.local_offer);
+              }
+
+              // Handle case where the snapshot doesn't contain any data
+              if (!snapshot.hasData || !snapshot.data!.exists) {
+                return const Icon(Icons.local_offer);
+              }
+
+              // Safely cast the snapshot data to a Map<String, dynamic>
+              final userData = snapshot.data?.data() as Map<String, dynamic>?;
+              if (userData == null) {
+                return const Icon(
+                    Icons.local_offer); // In case the data is null
+              }
+
+              final unseenOffers = userData['unseenOfferCount'] ?? 0;
+
+              return IconButton(
+                icon: Stack(
+                  children: [
+                    const Icon(Icons.local_offer),
+                    if (unseenOffers > 0)
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.red,
+                          child: Text(
+                            '$unseenOffers',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                onPressed: () {
+                  navigationService.navigateTo(const ClientOffersView());
+                },
+              );
+            },
           ),
         ],
         backgroundColor: ThemeConstants.primaryColor,

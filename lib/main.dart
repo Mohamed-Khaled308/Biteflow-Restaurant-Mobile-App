@@ -1,5 +1,6 @@
 import 'package:biteflow/animated_splash_screen.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
+import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/mode_view_model.dart';
@@ -13,9 +14,13 @@ import 'package:biteflow/views/theme/app_theme.dart';
 import 'firebase_options.dart';
 import 'locator.dart';
 
+
 void main() async {
   setupLocator();
+
   WidgetsFlutterBinding.ensureInitialized();
+
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -33,6 +38,7 @@ void main() async {
     ));
   });
 }
+
 
 class MyApp extends StatelessWidget {
    MyApp({super.key});
@@ -52,6 +58,7 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.darkTheme(context),
             themeMode: _viewModel.themeMode,
             navigatorKey: getIt<NavigationService>().navigationKey,
+            scaffoldMessengerKey: FirebaseNotifications().messengerKey,
             home: AnimatedSplashScreen(nextScreen: EntryPointView()),
             builder: (context, widget) {
               ScreenUtil.init(context);
