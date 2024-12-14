@@ -109,8 +109,10 @@ class CartService {
     }
   }
 
-  Future<Result<bool>> updateItemQuantityInCart(
-      String cartId, CartItem item) async {
+  Future<Result<bool>> updateItemInCart(
+    String cartId,
+    CartItem updatedItem,
+  ) async {
     try {
       DocumentSnapshot snapshot = await _carts.doc(cartId).get();
       if (!snapshot.exists) {
@@ -122,46 +124,17 @@ class CartService {
           .map((itemData) => CartItem.fromData(itemData))
           .toList();
 
-      CartItem existingItem = items.firstWhere(
+      int itemIndex = items.indexWhere(
         (cartItem) =>
-            cartItem.userId == item.userId &&
-            cartItem.menuItem.id == item.menuItem.id,
-        orElse: () => throw Exception('Item not found for this user'),
+            cartItem.userId == updatedItem.userId &&
+            cartItem.menuItem.id == updatedItem.menuItem.id,
       );
 
-      existingItem.quantity = item.quantity;
-
-      await _carts.doc(cartId).update({
-        'items': items.map((e) => e.toJson()).toList(),
-      });
-
-      return Result(data: true);
-    } catch (e) {
-      return Result(error: 'Error updating item quantity: $e');
-    }
-  }
-
-  Future<Result<bool>> updateItemNoteInCart(
-      String cartId, CartItem item) async {
-    try {
-      DocumentSnapshot snapshot = await _carts.doc(cartId).get();
-      if (!snapshot.exists) {
-        throw Exception('Cart not found');
+      if (itemIndex == -1) {
+        throw Exception('Item not found for this user');
       }
 
-      Map<String, dynamic> cartData = snapshot.data() as Map<String, dynamic>;
-      List<CartItem> items = (cartData['items'] as List)
-          .map((itemData) => CartItem.fromData(itemData))
-          .toList();
-
-      CartItem existingItem = items.firstWhere(
-        (cartItem) =>
-            cartItem.userId == item.userId &&
-            cartItem.menuItem.id == item.menuItem.id,
-        orElse: () => throw Exception('Item not found for this user'),
-      );
-
-      existingItem.notes = item.notes;
+      items[itemIndex] = updatedItem;
 
       await _carts.doc(cartId).update({
         'items': items.map((e) => e.toJson()).toList(),
@@ -169,7 +142,7 @@ class CartService {
 
       return Result(data: true);
     } catch (e) {
-      return Result(error: 'Error updating item note: $e');
+      return Result(error: 'Error updating item: $e');
     }
   }
 
@@ -199,6 +172,35 @@ class CartService {
       return Result(data: true);
     } catch (e) {
       return Result(error: 'Error removing item: $e');
+    }
+  }
+
+  Future<Result<bool>> updateParticipantStatus(
+      String cartId, String userId, ParticipantStatus status) async {
+    try {
+      DocumentSnapshot snapshot = await _carts.doc(cartId).get();
+      if (!snapshot.exists) {
+        throw Exception('Cart not found');
+      }
+
+      Map<String, dynamic> cartData = snapshot.data() as Map<String, dynamic>;
+      List<CartParticipant> participants = (cartData['participants'] as List)
+          .map((participantData) => CartParticipant.fromData(participantData))
+          .toList();
+
+      CartParticipant? participant = participants.firstWhere(
+        (p) => p.id == userId,
+      );
+
+      participant.status = status;
+
+      await _carts.doc(cartId).update({
+        'participants': participants.map((p) => p.toJson()).toList(),
+      });
+
+      return Result(data: true);
+    } catch (e) {
+      return Result(error: 'Error updating participant status: $e');
     }
   }
 }

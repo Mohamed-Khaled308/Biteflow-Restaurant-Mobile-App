@@ -22,7 +22,7 @@ class CartItemDescription extends StatelessWidget {
           Text(
             cartItem.menuItem.title,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.bold,
               color: ThemeConstants.blackColor,
             ),
@@ -38,7 +38,7 @@ class CartItemDescription extends StatelessWidget {
           ),
           verticalSpaceMedium,
           Text(
-            '${cartItem.menuItem.price} EGP',
+            '${cartItem.menuItem.price * cartItem.quantity} \$',
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,

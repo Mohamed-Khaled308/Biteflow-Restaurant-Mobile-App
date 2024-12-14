@@ -7,12 +7,10 @@ import 'package:biteflow/services/auth_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/models/user.dart';
-import 'package:logger/logger.dart';
 
 class UserProvider extends ChangeNotifier {
   final AuthService _authService = getIt<AuthService>();
   final UserService _userService = getIt<UserService>();
-  final _logger = getIt<Logger>();
 
   bool _isLoggedIn = false;
   User? _user;
@@ -135,7 +133,6 @@ class UserProvider extends ChangeNotifier {
   Future<Result<bool>> _loadOrCreateUser(
       String userId, String? email, String? name) async {
     final result = await _userService.getUserById(userId);
-    _logger.d('inside load or create user: ${result.isSuccess.toString()}');
 
     if (result.isSuccess) {
       _isLoggedIn = true;

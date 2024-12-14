@@ -1,3 +1,4 @@
+import 'package:biteflow/core/providers/notification_provider.dart';
 import 'package:biteflow/services/auth_service.dart';
 import 'package:biteflow/services/firestore/cart_service.dart';
 import 'package:biteflow/services/firestore/category_service.dart';
@@ -10,6 +11,7 @@ import 'package:biteflow/services/firestore/order_service.dart';
 import 'package:biteflow/services/image_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/services/payment_service.dart';
+import 'package:biteflow/viewmodels/cart_item_view_model.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/client_orders_view_model.dart';
 import 'package:biteflow/viewmodels/client_offers_view_model.dart';
@@ -44,11 +46,14 @@ void setupLocator() {
   getIt.registerLazySingleton<RestaurantService>(() => RestaurantService());
   getIt.registerLazySingleton<CategoryService>(() => CategoryService());
   getIt.registerLazySingleton<MenuItemService>(() => MenuItemService());
-  getIt.registerLazySingleton<OfferNotificationService>(() => OfferNotificationService());
+  getIt.registerLazySingleton<OfferNotificationService>(
+      () => OfferNotificationService());
   getIt.registerLazySingleton<OrderService>(() => OrderService());
   getIt.registerLazySingleton<PaymentService>(() => PaymentService());
   getIt.registerLazySingleton<CartService>(() => CartService());
   getIt.registerLazySingleton<UserProvider>(() => UserProvider());
+  getIt.registerLazySingleton<NotificationProvider>(
+      () => NotificationProvider());
   getIt.registerLazySingleton<Logger>(() => Logger());
 
   // ViewModels - Use factories for scoped ViewModels
@@ -65,8 +70,10 @@ void setupLocator() {
   getIt.registerFactory<PaymentViewModel>(() => PaymentViewModel());
   getIt.registerLazySingleton<ModeViewModel>(() => ModeViewModel());
 
-  getIt.registerFactory<ManagerCreateItemViewModel>(() => ManagerCreateItemViewModel());
-  getIt.registerFactory<ManagerOrdersDetailsViewModel>(() => ManagerOrdersDetailsViewModel());
+  getIt.registerFactory<ManagerCreateItemViewModel>(
+      () => ManagerCreateItemViewModel());
+  getIt.registerFactory<ManagerOrdersDetailsViewModel>(
+      () => ManagerOrdersDetailsViewModel());
   getIt.registerFactory<ManagerOffersViewModel>(() => ManagerOffersViewModel());
   getIt.registerFactory<ClientOffersViewModel>(() => ClientOffersViewModel());
   getIt.registerLazySingleton<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
@@ -87,4 +94,7 @@ void setupLocator() {
   );
 
   getIt.registerFactory<ImageViewModel>(() => ImageViewModel(getIt<ImageService>()));
+  getIt.registerFactoryParam<CartItemViewModel, String, void>(
+      (itemId, _) => CartItemViewModel(itemId: itemId));
+
 }

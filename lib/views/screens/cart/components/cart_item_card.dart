@@ -1,9 +1,11 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/cart.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_description.dart';
-import 'package:biteflow/views/screens/cart/components/cart_item_notes_dialog.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_participant.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_thumbnail.dart';
+import 'package:biteflow/views/screens/cart_item/cart_item_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,10 +35,8 @@ class CartItemCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            showDialog(
-                context: context,
-                builder: (ctx) =>
-                    CartItemNotesDialog(itemId: cartItem.menuItem.id));
+            getIt<NavigationService>()
+                .navigateTo(CartItemView(itemId: cartItem.menuItem.id));
           },
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),

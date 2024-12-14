@@ -1,4 +1,5 @@
 import 'package:biteflow/animated_splash_screen.dart';
+import 'package:biteflow/core/providers/notification_provider.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/services/navigation_service.dart';
@@ -34,15 +35,15 @@ void main() async {
         ChangeNotifierProvider(create: (_) => getIt<UserProvider>()),
         ChangeNotifierProvider(create: (_) => getIt<CartViewModel>()),
         ChangeNotifierProvider(create: (_) => getIt<ModeViewModel>()),
+        ChangeNotifierProvider(create: (_) => getIt<NotificationProvider>()),
       ],
-      child:  MyApp(),
+      child: MyApp(),
     ));
   });
 }
 
-
 class MyApp extends StatelessWidget {
-   MyApp({super.key});
+  MyApp({super.key});
   final _viewModel = getIt<ModeViewModel>();
 
   @override

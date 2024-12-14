@@ -18,7 +18,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/locator.dart';
-import 'package:cloud_functions/cloud_functions.dart'; // Import Cloud Functions
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,30 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
         FirebaseNotifications().initNotifications(user);
       }
     });
-  }
-
-  // Function to trigger the callable function for split request notifications
-  Future<void> sendSplitRequestNotification(
-      List<String> userIds, String title, String message) async {
-    try {
-      final HttpsCallable callable = FirebaseFunctions.instance
-          .httpsCallable('sendSplitRequestNotification');
-      await callable.call({
-        'userIds': userIds, // List of user IDs to send notification to
-        'title': title, // Title of the notification
-        'message': message, // Message of the notification
-      });
-
-      // Handle the result
-      // if (result.data['success']) {
-      //   print('Split request notification sent successfully');
-      // } else {
-      //   print(
-      //       'Failed to send split request notification: ${result.data['message']}');
-      // }
-    } catch (e) {
-      // print('Error calling the Firebase function: $e');
-    }
   }
 
   @override
@@ -117,33 +92,47 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text(
-                      'Scan QR Code to be added to cart',
-                      textAlign: TextAlign.center,
-                    ),
-                    content: Container(
-                      height: 300,
-                      width: 300,
-                      alignment: Alignment.center,
-                      child: MobileScanner(
-                        controller: MobileScannerController(
-                          detectionSpeed: DetectionSpeed.normal,
-                        ),
-                        onDetect: (capture) {
-                          final List<Barcode> barcodes = capture.barcodes;
-                          for (Barcode barcode in barcodes) {
-                            if (barcode.rawValue != null) {
-                              cartViewModel
-                                  .startListeningToCart(barcode.rawValue!);
-                              getIt<NavigationService>()
-                                  .navigateAndReplace(const CartView());
-                            }
-                          }
-                        },
+                  builder: (ctx) {
+                    final MobileScannerController scannerController =
+                        MobileScannerController(
+                      detectionSpeed: DetectionSpeed.normal,
+                    );
+
+                    return AlertDialog(
+                      title: const Text(
+                        'Scan QR Code to be added to cart',
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
+                      content: Container(
+                        height: 300,
+                        width: 300,
+                        alignment: Alignment.center,
+                        child: MobileScanner(
+                          controller: scannerController,
+                          onDetect: (capture) {
+                            final List<Barcode> barcodes = capture.barcodes;
+                            for (Barcode barcode in barcodes) {
+                              if (barcode.rawValue != null) {
+                                cartViewModel.joinCart(barcode.rawValue!);
+                                scannerController.dispose();
+                                getIt<NavigationService>()
+                                    .navigateAndReplace(const CartView());
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            scannerController.dispose();
+                            Navigator.of(ctx).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
               icon: const Icon(Icons.camera_alt_rounded)),

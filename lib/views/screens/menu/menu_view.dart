@@ -13,6 +13,6 @@ class MenuView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => getIt<MenuViewModel>(),
-        child: const MenuScreen(restaurantId: '28TIbvVM1386tuWHHH3b'));
+        child: MenuScreen(restaurantId: restaurantId));
   }
 }

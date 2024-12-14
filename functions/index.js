@@ -82,7 +82,7 @@ exports.sendSplitRequestNotification = functions.https.
         const userIds = data.data.userIds;
         const title = data.data.title;
         const message = data.data.message;
-
+        const itemId = data.data.itemId;
 
         // Validate input
         if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
@@ -122,6 +122,7 @@ exports.sendSplitRequestNotification = functions.https.
             },
             data: {
               type: "split_request",
+              itemId: itemId,
             },
             tokens: tokens,
           };
