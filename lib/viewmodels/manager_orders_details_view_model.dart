@@ -7,6 +7,7 @@ import 'package:biteflow/services/firestore/order_service.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
 import 'package:biteflow/models/order_clients_payment.dart';
+import 'package:biteflow/core/utils/price_calculator.dart';
 
 
 class ManagerOrdersDetailsViewModel extends BaseModel {
@@ -52,4 +53,13 @@ class ManagerOrdersDetailsViewModel extends BaseModel {
     
     setBusy(false);
   }
+
+  double getPaidAmount(){
+    return PriceCalculator.getPaidAmount(selectedOrderFullClientsPayment);
+  }
+
+  double getRemainingAmount(){
+    return selectedOrder!.totalAmount - getPaidAmount();
+  }
+
 }
