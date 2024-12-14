@@ -7,12 +7,14 @@ import 'package:biteflow/views/screens/client_offers/client_offers_view.dart';
 import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:biteflow/views/screens/menu/menu_view.dart';
+import 'package:biteflow/views/widgets/home/promotional_offer_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_list_tile.dart';
 import 'package:biteflow/views/widgets/home/section_title.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/locator.dart';
@@ -51,20 +53,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'RESTAURANTS AT',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: ThemeConstants.greyColor,
               ),
             ),
             Text(
               'Helwan',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 color: ThemeConstants.whiteColor,
               ),
             ),
@@ -201,13 +203,36 @@ class _HomeScreenState extends State<HomeScreen> {
       body: viewModel.isBusy
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
+              padding: EdgeInsets.all(ThemeConstants.defaultPadding.w),
               children: [
-                // Best Pick Section
+                if (viewModel.promotionalOffers.isNotEmpty) ...[
+                  const SectionTitle(title: 'Special Offers'),
+                  SizedBox(height: 10.h),
+                  SizedBox(
+                    height: 170.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      // padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      itemCount: viewModel.promotionalOffers.length,
+                      itemBuilder: (context, index) {
+                        final offer = viewModel.promotionalOffers[index];
+                        return PromotionalOfferCard(
+                          offer: offer,
+                          onTap: () {
+                            navigationService.navigateTo(
+                              MenuView(restaurantId: offer.restaurantId),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 15.h),
+                ],
                 const SectionTitle(title: 'Best Pick'),
-                const SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 SizedBox(
-                  height: 200,
+                  height: 180.h,
                   child: viewModel.bestPickRestaurants.isNotEmpty
                       ? ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -227,36 +252,34 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                         )
-                      : const Center(
-                          child: Text('No restaurants available'),
+                      : Center(
+                          child: Text(
+                            'No restaurants available',
+                            style: TextStyle(fontSize: 14.sp),
+                          ),
                         ),
                 ),
-                const SizedBox(height: 20),
-                // All Restaurants Section
+                // SizedBox(height: 20.h),
                 const SectionTitle(title: 'All Restaurants'),
-                const SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 viewModel.allRestaurants.isNotEmpty
                     ? Column(
                         children: viewModel.allRestaurants
                             .map(
-                              (restaurant) => GestureDetector(
-                                onTap: () {
-                                  navigationService.navigateTo(
-                                    MenuView(restaurantId: restaurant.id),
-                                  );
-                                },
-                                child: Hero(
-                                  tag: restaurant.id,
-                                  child: RestaurantListTile(
-                                    restaurant: restaurant,
-                                  ),
+                              (restaurant) => Hero(
+                                tag: restaurant.id,
+                                child: RestaurantListTile(
+                                  restaurant: restaurant,
                                 ),
                               ),
                             )
                             .toList(),
                       )
-                    : const Center(
-                        child: Text('No restaurants available'),
+                    : Center(
+                        child: Text(
+                          'No restaurants available',
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
                       ),
               ],
             ),

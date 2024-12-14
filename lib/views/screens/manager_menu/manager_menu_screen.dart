@@ -16,7 +16,6 @@ class ManagerMenuScreen extends StatefulWidget {
 }
 
 class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
-
   @override
   // ignore: must_call_super
   void dispose() {
@@ -45,37 +44,42 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
               backgroundColor: ThemeConstants.blackColor40,
               color: ThemeConstants.blackColor80,
             ))
-          : const Column(
-              children: [
-                SizedBox(height: 10),
-                CategoriesList(),
-                SizedBox(height: 10),
-                ItemsList(),
-              ],
-            ),
-      floatingActionButton: viewModel.busy? null : FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
+          : viewModel.categories!.isEmpty
+              ? const Center(child: Text('No items yet'))
+              : const Column(
+                  children: [
+                    SizedBox(height: 10),
+                    CategoriesList(),
+                    SizedBox(height: 10),
+                    ItemsList(),
+                  ],
                 ),
-              ),
-              builder: (context) {
-                return ChangeNotifierProvider(
-                  create: (_) => getIt<ManagerCreateItemViewModel>(),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.75,
-                    child: CreateItemCategory(categories: viewModel.categories),
-                  ),
-                );
-              });
-        },
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(Icons.add, color: ThemeConstants.whiteColor),
-      ),
+      floatingActionButton: viewModel.busy
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    builder: (context) {
+                      return ChangeNotifierProvider(
+                        create: (_) => getIt<ManagerCreateItemViewModel>(),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.75,
+                          child: CreateItemCategory(
+                              categories: viewModel.categories),
+                        ),
+                      );
+                    });
+              },
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Icon(Icons.add, color: ThemeConstants.whiteColor),
+            ),
     );
   }
 }

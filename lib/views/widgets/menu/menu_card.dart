@@ -2,7 +2,7 @@ import 'package:biteflow/models/menu_item.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../theme/app_theme.dart';
+import '../../theme/biteflow_theme.dart';
 import 'package:provider/provider.dart';
 
 class MenuCard extends StatelessWidget {
@@ -30,7 +30,7 @@ class MenuCard extends StatelessWidget {
     final viewModel = context.watch<CartViewModel>();
 
     // Accessing the current theme for colors and text styles
-    final theme = AppTheme.lightTheme(context); // Get light theme from AppTheme
+    final theme = BiteflowTheme.lightTheme(context); // Get light theme from AppTheme
 
     return Card(
       elevation: 5,

@@ -11,15 +11,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:biteflow/views/theme/app_theme.dart';
+import 'package:biteflow/views/theme/biteflow_theme.dart';
 import 'firebase_options.dart';
 import 'locator.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   setupLocator();
 
   WidgetsFlutterBinding.ensureInitialized();
-
+  await dotenv.load(fileName: '.env');
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -45,25 +48,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ModeViewModel>(builder: (context, modeViewModel, child) {
-      return ScreenUtilInit(
-        designSize: const Size(392, 851),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (_, child) => MaterialApp(
-          title: 'Biteflow',
-          theme: AppTheme.lightTheme(context),
-          darkTheme: AppTheme.darkTheme(context),
-          themeMode: _viewModel.themeMode,
-          navigatorKey: getIt<NavigationService>().navigationKey,
-          scaffoldMessengerKey: FirebaseNotifications().messengerKey,
-          home: AnimatedSplashScreen(nextScreen: EntryPointView()),
-          builder: (context, widget) {
-            ScreenUtil.init(context);
-            return widget!;
-          },
-        ),
-      );
-    });
+    return Consumer<ModeViewModel>(
+      builder: (context , modeViewModel , child) {
+        return ScreenUtilInit(
+          designSize: const Size(392, 851),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (_, child) => MaterialApp(
+            title: 'Biteflow',
+            theme: BiteflowTheme.lightTheme(context),
+            darkTheme: BiteflowTheme.darkTheme(context),
+            themeMode: _viewModel.themeMode,
+            navigatorKey: getIt<NavigationService>().navigationKey,
+            scaffoldMessengerKey: FirebaseNotifications().messengerKey,
+            home: AnimatedSplashScreen(nextScreen: EntryPointView()),
+            builder: (context, widget) {
+              ScreenUtil.init(context);
+              return widget!;
+            },
+          ),
+        );
+      }
+    );
   }
 }
