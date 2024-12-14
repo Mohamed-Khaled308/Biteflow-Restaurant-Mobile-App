@@ -1,5 +1,7 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/locator.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
+import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:biteflow/views/screens/login/components/login_form.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_subtitle.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_title.dart';
@@ -56,10 +58,29 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<LoginViewModel>();
+    final modeViewModel = getIt<ModeViewModel>();
 
     return GestureDetector(
       onTap: _dismissKeyboard, // Dismiss keyboard on tap outside
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.light_mode_sharp
+                  : Icons.dark_mode_sharp,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
+            onPressed: () {
+              modeViewModel.toggleThemeMode();
+              
+            },
+          ),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Center(

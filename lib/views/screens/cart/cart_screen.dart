@@ -28,7 +28,7 @@ class _CartScreenState extends State<CartScreen> {
     final viewModel = context.watch<CartViewModel>();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('Cart'),
         actions: [
