@@ -26,6 +26,20 @@ class OrderService {
       return Result(error: e.toString());
     }
   }
+  Future<Result<List<biteflow.Order>>> getOrdersByClient(String clientId) async {
+  try {
+    QuerySnapshot ordersSnapshot = await _orders.get();
+    
+    List<biteflow.Order> filteredOrders = ordersSnapshot.docs
+        .map((doc) => biteflow.Order.fromData(doc.data() as Map<String, dynamic>))
+        .where((order) => order.orderClientsPayment.any((payment) => payment.userId == clientId))
+        .toList();
+    
+    return Result(data: filteredOrders);
+  } catch (e) {
+    return Result(error: e.toString());
+  }
+}
 
   // update order status
   Future<Result<bool>> updateOrderStatus(

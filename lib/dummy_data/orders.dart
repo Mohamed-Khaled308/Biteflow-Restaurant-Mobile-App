@@ -1,5 +1,6 @@
 import 'package:biteflow/models/order.dart';
 import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/models/order_clients_payment.dart';
 
 final Order tableOrder = Order(
   id: '1',
@@ -30,7 +31,18 @@ final Order tableOrder = Order(
       restaurantId: 'r1'
     ),
   ],
-  userIDs: ['1', '2'],
+  orderClientsPayment: [
+    OrderClientsPayment(
+      userId: '1',
+      isPaid: true,
+      amount: 1000,
+    ),
+    OrderClientsPayment(
+      userId: '2',
+      isPaid: false,
+      amount: 2000,
+    ),
+  ],
   paymentMethod: 'cash',
   restaurantId: '1',
   orderNumber: 73,

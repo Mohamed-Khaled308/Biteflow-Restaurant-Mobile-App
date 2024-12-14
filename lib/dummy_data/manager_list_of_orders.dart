@@ -1,6 +1,8 @@
 import 'package:biteflow/models/order.dart';
 import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/models/client.dart';
+import 'package:biteflow/models/order_clients_payment.dart';
+
 
 // They all have same restaurantID corresponding to the same manager
 final List<Order> managerListOfOrders = [
@@ -35,7 +37,19 @@ final List<Order> managerListOfOrders = [
           restaurantId: 'r1',
         ),
       ],
-      userIDs: ['1', '2'],
+      // userIDs: ['1', '2'],
+      orderClientsPayment: [
+        OrderClientsPayment(
+          userId: '1',
+          isPaid: true,
+          amount: 1000,
+        ),
+        OrderClientsPayment(
+          userId: '2',
+          isPaid: false,
+          amount: 2000,
+        ),
+      ],
       paymentMethod: 'cash',
       restaurantId: '1',
       orderNumber: 1),
@@ -83,7 +97,19 @@ final List<Order> managerListOfOrders = [
           notes: 'This is a note for pants',
         ),
       ],
-      userIDs: ['1', '2'],
+      // userIDs: ['1', '2'],
+      orderClientsPayment: [
+        OrderClientsPayment(
+          userId: '1',
+          isPaid: true,
+          amount: 1000,
+        ),
+        OrderClientsPayment(
+          userId: '2',
+          isPaid: false,
+          amount: 2000,
+        ),
+      ],
       paymentMethod: 'cash',
       restaurantId: '1',
       orderNumber: 2),
@@ -118,7 +144,19 @@ final List<Order> managerListOfOrders = [
           notes: 'This is a note for pants',
         ),
       ],
-      userIDs: ['1', '2'],
+      // userIDs: ['1', '2'],
+      orderClientsPayment: [
+        OrderClientsPayment(
+          userId: '1',
+          isPaid: true,
+          amount: 1000,
+        ),
+        OrderClientsPayment(
+          userId: '2',
+          isPaid: false,
+          amount: 2000,
+        ),
+      ],
       paymentMethod: 'cash',
       restaurantId: '1',
       orderNumber: 23),
@@ -153,7 +191,19 @@ final List<Order> managerListOfOrders = [
           notes: 'This is a note for pants',
         ),
       ],
-      userIDs: ['1', '2'],
+      // userIDs: ['1', '2'],
+      orderClientsPayment: [
+        OrderClientsPayment(
+          userId: '1',
+          isPaid: true,
+          amount: 1000,
+        ),
+        OrderClientsPayment(
+          userId: '2',
+          isPaid: false,
+          amount: 2000,
+        ),
+      ],
       paymentMethod: 'cash',
       restaurantId: '1',
       orderNumber: 76),

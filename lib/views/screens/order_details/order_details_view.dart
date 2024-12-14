@@ -1,3 +1,4 @@
+import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/viewmodels/order_view_model.dart';
 import 'package:biteflow/views/screens/order_details/order_details_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +6,15 @@ import 'package:provider/provider.dart';
 import 'package:biteflow/locator.dart';
 
 class OrderDetailsView extends StatelessWidget {
-  const OrderDetailsView({super.key});
+  const OrderDetailsView({super.key , required this.items , required this.totalAmount});
+  final List<OrderItem> items ;
+  final double totalAmount;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => getIt<OrderViewModel>(),
-      child: const OrderDetailsScreen(),
+      child: OrderDetailsScreen(items: items, totalAmount: totalAmount),
     );
   }
 }
