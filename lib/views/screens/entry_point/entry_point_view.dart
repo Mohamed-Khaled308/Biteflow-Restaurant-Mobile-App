@@ -1,11 +1,16 @@
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/services/navigation_service.dart';
+import 'package:biteflow/viewmodels/client_orders_view_model.dart';
 import 'package:biteflow/views/screens/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
 import 'entry_point_screen.dart';
+import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
+import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
+
+
 
 class EntryPointView extends StatelessWidget {
   EntryPointView({super.key});
@@ -22,9 +27,30 @@ class EntryPointView extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return ChangeNotifierProvider(
-      create: (_) => getIt<EntryPointViewModel>(),
+    ManagerMenuViewModel managerMenuViewModel = getIt<ManagerMenuViewModel>();
+    managerMenuViewModel.loadRestaurantData(); // can be made automatic in constructor
+    ManagerOrdersViewModel managerOrdersViewModel = getIt<ManagerOrdersViewModel>();
+    managerOrdersViewModel.loadOrdersData();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => getIt<EntryPointViewModel>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => getIt<ClientOrdersViewModel>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => managerMenuViewModel,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => managerOrdersViewModel,
+        ),
+      ],
       child: const EntryPointScreen(),
     );
+    // return ChangeNotifierProvider(
+    //   create: (_) => getIt<EntryPointViewModel>(),
+    //   child: const EntryPointScreen(),
+    // );
   }
 }

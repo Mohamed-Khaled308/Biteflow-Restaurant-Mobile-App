@@ -454,7 +454,7 @@ class CartViewModel extends BaseModel {
       }).toList();
 
       final order = Order(
-        id: _cart!.id,
+        id: _orderService.generateOrderId(),
         restaurantId: _cart!.restaurantId,
         orderNumber: _generateOrderNumber(),
         totalAmount: totalAmount,

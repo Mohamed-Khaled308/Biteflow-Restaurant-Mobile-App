@@ -1,9 +1,10 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
 import 'package:biteflow/views/screens/manager_orders/components/order_details.dart';
 import 'package:biteflow/views/screens/manager_orders/components/order_update_status.dart';
 import 'package:biteflow/views/screens/manager_orders/components/track_payments.dart';
 import 'package:flutter/material.dart';
-import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
 import 'package:provider/provider.dart';
 // import 'package:biteflow/models/order.dart';
@@ -20,7 +21,7 @@ class _OrderBottomSheetState extends State<OrderBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ManagerOrdersDetailsViewModel>();
+    final viewModel = context.watch<ManagerOrdersViewModel>();
     return DraggableScrollableSheet(
       initialChildSize: 0.6,
       expand: false,
