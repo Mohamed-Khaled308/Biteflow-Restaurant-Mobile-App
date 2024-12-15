@@ -45,12 +45,15 @@ class _ManagerPromotionalOffersScreenState
         setState(() {
           _endDate = null; // Reset the end date after successful submission
         });
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text('Offer notification sent successfully!')),
         );
+        // ignore: use_build_context_synchronously
         Navigator.pop(context); // Close the modal card
       } else {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: ${result.error}')),
         );
@@ -63,8 +66,8 @@ class _ManagerPromotionalOffersScreenState
   }
 
   void _showOfferInputModal() {
-    final String initialTitle = ''; 
-    final DateTime? initialEndDate = null;
+    const String initialTitle = ''; 
+    const DateTime? initialEndDate = null;
 
     // Reset the controller's text and the end date
     _offerController.text = initialTitle;
