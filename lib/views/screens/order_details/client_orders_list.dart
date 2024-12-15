@@ -191,8 +191,8 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                                       ),
                                                     );
                                                   }
-                                                  /***  here we can make the required updates to the UI and db ***/
-                                                  /*** yosef shawky ***/
+                                                  viewModel.updateOrderClientPaymentStatus(
+                                                      order.id);
                                                 }).catchError((e) {
                                                   paymentViewModel
                                                       .setBusy(false);
