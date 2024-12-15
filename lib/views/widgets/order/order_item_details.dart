@@ -1,5 +1,10 @@
+import 'package:biteflow/locator.dart';
+import 'package:biteflow/main.dart';
 import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/models/order_item_participant.dart';
+import 'package:biteflow/viewmodels/client_orders_view_model.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
+import 'package:biteflow/views/widgets/user/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -7,17 +12,32 @@ class OrderItemDetails extends StatelessWidget {
   const OrderItemDetails(this.orderItem, {super.key});
 
   final OrderItem orderItem;
-
   @override
   Widget build(BuildContext context) {
+    final _viewmodel = getIt<ClientOrdersViewModel>();
+    bool isClientInItems = false;
+    for (final OrderItemParticipant in orderItem.participants) {
+      if (OrderItemParticipant.userId == _viewmodel.clientLogged.id) {
+        isClientInItems = true;
+        break;
+      }
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isClientInItems 
+          ? Colors.blue.shade50 
+          : Colors.white,
         borderRadius: BorderRadius.circular(15),
+        border: isClientInItems 
+          ? Border.all(color: Colors.blue.shade200, width: 2)
+          : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: isClientInItems 
+              ? Colors.blue.withOpacity(0.3) 
+              : Colors.grey.withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -34,10 +54,12 @@ class OrderItemDetails extends StatelessWidget {
                 children: [
                   Text(
                     orderItem.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: isClientInItems 
+                        ? Colors.blue.shade800 
+                        : Colors.black87,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -45,9 +67,9 @@ class OrderItemDetails extends StatelessWidget {
                   const SizedBox(height: 12),
                   OrderItemCardTrait(
                     Icons.production_quantity_limits_outlined,
-                    Colors.orange,
-                    'Quanity: ${orderItem.quantity}',
-                    Colors.black87,
+                    isClientInItems ? Colors.green.shade600 : Colors.orange,
+                    'Quantity: ${orderItem.quantity}',
+                    isClientInItems ? Colors.green.shade900 : Colors.black87,
                   ),
                   if (orderItem.notes.isNotEmpty)
                     Padding(
@@ -55,7 +77,9 @@ class OrderItemDetails extends StatelessWidget {
                       child: Text(
                         orderItem.notes,
                         style: TextStyle(
-                          color: Colors.grey.shade600,
+                          color: isClientInItems 
+                            ? Colors.blue.shade700 
+                            : Colors.grey.shade600,
                           fontStyle: FontStyle.italic,
                         ),
                         maxLines: 2,
@@ -64,15 +88,21 @@ class OrderItemDetails extends StatelessWidget {
                     ),
                   OrderItemCardTrait(
                     Icons.star,
-                    Colors.green,
+                    isClientInItems ? Colors.amber.shade600 : Colors.green,
                     'Rating: ${orderItem.rating}',
-                    Colors.black87,
+                    isClientInItems ? Colors.amber.shade900 : Colors.black87,
                   ),
                   OrderItemCardTrait(
                     Icons.price_change_rounded,
-                    Colors.red,
-                    '${orderItem.price} EGP',
-                    Colors.black87,
+                    isClientInItems ? Colors.purple.shade600 : Colors.red,
+                    '${orderItem.price} \$',
+                    isClientInItems ? Colors.purple.shade900 : Colors.black87,
+                  ),
+                  Row(
+                    children: [
+                      for (final OrderItemParticipant participant in orderItem.participants)
+                        UserAvatar(userId: participant.userId, userName: participant.userName),
+                    ],
                   ),
                 ],
               ),
@@ -99,6 +129,23 @@ class OrderItemDetails extends StatelessWidget {
                     );
                   },
                 ),
+                if (isClientInItems)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade600,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ),
               ]),
             ),
           ],
