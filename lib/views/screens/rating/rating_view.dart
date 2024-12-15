@@ -11,7 +11,7 @@ class RatingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => getIt<RatingViewModel>(),
-      child: RatingScreen(),
+      child: const RatingScreen(restaurantId: 'MmpiWXTcEvi2s8hd9TUf',),
     );
   }
 }

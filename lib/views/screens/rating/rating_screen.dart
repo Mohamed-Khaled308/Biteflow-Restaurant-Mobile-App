@@ -1,148 +1,229 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
-import 'package:biteflow/locator.dart';
-import 'package:biteflow/models/order_item.dart';
-import 'package:biteflow/services/navigation_service.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/viewmodels/rating_view_model.dart';
-import 'package:biteflow/views/screens/home/home_view.dart';
-import 'package:biteflow/views/widgets/rating/rating_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
-class RatingScreen extends StatelessWidget {
-  RatingScreen({super.key});
+class RatingScreen extends StatefulWidget {
+  final String restaurantId;
 
-  final TextEditingController _feedbackController = TextEditingController();
+  const RatingScreen({
+    super.key,
+    required this.restaurantId,
+  });
 
-  void _showRatingBottomSheet(
-      BuildContext context, OrderItem item, RatingViewModel viewModel) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // To make the bottom sheet full height
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.3,
-          widthFactor: 1.0,
-          child: RatingBottomSheet(
-            item: item,
-            onRatingSubmitted: (rating) {
-              viewModel.updateRating(item, rating);
-              Navigator.pop(context);
-            },
-          ),
-        );
-      },
-    );
+  @override
+  State<RatingScreen> createState() => _RatingScreenState();
+}
+
+class _RatingScreenState extends State<RatingScreen> {
+  final TextEditingController _commentController = TextEditingController();
+  double _rating = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<RatingViewModel>().loadRestaurant(widget.restaurantId);
+    });
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  Future<bool> _onWillPop() async {
+    if (_rating > 0 || _commentController.text.isNotEmpty) {
+      final shouldDiscard = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Discard Rating?'),
+          content: const Text('Are you sure you want to discard your rating?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(
+                foregroundColor: ThemeConstants.errorColor,
+              ),
+              child: const Text('Discard'),
+            ),
+          ],
+        ),
+      );
+      return shouldDiscard ?? false;
+    }
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<RatingViewModel>();
+    final userProvider = context.watch<UserProvider>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Rate Your Dishes'),
-        backgroundColor: ThemeConstants.primaryColor,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
-              itemCount:
-                  viewModel.orderedItems.length + 1, // Add 1 for the footer
-              itemBuilder: (context, index) {
-                if (index == viewModel.orderedItems.length) {
-                  // Footer: Feedback and Submit Button
-                  return Padding(
-                    padding:
-                        const EdgeInsets.all(ThemeConstants.defaultPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 16),
-                        TextField(
-                          controller: _feedbackController,
-                          decoration: InputDecoration(
-                            labelText: 'Leave a comment (optional)',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(
-                                  ThemeConstants.defaultBorderRadious),
-                            ),
-                          ),
-                          maxLines: 3,
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            // TODO: Handle feedback submission
-                            // For example: saveFeedback(_feedbackController.text);
+    if (!userProvider.isLoggedIn) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Rate Restaurant'),
+          backgroundColor: ThemeConstants.primaryColor,
+        ),
+        body: const Center(
+          child: Text('Please login to rate restaurants'),
+        ),
+      );
+    }
 
-                            getIt<NavigationService>().replaceWith(
-                              const HomeView(),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ThemeConstants.primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  ThemeConstants.defaultBorderRadious),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12.0,
-                              horizontal: 24.0,
-                            ),
-                          ),
-                          child: const Text(
-                            'Submit',
-                            style: TextStyle(
-                              color: ThemeConstants.whiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  // Regular list item
-                  final item = viewModel.orderedItems[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 4.0,
-                    ),
-                    child: ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
+    // ignore: deprecated_member_use
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Rate Restaurant'),
+          backgroundColor: ThemeConstants.primaryColor,
+          actions: [
+            TextButton.icon(
+              onPressed: () => _onWillPop().then((shouldPop) {
+                if (shouldPop) {
+                  // Navigator.of(context).pop();
+                  //TODO: Uncomment the above line after implementing the cart
+                }
+              }),
+              icon: const Icon(Icons.close, color: ThemeConstants.whiteColor),
+              label: const Text(
+                'Discard',
+                style: TextStyle(color: ThemeConstants.whiteColor),
+              ),
+            ),
+          ],
+        ),
+        body: viewModel.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (viewModel.restaurant != null) ...[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
                         child: Image.network(
-                          item.imageUrl,
-                          width: 60,
-                          height: 60,
+                          viewModel.restaurant!.imageUrl,
+                          height: 200,
+                          width: double.infinity,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      title: Text(item.title),
-                      subtitle: Text(
-                        'Quantity: ${item.quantity}\n${item.description}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      const SizedBox(height: 16),
+                      Text(
+                        'Thank you for ordering from ${viewModel.restaurant!.name}!',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      trailing: Icon(
-                        Icons.star,
-                        color: item.rating > 0
-                            ? ThemeConstants.warningColor
-                            : ThemeConstants.greyColor,
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Please rate your experience',
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
                       ),
-                      onTap: () {
-                        _showRatingBottomSheet(context, item, viewModel);
-                      },
+                    ],
+                    const SizedBox(height: 32),
+                    Center(
+                      child: RatingBar.builder(
+                        initialRating: _rating,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 40,
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: ThemeConstants.warningColor,
+                        ),
+                        onRatingUpdate: (rating) {
+                          setState(() {
+                            _rating = rating;
+                          });
+                        },
+                      ),
                     ),
-                  );
-                }
-              },
-            ),
-          ),
-        ],
+                    const SizedBox(height: 32),
+                    TextField(
+                      controller: _commentController,
+                      decoration: InputDecoration(
+                        labelText: 'Leave a comment (optional)',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            ThemeConstants.defaultBorderRadious,
+                          ),
+                        ),
+                      ),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 32),
+                    if (viewModel.error != null)
+                      Text(
+                        viewModel.error!,
+                        style:
+                            const TextStyle(color: ThemeConstants.errorColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: viewModel.isLoading || _rating == 0
+                          ? null
+                          : () async {
+                              final success = await viewModel.submitRating(
+                                widget.restaurantId,
+                                _rating,
+                                _commentController.text,
+                              );
+                              if (success && mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Thank you for your rating!'),
+                                    backgroundColor:
+                                        ThemeConstants.successColor,
+                                  ),
+                                );
+                                // Navigator.of(context).pop();
+                                // TODO: Uncomment the above line after implementing the cart
+                              }
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ThemeConstants.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            ThemeConstants.defaultBorderRadious,
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12.0,
+                          horizontal: 24.0,
+                        ),
+                      ),
+                      child: viewModel.isLoading
+                          ? const CircularProgressIndicator(
+                              color: ThemeConstants.whiteColor)
+                          : const Text(
+                              'Submit Rating',
+                              style: TextStyle(
+                                color: ThemeConstants.whiteColor,
+                                fontSize: 16,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
