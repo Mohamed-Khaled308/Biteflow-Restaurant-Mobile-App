@@ -29,4 +29,9 @@ class ImageViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void resetImageUrl() {
+    _imageUrl = null;
+    notifyListeners();
+  }
 }
