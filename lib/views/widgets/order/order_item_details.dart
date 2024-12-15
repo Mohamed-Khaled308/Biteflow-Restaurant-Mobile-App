@@ -1,5 +1,4 @@
 import 'package:biteflow/locator.dart';
-import 'package:biteflow/main.dart';
 import 'package:biteflow/models/order_item.dart';
 import 'package:biteflow/models/order_item_participant.dart';
 import 'package:biteflow/viewmodels/client_orders_view_model.dart';
@@ -14,10 +13,10 @@ class OrderItemDetails extends StatelessWidget {
   final OrderItem orderItem;
   @override
   Widget build(BuildContext context) {
-    final _viewmodel = getIt<ClientOrdersViewModel>();
+    final viewmodel = getIt<ClientOrdersViewModel>();
     bool isClientInItems = false;
-    for (final OrderItemParticipant in orderItem.participants) {
-      if (OrderItemParticipant.userId == _viewmodel.clientLogged.id) {
+    for (final orderItemParticipant in orderItem.participants) {
+      if (orderItemParticipant.userId == viewmodel.clientLogged.id) {
         isClientInItems = true;
         break;
       }
