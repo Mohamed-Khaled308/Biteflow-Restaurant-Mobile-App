@@ -2,13 +2,14 @@ import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/category.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
+import 'package:biteflow/viewmodels/menu_view_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
+import 'package:biteflow/views/screens/feedback/feedback_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../../../viewmodels/menu_view_model.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/menu/menu_item_grid.dart';
 import '../../widgets/menu/menu_card.dart';
-import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
   final String restaurantId;
@@ -38,9 +39,7 @@ class _MenuScreenState extends State<MenuScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final viewModel = context.read<MenuViewModel>();
       viewModel.restaurantId = widget.restaurantId;
-      // print('Set restaurant ID to: ${widget.restaurantId}');
       await viewModel.loadRestaurantData();
-      // print('Data loaded successfully');
     });
   }
 
@@ -50,30 +49,153 @@ class _MenuScreenState extends State<MenuScreen> {
     super.dispose();
   }
 
+  Widget _buildItemList(MenuViewModel viewModel) {
+    final totalFilteredItemCount = viewModel.filteredItems.length;
+
+    if (totalFilteredItemCount < 3) {
+      // Few items: use a ListView inside SliverFillRemaining
+      return SliverFillRemaining(
+        hasScrollBody: true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: totalFilteredItemCount,
+                  itemBuilder: (context, index) {
+                    final item = viewModel.filteredItems[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        elevation: 2.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: MenuItemGrid(
+                          imageUrl: item.imageUrl,
+                          title: item.title,
+                          price: item.price,
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              builder: (context) {
+                                return ChangeNotifierProvider.value(
+                                  value: getIt<CartViewModel>(),
+                                  child: SingleChildScrollView(
+                                    child: MenuCard(
+                                      imageUrl: item.imageUrl,
+                                      title: item.title,
+                                      description: item.description,
+                                      price: item.price,
+                                      rating: item.rating,
+                                      categoryId: item.categoryId,
+                                      restaurantId: widget.restaurantId,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      // Many items: use SliverList
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final item = viewModel.filteredItems[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              child: Card(
+                elevation: 2.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: MenuItemGrid(
+                  imageUrl: item.imageUrl,
+                  title: item.title,
+                  price: item.price,
+                  onTap: () {
+                    viewModel.selectedItem = item;
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) {
+                        return MenuCard(
+                          imageUrl: item.imageUrl,
+                          title: item.title,
+                          description: item.description,
+                          price: item.price,
+                          rating: item.rating,
+                          categoryId: item.categoryId,
+                          restaurantId: widget.restaurantId,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+          childCount: totalFilteredItemCount,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MenuViewModel>();
-    // print('Categories: ${viewModel.categories}');
-    // print('Filtered Items: ${viewModel.filteredItems.length}');
-    //final screenHeight = MediaQuery.of(context).size.height;
-    //print('Screen height: $screenHeight');
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu'),
+        title: const Text(
+          'Menu',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-              onPressed: () {
-                getIt<NavigationService>().navigateTo(const CartView());
-              },
-              icon: const Icon(Icons.shopping_cart_sharp)),
+            onPressed: () {
+              getIt<NavigationService>().navigateTo(
+                FeedbackView(restaurantId: widget.restaurantId),
+              );
+            },
+            icon: const Icon(Icons.feedback),
+          ),
+          IconButton(
+            onPressed: () {
+              getIt<NavigationService>().navigateTo(const CartView());
+            },
+            icon: const Icon(Icons.shopping_cart_sharp),
+          ),
         ],
       ),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          // Placeholder Section
+          // Placeholder Section with a gradient overlay
           SliverToBoxAdapter(
             child: Consumer<MenuViewModel>(
               builder: (context, viewModel, child) {
@@ -81,151 +203,77 @@ class _MenuScreenState extends State<MenuScreen> {
 
                 return Hero(
                   tag: widget.restaurantId,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: _placeholderOpacity,
-                    child: SizedBox(
-                      width: double.infinity, // Full screen width
-                      height:
-                          300, // Fixed height to match the placeholder's height
-                      child: imageUrl != null
-                          ? Image.network(
-                              imageUrl,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Icon(
-                                  Icons.broken_image,
-                                  size: 50,
-                                  color: Colors.grey,
-                                );
-                              },
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            )
-                          : const Icon(
-                              Icons.image,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          // Fixed Categories
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: CategoriesHeaderDelegate(
-              categories:
-                  viewModel.categories ?? [], // Provide an empty list if null
-              selectedCategoryId: viewModel.selectedCategoryId ?? '',
-              onCategorySelected: (id) {
-                viewModel.selectedCategoryId = id; // Use the setter
-              },
-              theme: Theme.of(context),
-            ),
-          ),
-
-          SliverLayoutBuilder(
-            builder: (BuildContext context, SliverConstraints constraints) {
-              final totalFilteredItemCount = viewModel.filteredItems.length;
-              // print('FilterdItems: $totalFilteredItemCount');
-              if (totalFilteredItemCount < 3) {
-                // Few items case: Use SliverFillRemaining to stretch
-                return // Scrollable Items
-                    SliverFillRemaining(
-                  hasScrollBody: true,
-                  child: Column(
+                  child: Stack(
                     children: [
-                      Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: viewModel.filteredItems.length,
-                          itemBuilder: (context, index) {
-                            final item = viewModel.filteredItems[index];
-                            return MenuItemGrid(
-                              imageUrl: item.imageUrl,
-                              title: item.title,
-                              price: item.price,
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20),
-                                    ),
-                                  ),
-                                  builder: (context) {
-                                    return ChangeNotifierProvider.value(
-                                      value: getIt<CartViewModel>(),
-                                      child: SingleChildScrollView(
-                                        child: MenuCard(
-                                          imageUrl: item.imageUrl,
-                                          title: item.title,
-                                          description: item.description,
-                                          price: item.price,
-                                          rating: item.rating,
-                                          categoryId: item.categoryId,
-                                          restaurantId: widget.restaurantId,
-                                        ),
-                                      ),
+                      AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: _placeholderOpacity,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 300,
+                          child: imageUrl != null
+                              ? Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(
+                                      Icons.broken_image,
+                                      size: 50,
+                                      color: Colors.grey,
                                     );
                                   },
-                                );
-                              },
-                            );
-                          },
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                )
+                              : const Icon(
+                                  Icons.image,
+                                  size: 50,
+                                  color: Colors.grey,
+                                ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 300,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.black.withOpacity(0.3),
+                              Colors.black.withOpacity(0.0),
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 );
-              } else {
-                // Many items case: Use SliverList for scrollable content
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final item = viewModel.filteredItems[index];
-                      return MenuItemGrid(
-                        imageUrl: item.imageUrl,
-                        title: item.title,
-                        price: item.price,
-                        onTap: () {
-                          viewModel.selectedItem =
-                              item; // Use the setter to update selectedItem
-                          showModalBottomSheet(
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            builder: (context) {
-                              return MenuCard(
-                                imageUrl: item.imageUrl,
-                                title: item.title,
-                                description: item.description,
-                                price: item.price,
-                                rating: item.rating,
-                                categoryId: item.categoryId,
-                                restaurantId: widget.restaurantId,
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                    childCount: viewModel.filteredItems.length,
-                  ),
-                );
-              }
+              },
+            ),
+          ),
+
+          // Fixed Categories
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: CategoriesHeaderDelegate(
+              categories: viewModel.categories ?? [],
+              selectedCategoryId: viewModel.selectedCategoryId ?? '',
+              onCategorySelected: (id) {
+                viewModel.selectedCategoryId = id;
+              },
+              theme: Theme.of(context),
+            ),
+          ),
+
+          // Items
+          SliverLayoutBuilder(
+            builder: (BuildContext context, SliverConstraints constraints) {
+              return _buildItemList(viewModel);
             },
           ),
         ],
@@ -251,30 +299,38 @@ class CategoriesHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       color: theme.scaffoldBackgroundColor,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
+          final isSelected = selectedCategoryId == category.id;
           return GestureDetector(
             onTap: () => onCategorySelected(category.id),
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 6),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: selectedCategoryId == category.id
-                    ? theme.primaryColor
-                    : theme.scaffoldBackgroundColor,
+                color: isSelected ? theme.primaryColor : theme.cardColor,
                 borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  if (isSelected)
+                    BoxShadow(
+                      color: theme.primaryColor.withOpacity(0.3),
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                ],
               ),
               child: Center(
                 child: Text(
                   category.title,
                   style: TextStyle(
-                    color: selectedCategoryId == category.id
-                        ? Colors.white
-                        : theme.textTheme.bodyMedium?.color,
+                    color: isSelected ? Colors.white : theme.textTheme.bodyMedium?.color,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
               ),
@@ -286,10 +342,10 @@ class CategoriesHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 50;
+  double get maxExtent => 60;
 
   @override
-  double get minExtent => 50;
+  double get minExtent => 60;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
