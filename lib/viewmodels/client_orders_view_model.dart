@@ -32,6 +32,19 @@ class ClientOrdersViewModel extends BaseModel {
 
     setBusy(false);
   }
+
+  Future<void> updateOrderClientPaymentStatus(String orderId) async {
+    setBusy(true);
+
+    final result = await getIt<OrderService>().updateOrderClientPaymentStatus(orderId, _clientLogged.id);
+    if(result.isSuccess){
+      await _fetchClientOrders();
+    } else {
+      _logger.e(result.error);
+    }
+
+    setBusy(false);
+  }
   
 
 }

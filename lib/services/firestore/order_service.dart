@@ -54,6 +54,39 @@ class OrderService {
       return Result(error: e.toString());
     }
   }
+// update order to make isPaid true
+Future<Result<void>> updateOrderClientPaymentStatus(String orderId, String clientId) async {
+  try {
+    DocumentReference orderDoc = _orders.doc(orderId);
+
+    DocumentSnapshot orderSnapshot = await orderDoc.get();
+    
+    biteflow.Order order = biteflow.Order.fromData(orderSnapshot.data() as Map<String, dynamic>);
+
+    List<Map<String, dynamic>> updatedOrderClientsPayment = order.orderClientsPayment
+        .map((payment) {
+          if (payment.userId == clientId) {
+            return {
+              ...payment.toJson(),
+              'isPaid': true
+            };
+          }
+          return payment.toJson();
+        })
+        .toList();
+
+    // Update the document in Firestore
+    await orderDoc.update({
+      'orderClientsPayment': updatedOrderClientsPayment
+    });
+
+    return Result(data: null);
+  } catch (e) {
+    return Result(error: e.toString());
+  }
+}
+
+
 
   // update order status
   Future<Result<bool>> updateOrderStatus(String orderId, String status) async {
