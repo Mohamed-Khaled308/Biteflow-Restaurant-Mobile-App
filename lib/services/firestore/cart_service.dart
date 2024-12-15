@@ -42,6 +42,17 @@ class CartService {
     }
   }
 
+  Future<Result<bool>> softDeleteCart(String cartId) async {
+    try {
+      await _carts.doc(cartId).update({
+        'isDeleted': true,
+      });
+      return Result(data: true);
+    } catch (e) {
+      return Result(error: 'Error soft deleting cart: $e');
+    }
+  }
+
   Future<Result<bool>> deleteCart(String cartId) async {
     try {
       await _carts.doc(cartId).delete();

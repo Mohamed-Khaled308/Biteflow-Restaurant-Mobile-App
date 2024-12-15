@@ -1,15 +1,17 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/services/navigation_service.dart';
-import 'package:biteflow/views/screens/menu/menu_view.dart';
-import 'package:biteflow/views/widgets/user/user_card.dart';
+import 'package:biteflow/views/screens/cart/components/nav_bar_actions/add_items.dart';
+import 'package:biteflow/views/screens/cart/components/nav_bar_actions/members_filter.dart';
+import 'package:biteflow/views/screens/cart/components/nav_bar_actions/options.dart';
+import 'package:biteflow/views/screens/home/home_screen.dart';
+import 'package:biteflow/views/screens/order_details/orders_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/screens/cart/components/cart_item_card.dart';
-import 'package:biteflow/views/widgets/cart/payment_summary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:biteflow/views/screens/cart/components/ready_to_order.dart';
 
@@ -22,11 +24,22 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final _listKey = GlobalKey<AnimatedListState>();
+  late CartViewModel viewModel;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    viewModel = context.watch<CartViewModel>();
+  }
+
+  @override
+  void dispose() {
+    viewModel.setIsCartOpen = false;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<CartViewModel>();
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -39,116 +52,10 @@ class _CartScreenState extends State<CartScreen> {
           color: ThemeConstants.whiteColor,
         ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.filter_list,
-            ),
-            onPressed: () async {
-              final selectedFilter = await showMenu<String>(
-                menuPadding:
-                    EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
-                context: context,
-                position: RelativeRect.fromLTRB(
-                  MediaQuery.of(context).size.width - 50.w,
-                  kToolbarHeight,
-                  0.0,
-                  0.0,
-                ),
-                items: [
-                  PopupMenuItem<String>(
-                    padding: const EdgeInsets.all(0),
-                    value: null,
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
-                      color: viewModel.filterUserId == null
-                          ? ThemeConstants.greyColor.withOpacity(
-                              0.5) // Highlight if "All Participants" is selected
-                          : null,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 30.w,
-                            height: 30.h,
-                            child: CircleAvatar(
-                              radius: 15.r,
-                              child: const Icon(Icons.group),
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          Text(
-                            'All Members',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ...viewModel.cart.participants.map((participant) {
-                    final isSelected = viewModel.filterUserId == participant.id;
-                    return PopupMenuItem<String>(
-                      padding: const EdgeInsets.all(0),
-                      value: participant.id,
-                      child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          color: isSelected
-                              ? ThemeConstants.greyColor.withOpacity(0.5)
-                              : null,
-                          child: UserCard(
-                              name: participant.name, id: participant.id)),
-                    );
-                  })
-                ],
-              );
-              if (selectedFilter != null) {
-                viewModel.setFilter(selectedFilter);
-              } else {
-                // If null is selected (All Participants), reset the filter
-                viewModel.setFilter(null);
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.qr_code_2_rounded),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (ctx) => AlertDialog(
-                  title: const Text(
-                    'Scan this QR Code to be added to the order',
-                    textAlign: TextAlign.center,
-                  ),
-                  content: Container(
-                    height: 200,
-                    width: 200,
-                    alignment: Alignment.center,
-                    child: QrImageView(
-                      data: viewModel.cart.id,
-                      version: QrVersions.auto,
-                      size: 200.0,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            width: 8.w,
-          ),
-          TextButton(
-              onPressed: () {
-                getIt<NavigationService>().navigateTo(
-                  MenuView(restaurantId: viewModel.cart.restaurantId),
-                );
-              },
-              child: const Text(
-                'Add Items',
-                style: TextStyle(color: ThemeConstants.whiteColor),
-              ))
+          const MembersFilter(),
+          const Options(),
+          const AddItems(),
+          SizedBox(width: 8.w),
         ],
       ),
       body: StreamBuilder<Cart>(
@@ -166,12 +73,38 @@ class _CartScreenState extends State<CartScreen> {
             return const Center(child: Text('Cart is empty'));
           }
 
+          final cart = snapshot.data!;
+
+          if (cart.isDeleted) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              viewModel.cleanUpCart();
+              getIt<NavigationService>().popUntil(HomeScreen);
+              getIt<NavigationService>().navigateTo(const OrdersView());
+            });
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final participants = snapshot.data!.participants;
+
+          final isUserParticipant =
+              participants.any((p) => p.id == getIt<UserProvider>().user?.id);
+
+          if (!isUserParticipant && !viewModel.isCreator) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (viewModel.cart!.restaurantId == snapshot.data!.restaurantId) {
+                viewModel.cleanUpCart();
+                getIt<NavigationService>().popUntil(HomeScreen);
+              }
+            });
+          }
+
           final newList = viewModel.applyFilter(snapshot.data!.items);
           final curList = viewModel.filteredItems;
           _updateListState(curList, newList);
           viewModel.setCart = snapshot.data!;
           final filteredItems = newList;
           viewModel.setFilteredItems = filteredItems;
+
           return Column(
             children: [
               Expanded(
@@ -193,7 +126,6 @@ class _CartScreenState extends State<CartScreen> {
                         },
                       ),
               ),
-              PaymentSummary(viewModel.totalAmount),
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.all(16.0),
@@ -210,7 +142,42 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ],
                 ),
-                child: const ReadyToOrder(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Payment Summary',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Total Amount',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${viewModel.totalAmount} \$',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(height: 32.h),
+                    const ReadyToOrder(),
+                  ],
+                ),
               ),
             ],
           );

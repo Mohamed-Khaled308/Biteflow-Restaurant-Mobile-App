@@ -4,9 +4,9 @@ import 'package:biteflow/firebase_notifications.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/views/screens/client_offers/client_offers_view.dart';
-import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:biteflow/views/screens/menu/menu_view.dart';
+import 'package:biteflow/views/widgets/cart/cart_icon.dart';
 import 'package:biteflow/views/widgets/home/promotional_offer_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_card.dart';
 import 'package:biteflow/views/widgets/home/restaurant_list_tile.dart';
@@ -47,9 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeViewModel>();
-    final cartViewModel = context.read<CartViewModel>();
+    final cartViewModel = context.watch<CartViewModel>();
     final NavigationService navigationService = getIt<NavigationService>();
-    final modeViewModel = getIt<ModeViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -72,22 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+        iconTheme: const IconThemeData(
+          color: ThemeConstants.whiteColor,
+        ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Theme.of(context).brightness == Brightness.dark
-                  ? Icons.light_mode_sharp
-                  : Icons.dark_mode_sharp,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
-            ),
-            onPressed: () {
-              modeViewModel.toggleThemeMode();
-              
-            },
-          ),
-          
           IconButton(
               onPressed: () {
                 showDialog(
@@ -136,45 +123,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
               icon: const Icon(Icons.camera_alt_rounded)),
-          StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(context
-                    .watch<UserProvider>()
-                    .user
-                    ?.id) // Use the user's ID here
-                .snapshots(),
-            builder: (context, snapshot) {
-              // Handle loading state
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
+          IconButton(
+            icon: Stack(
+              children: [
+                const Icon(Icons.local_offer),
+                StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(context
+                          .watch<UserProvider>()
+                          .user
+                          ?.id) // Use the user's ID here
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    // Handle loading state
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox(); // Return an empty widget while loading
+                    }
 
-              // Handle errors
-              if (snapshot.hasError) {
-                return const Icon(Icons.local_offer);
-              }
+                    // Handle errors or cases where the snapshot is invalid
+                    if (snapshot.hasError ||
+                        !snapshot.hasData ||
+                        !snapshot.data!.exists) {
+                      return const SizedBox(); // No badge if there's an error or no data
+                    }
 
-              // Handle case where the snapshot doesn't contain any data
-              if (!snapshot.hasData || !snapshot.data!.exists) {
-                return const Icon(Icons.local_offer);
-              }
+                    // Safely cast the snapshot data to a Map<String, dynamic>
+                    final userData =
+                        snapshot.data?.data() as Map<String, dynamic>?;
+                    final unseenOffers = userData?['unseenOfferCount'] ?? 0;
 
-              // Safely cast the snapshot data to a Map<String, dynamic>
-              final userData = snapshot.data?.data() as Map<String, dynamic>?;
-              if (userData == null) {
-                return const Icon(
-                    Icons.local_offer); // In case the data is null
-              }
-
-              final unseenOffers = userData['unseenOfferCount'] ?? 0;
-
-              return IconButton(
-                icon: Stack(
-                  children: [
-                    const Icon(Icons.local_offer),
-                    if (unseenOffers > 0)
-                      Positioned(
+                    if (unseenOffers > 0) {
+                      return Positioned(
                         right: 0,
                         top: 0,
                         child: CircleAvatar(
@@ -188,14 +168,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                      ),
-                  ],
+                      );
+                    }
+
+                    return const SizedBox(); // No badge if unseenOffers is 0
+                  },
                 ),
-                onPressed: () {
-                  navigationService.navigateTo(const ClientOffersView());
-                },
-              );
+              ],
+            ),
+            onPressed: () {
+              navigationService.navigateTo(const ClientOffersView());
             },
+          ),
+          Visibility(
+            visible: !cartViewModel.isCartEmpty,
+            child: const CartIcon(),
           ),
         ],
         backgroundColor: ThemeConstants.primaryColor,

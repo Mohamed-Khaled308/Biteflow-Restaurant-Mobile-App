@@ -6,13 +6,15 @@ class Cart {
   final String creatorId; // New field for the user who created the cart
   final List<CartParticipant> participants;
   final List<CartItem> items;
+  bool isDeleted;
 
   Cart({
     required this.id,
     required this.restaurantId,
-    required this.creatorId,  // Accept creatorId in the constructor
+    required this.creatorId, // Accept creatorId in the constructor
     this.participants = const [],
     this.items = const [],
+    this.isDeleted = false,
   });
 
   factory Cart.fromData(Map<String, dynamic> data) {
@@ -29,6 +31,7 @@ class Cart {
               ?.map((item) => CartItem.fromData(item as Map<String, dynamic>))
               .toList() ??
           [],
+      isDeleted: data['isDeleted'] ?? false, // Handle isDeleted field
     );
   }
 
@@ -39,6 +42,7 @@ class Cart {
       'creatorId': creatorId, // Include creatorId in the JSON representation
       'participants': participants.map((p) => p.toJson()).toList(),
       'items': items.map((i) => i.toJson()).toList(),
+      'isDeleted': isDeleted, // Include isDeleted in the JSON representation
     };
   }
 }

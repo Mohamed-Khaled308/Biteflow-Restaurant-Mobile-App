@@ -73,7 +73,7 @@ class _SignupScreenState extends State<SignupScreen> {
             padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
             child: Center(
               child: SizedBox(
-                width: 320.w,
+                width: 300.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -116,7 +116,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             )
                           : const Text('Sign up'),
                     ),
-                    verticalSpaceMassive,
+                    verticalSpaceLarge,
+                    verticalSpaceLarge,
                     verticalSpaceSmall,
                     verticalSpaceTiny,
                     GestureDetector(
@@ -186,7 +187,7 @@ class _SignupScreenState extends State<SignupScreen> {
               errorMessage,
               style: TextStyle(
                 color: ThemeConstants.errorColor,
-                fontSize: 14.sp,
+                fontSize: 12.5.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -1,8 +1,8 @@
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/category.dart';
-import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
-import 'package:biteflow/views/screens/cart/cart_view.dart';
+import 'package:biteflow/views/widgets/cart/cart_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../../viewmodels/menu_view_model.dart';
@@ -53,6 +53,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MenuViewModel>();
+    final cartViewModel = context.watch<CartViewModel>();
     // print('Categories: ${viewModel.categories}');
     // print('Filtered Items: ${viewModel.filteredItems.length}');
     //final screenHeight = MediaQuery.of(context).size.height;
@@ -60,14 +61,17 @@ class _MenuScreenState extends State<MenuScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu'),
+        title: const Text('Menu',
+            style: TextStyle(color: ThemeConstants.whiteColor)),
+        iconTheme: const IconThemeData(
+          color: ThemeConstants.whiteColor,
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
-          IconButton(
-              onPressed: () {
-                getIt<NavigationService>().navigateTo(const CartView());
-              },
-              icon: const Icon(Icons.shopping_cart_sharp)),
+          Visibility(
+            visible: !cartViewModel.isCartEmpty,
+            child: const CartIcon(),
+          ),
         ],
       ),
       body: CustomScrollView(

@@ -1,9 +1,11 @@
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
+import 'package:biteflow/locator.dart';
 
 class AddNotes extends StatefulWidget {
   final String initialNote;
@@ -33,6 +35,13 @@ class AddNotesState extends State<AddNotes> {
 
   void _openNoteBottomSheet(BuildContext context) {
     final viewModel = context.read<CartItemViewModel>();
+    final isCurrentUserOwner =
+        viewModel.cartItem.userId == getIt<UserProvider>().user!.id;
+
+    if (!isCurrentUserOwner) {
+      return; // Do nothing if the current user is not the owner
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -46,7 +55,7 @@ class AddNotesState extends State<AddNotes> {
               });
 
               return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -87,8 +96,11 @@ class AddNotesState extends State<AddNotes> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartItemViewModel>();
+    final isCurrentUserOwner =
+        viewModel.cartItem.userId == getIt<UserProvider>().user!.id;
+
     return InkWell(
-      onTap: () => _openNoteBottomSheet(context),
+      onTap: isCurrentUserOwner ? () => _openNoteBottomSheet(context) : null,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         child: Row(
@@ -97,6 +109,9 @@ class AddNotesState extends State<AddNotes> {
             Icon(
               Icons.mode_comment_outlined,
               size: 28.sp,
+              color: isCurrentUserOwner
+                  ? ThemeConstants.blackColor
+                  : ThemeConstants.greyColor,
             ),
             SizedBox(width: 16.w),
             Expanded(
@@ -106,7 +121,9 @@ class AddNotesState extends State<AddNotes> {
                   Text(
                     'Any special requests?',
                     style: TextStyle(
-                      color: ThemeConstants.blackColor,
+                      color: isCurrentUserOwner
+                          ? ThemeConstants.blackColor
+                          : ThemeConstants.greyColor,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                     ),
@@ -115,7 +132,9 @@ class AddNotesState extends State<AddNotes> {
                     Text(
                       viewModel.notes,
                       style: TextStyle(
-                        color: ThemeConstants.blackColor60,
+                        color: isCurrentUserOwner
+                            ? ThemeConstants.blackColor60
+                            : ThemeConstants.greyColor,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -126,11 +145,15 @@ class AddNotesState extends State<AddNotes> {
               ),
             ),
             TextButton(
-              onPressed: () => _openNoteBottomSheet(context),
+              onPressed: isCurrentUserOwner
+                  ? () => _openNoteBottomSheet(context)
+                  : null,
               child: Text(
                 viewModel.notes.isNotEmpty ? 'Edit' : 'Add note',
                 style: TextStyle(
-                  color: ThemeConstants.primaryColor,
+                  color: isCurrentUserOwner
+                      ? ThemeConstants.primaryColor
+                      : ThemeConstants.greyColor,
                   fontSize: 14.sp,
                 ),
               ),
