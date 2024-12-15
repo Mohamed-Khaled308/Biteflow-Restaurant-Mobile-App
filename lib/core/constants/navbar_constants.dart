@@ -1,6 +1,6 @@
 // import 'package:biteflow/views/screens/client_offers/client_offers_view.dart';
 // import 'package:biteflow/views/screens/manager_offers/manage_offers_view.dart';
-import 'package:biteflow/views/screens/payment/payment_test_view.dart';
+// import 'package:biteflow/views/screens/payment/payment_test_view.dart';
 import 'package:biteflow/views/screens/manager_promotional_offers/manager_promotional_offers_view.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/views/screens/home/home_view.dart';
@@ -22,8 +22,8 @@ class NavbarConstants {
     const HomeView(),
     // const ClientOffersView(),
     const OrdersView(),
-    // const ProfileView(),
-    const PaymentTestView(),
+    const ProfileView(),
+    // const PaymentTestView(),
   ];
 
   static final List<Map<String, dynamic>> managerNavItems = [
