@@ -1,4 +1,5 @@
  import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/models/order_item_participant.dart';
 
 List<OrderItem> orderedItemsData = [
   OrderItem(
@@ -12,6 +13,16 @@ List<OrderItem> orderedItemsData = [
     notes: 'Extra spicy',
     categoryId: 'c1',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
   OrderItem(
     id: '2',
@@ -24,6 +35,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c2',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -36,6 +57,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c3',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -48,6 +79,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c4',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -60,6 +101,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c5',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -72,6 +123,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c6',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -84,6 +145,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c7',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -96,6 +167,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c1',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -108,6 +189,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c2',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -120,6 +211,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c3',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
    OrderItem(
     id: '2',
@@ -132,6 +233,16 @@ List<OrderItem> orderedItemsData = [
     notes: '',
     categoryId: 'c4',
     restaurantId: 'r1',
+          participants: [
+            OrderItemParticipant(
+              userId: '1',
+              userName: 'John Doe',
+            ),
+            OrderItemParticipant(
+              userId: '2',
+              userName: 'Jane Doe',
+            ),
+          ],
   ),
   
   // Add more items as needed

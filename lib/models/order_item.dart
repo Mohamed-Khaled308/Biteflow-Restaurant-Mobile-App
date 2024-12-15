@@ -1,8 +1,11 @@
 import 'package:biteflow/models/item.dart';
+import 'package:biteflow/models/order_item_participant.dart';
 
 class OrderItem extends Item {
   final int quantity;
   final String notes;
+  final double discountPercentage;
+  final List<OrderItemParticipant> participants;
 
   OrderItem({
     required super.id,
@@ -14,12 +17,18 @@ class OrderItem extends Item {
     required super.rating,
     required super.categoryId,
     required super.restaurantId,
+    required this.participants,
     this.notes = '',
+    this.discountPercentage = 0.0,
   });
 
   OrderItem.fromData(Map<String, dynamic> data)
       : quantity = data['quantity'],
         notes = data['notes'],
+        discountPercentage = (data['discountPercentage'] ?? 0.0).toDouble(),
+        participants = (data['participants'] as List<dynamic>? ?? [])
+            .map((participant) => OrderItemParticipant.fromData(participant))
+            .toList(),
         super(
             id: data['id'],
             title: data['title'],
@@ -47,6 +56,7 @@ class OrderItem extends Item {
       notes: updatedNotes ?? notes,
       categoryId: categoryId,
       restaurantId: restaurantId,
+      participants: participants,
     );
   }
 
@@ -55,6 +65,7 @@ class OrderItem extends Item {
     Map<String, dynamic> data = super.toJson();
     data['quantity'] = quantity;
     data['notes'] = notes;
+    data['discountPercentage'] = discountPercentage;
     return data;
   }
 }

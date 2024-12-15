@@ -27,7 +27,7 @@ class NavbarConstants {
   ];
 
   static final List<Map<String, dynamic>> managerNavItems = [
-    {'icon': 'assets/icons/menu.svg', 'title': 'Menu'},
+    {'icon': 'assets/icons/home.svg', 'title': 'Menu'},
     {'icon': 'assets/icons/home.svg', 'title': 'Offers'},
     {'icon': 'assets/icons/order.svg', 'title': 'Orders'},
     {'icon': 'assets/icons/profile.svg', 'title': 'Profile'},
