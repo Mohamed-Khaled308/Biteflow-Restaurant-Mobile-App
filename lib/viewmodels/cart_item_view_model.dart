@@ -42,7 +42,7 @@ class CartItemViewModel extends BaseModel {
     cartItem.notes = _notes;
     setBusy(true);
     final result =
-        await _cartService.updateItemInCart(_cartViewModel.cart.id, cartItem);
+        await _cartService.updateItemInCart(_cartViewModel.cart!.id, cartItem);
     if (result.isSuccess) {
     } else {
       getIt<Logger>().e(result.error);
@@ -55,7 +55,7 @@ class CartItemViewModel extends BaseModel {
     cartItem.participants.add(participant);
     setBusy(true);
     final result =
-        await _cartService.updateItemInCart(_cartViewModel.cart.id, cartItem);
+        await _cartService.updateItemInCart(_cartViewModel.cart!.id, cartItem);
     if (result.isSuccess) {
     } else {
       getIt<Logger>().e(result.error);
@@ -69,7 +69,7 @@ class CartItemViewModel extends BaseModel {
         .removeWhere((participant) => participant.id == participantId);
     setBusy(true);
     final result =
-        await _cartService.updateItemInCart(_cartViewModel.cart.id, cartItem);
+        await _cartService.updateItemInCart(_cartViewModel.cart!.id, cartItem);
     if (result.isSuccess) {
     } else {
       getIt<Logger>().e(result.error);

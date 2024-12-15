@@ -26,7 +26,7 @@ class ReadyToOrder extends StatelessWidget {
                   child: Text(
                     // textAlign: TextAlign.center,
                     allParticipantsReady
-                        ? 'We are Ready!'
+                        ? 'Everyone\'s ready!'
                         : 'Waiting for others',
                     style: TextStyle(
                       fontSize: 16.sp,

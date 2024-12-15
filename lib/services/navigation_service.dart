@@ -9,7 +9,7 @@ class NavigationService {
     _navigationKey.currentState!.pop();
   }
 
-  Future<dynamic> navigateTo(Widget screen, {dynamic arguments}) {
+  Future<void> navigateTo(Widget screen, {dynamic arguments}) {
     return _navigationKey.currentState!.push(
       MaterialPageRoute(
         builder: (_) => screen,
@@ -18,7 +18,7 @@ class NavigationService {
     );
   }
 
-  Future<dynamic> replaceWith(Widget screen, {dynamic arguments}) {
+  Future<void> replaceWith(Widget screen, {dynamic arguments}) {
     return _navigationKey.currentState!.pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (_) => screen,
@@ -28,12 +28,18 @@ class NavigationService {
     );
   }
 
-  Future<dynamic> navigateAndReplace(Widget screen, {dynamic arguments}) {
+  Future<void> navigateAndReplace(Widget screen, {dynamic arguments}) {
     return _navigationKey.currentState!.pushReplacement(
       MaterialPageRoute(
         builder: (_) => screen,
         settings: RouteSettings(arguments: arguments),
       ),
     );
+  }
+
+  Future<void> popUntil(Type screen) async {
+    _navigationKey.currentState!.popUntil((route) {
+      return route.isFirst || route.runtimeType == screen;
+    });
   }
 }

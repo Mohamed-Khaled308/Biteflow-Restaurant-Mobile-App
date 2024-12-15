@@ -2,7 +2,12 @@ import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/models/menu_item.dart';
+import 'package:biteflow/models/order.dart';
+import 'package:biteflow/models/order_clients_payment.dart';
+import 'package:biteflow/models/order_item.dart';
+import 'package:biteflow/models/order_item_participant.dart';
 import 'package:biteflow/services/firestore/cart_service.dart';
+import 'package:biteflow/services/firestore/order_service.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
@@ -13,15 +18,18 @@ class CartViewModel extends BaseModel {
   final _navigationService = getIt<NavigationService>();
   final _userProvider = getIt<UserProvider>();
   final _cartService = getIt<CartService>();
+  final _orderService = getIt<OrderService>();
   final _logger = getIt<Logger>();
 
   Stream<Cart>? _cartStream;
   Stream<Cart>? get cartStream => _cartStream;
 
   Cart? _cart;
-  Cart get cart => _cart!;
+  Cart? get cart => _cart;
+  bool get isCartEmpty => _cart == null || cart!.items.isEmpty;
   set setCart(Cart? cart) {
-    if (cart != _cart) {
+    if (_cart == null ||
+        cart!.toJson().toString() != _cart!.toJson().toString()) {
       _cart = cart;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
@@ -38,11 +46,18 @@ class CartViewModel extends BaseModel {
     _isFilterOpen = !_isFilterOpen;
   }
 
-  bool get isReady =>
-      _cart!.participants
-          .firstWhere((p) => p.id == _userProvider.user!.id)
-          .status ==
-      ParticipantStatus.done;
+  bool get isReady {
+    int participantIndex = _cart!.participants.indexWhere(
+      (p) => p.id == _userProvider.user!.id,
+    );
+
+    if (participantIndex != -1) {
+      CartParticipant participant = _cart!.participants[participantIndex];
+      return participant.status == ParticipantStatus.done;
+    }
+
+    return false;
+  }
 
   bool checkAllParticipantsDone() {
     String creatorId = _cart!.creatorId;
@@ -54,7 +69,8 @@ class CartViewModel extends BaseModel {
     return allDone;
   }
 
-  bool get isCreator => cart.creatorId == _userProvider.user!.id;
+  bool get isCreator =>
+      _cart == null ? false : cart!.creatorId == _userProvider.user!.id;
 
   List<CartItem> _filteredItems = [];
   List<CartItem> get filteredItems => _filteredItems;
@@ -76,6 +92,19 @@ class CartViewModel extends BaseModel {
     notifyListeners();
   }
 
+  int get cartItemCount {
+    int cnt = 0;
+    for (var item in cart!.items) {
+      cnt += item.quantity;
+    }
+    return cnt;
+  }
+
+  bool isCartOpened = false;
+  set setIsCartOpen(bool value) {
+    isCartOpened = value;
+  }
+
   void joinCart(String cartId) async {
     _cartStream = _cartService.listenToCartUpdates(cartId);
     CartParticipant participant = CartParticipant(
@@ -83,9 +112,76 @@ class CartViewModel extends BaseModel {
     await _cartService.addParticipantToCart(cartId, participant);
   }
 
-  void leaveCart() {
+  Future<void> leaveCart() async {
+    CartParticipant participant = _createParticipant();
+
+    if (isCreator) {
+      await _handleCreatorLeaving(participant);
+    } else {
+      await _handleParticipantLeaving(participant);
+    }
+
+    cleanUpCart();
+  }
+
+  CartParticipant _createParticipant() {
+    return CartParticipant(
+      id: _userProvider.user!.id,
+      name: _userProvider.user!.name,
+    );
+  }
+
+  Future<void> _handleCreatorLeaving(CartParticipant participant) async {
+    await _removeAllParticipants();
+
+    // await _cartService.deleteCart(_cart!.id);
+
+    _logger.d('Creator left. Cart and participants removed.');
+  }
+
+  Future<void> _handleParticipantLeaving(CartParticipant participant) async {
+    await _removeParticipantFromItems(participant);
+
+    await _cartService.removeParticipantFromCart(_cart!.id, participant);
+
+    await _removeOwnerItems(participant);
+  }
+
+  Future<void> _removeAllParticipants() async {
+    for (var participant in _cart!.participants) {
+      await _cartService.removeParticipantFromCart(_cart!.id, participant);
+    }
+  }
+
+  Future<void> _removeParticipantFromItems(CartParticipant participant) async {
+    for (var item in _cart!.items) {
+      item.participants.removeWhere((p) => p.id == participant.id);
+
+      final result = await _cartService.updateItemInCart(_cart!.id, item);
+      if (!result.isSuccess) {
+        _logger.e('Error updating item ${item.menuItem.id}: ${result.error}');
+      }
+    }
+  }
+
+  Future<void> _removeOwnerItems(CartParticipant participant) async {
+    List<CartItem> itemsToRemove = [];
+
+    for (var item in _cart!.items) {
+      if (item.userId == participant.id) {
+        itemsToRemove.add(item);
+      }
+    }
+
+    for (var item in itemsToRemove) {
+      await removeItem(item.menuItem.id);
+    }
+  }
+
+  void cleanUpCart() {
     _cartStream = null;
     _cart = null;
+
     notifyListeners();
   }
 
@@ -140,24 +236,34 @@ class CartViewModel extends BaseModel {
   }) async {
     _navigationService.pop();
     if (_cart == null ||
-        menuItem.restaurantId != _cart!.items[0].menuItem.restaurantId) {
+        _cart!.items.isNotEmpty &&
+            menuItem.restaurantId != _cart!.items[0].menuItem.restaurantId) {
+      if (_cart != null) {
+        await leaveCart();
+      }
       await _createNewCart(menuItem.restaurantId);
     }
-
     CartItem newItem = _createItem(menuItem, quantity, notes);
     final result = await _cartService.addItemToCart(_cart!.id, newItem);
     if (result.isSuccess) {
-      _navigationService.navigateTo(const CartView());
+      if (isCartOpened) {
+        _navigationService.pop();
+      } else {
+        _navigationService.navigateTo(const CartView());
+        setIsCartOpen = true;
+      }
     } else {
       _logger.e(result.error);
     }
   }
 
-  void removeItem(String itemId) async {
+  Future<void> removeItem(String itemId) async {
     int idx = _findItem(itemId);
     if (idx == -1) return;
+    _cart!.items.removeAt(idx);
     final result = await _cartService.removeItem(_cart!.id, itemId);
     if (result.isSuccess) {
+      notifyListeners();
     } else {
       _logger.e(result.error);
     }
@@ -206,23 +312,36 @@ class CartViewModel extends BaseModel {
 
   double get totalAmount {
     double total = 0;
+
     if (_cart != null) {
       for (final item in _cart!.items) {
-        if (filterUserId == null || item.userId == filterUserId) {
+        if (filterUserId == null) {
           total += item.menuItem.price * item.quantity;
+        } else {
+          bool isFilterUserInParticipants = item.participants
+              .any((participant) => participant.id == filterUserId);
+          if (isFilterUserInParticipants) {
+            double amountPerUser = item.menuItem.price * item.quantity;
+
+            if (item.participants.isNotEmpty) {
+              amountPerUser /= item.participants.length;
+            }
+
+            total += amountPerUser;
+          }
         }
       }
     }
+
     return total;
   }
 
   void acceptInvitation(String itemId) async {
     int idx = _findItem(itemId);
-    if (idx == -1) return; // Item not found
+    if (idx == -1) return;
 
     CartItem updatedItem = _cart!.items[idx];
 
-    // Find the participant and update their status to 'done'
     for (var participant in updatedItem.participants) {
       if (participant.id == _userProvider.user!.id) {
         participant.status = ParticipantStatus.done;
@@ -230,7 +349,6 @@ class CartViewModel extends BaseModel {
       }
     }
 
-    // Update the item in the cart
     final result = await _cartService.updateItemInCart(_cart!.id, updatedItem);
     if (result.isSuccess) {
       _cart!.items[idx] = updatedItem;
@@ -247,11 +365,9 @@ class CartViewModel extends BaseModel {
 
     CartItem updatedItem = _cart!.items[idx];
 
-    // Remove the participant with the current user's ID
     updatedItem.participants
         .removeWhere((participant) => participant.id == _userProvider.user!.id);
 
-    // Update the item in the cart
     final result = await _cartService.updateItemInCart(_cart!.id, updatedItem);
     if (result.isSuccess) {
       _cart!.items[idx] = updatedItem;
@@ -280,7 +396,89 @@ class CartViewModel extends BaseModel {
     }
   }
 
-  void placeOrder() {
-    // TODO FINALLY ORDER IS PLACED !!!!!!!!!!!!!!!!!!!!!!!!!
+  double getAmount(CartParticipant participant) {
+    double total = 0;
+
+    for (final item in _cart!.items) {
+      bool isParticipantInList =
+          item.participants.any((p) => p.id == participant.id);
+
+      if (isParticipantInList) {
+        double amountPerUser = item.menuItem.price * item.quantity;
+        amountPerUser /= item.participants.length;
+
+        total += amountPerUser;
+      }
+    }
+
+    return total;
+  }
+
+  void placeOrder(final splittingMethod) async {
+    if (_cart == null) {
+      _logger.e('No active cart to place an order.');
+      return;
+    }
+    _filterUserId = null;
+
+    try {
+      List<OrderItem> orderItems = _cart!.items.map((cartItem) {
+        return OrderItem(
+          id: cartItem.menuItem.id,
+          title: cartItem.menuItem.title,
+          price: cartItem.menuItem.price,
+          imageUrl: cartItem.menuItem.imageUrl,
+          description: cartItem.menuItem.description,
+          rating: cartItem.menuItem.rating,
+          categoryId: cartItem.menuItem.categoryId,
+          restaurantId: cartItem.menuItem.restaurantId,
+          quantity: cartItem.quantity,
+          notes: cartItem.notes,
+          discountPercentage: cartItem.menuItem.discountPercentage,
+          participants: cartItem.participants.map((participant) {
+            return OrderItemParticipant(
+              userId: participant.id,
+              userName: participant.name,
+            );
+          }).toList(),
+        );
+      }).toList();
+
+      List<OrderClientsPayment> clientPayments =
+          _cart!.participants.map((participant) {
+        final amount = splittingMethod == 'equally'
+            ? totalAmount / _cart!.participants.length
+            : getAmount(participant);
+        return OrderClientsPayment(
+            userId: participant.id, isPaid: false, amount: amount);
+      }).toList();
+
+      final order = Order(
+        id: _cart!.id,
+        restaurantId: _cart!.restaurantId,
+        orderNumber: _generateOrderNumber(),
+        totalAmount: totalAmount,
+        items: orderItems,
+        orderClientsPayment: clientPayments,
+        paymentMethod: '',
+      );
+
+      final result = await _orderService.placeOrder(order);
+
+      if (result.isSuccess) {
+        _logger.d('Order placed successfully: ${order.id}');
+
+        _cartService.softDeleteCart(_cart!.id);
+      } else {
+        _logger.e('Error placing order: ${result.error}');
+      }
+    } catch (e) {
+      _logger.e('Unexpected error while placing order: $e');
+    }
+  }
+
+  int _generateOrderNumber() {
+    final now = DateTime.now();
+    return now.millisecondsSinceEpoch % 100000; // this is a dummy number
   }
 }

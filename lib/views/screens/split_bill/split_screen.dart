@@ -20,9 +20,13 @@ class SplitScreenState extends State<SplitScreen> {
     final viewModel = context.read<CartViewModel>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Choose Splitting Method',
-          style: TextStyle(color: ThemeConstants.whiteColor),
+        title: Text(
+          'Splitting Options',
+          style: TextStyle(
+            color: ThemeConstants.whiteColor,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         backgroundColor: ThemeConstants.primaryColor,
         iconTheme: const IconThemeData(
@@ -30,61 +34,119 @@ class SplitScreenState extends State<SplitScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Choose splitting method',
+              'How would you like to split the bill?',
               style: TextStyle(
-                fontSize: 24.sp,
+                fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
+                color: ThemeConstants.blackColor,
+              ),
+            ),
+            verticalSpaceLarge,
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedMethod = 'equally';
+                });
+              },
+              child: ListTile(
+                leading: const Icon(
+                  Icons.group,
+                  color: ThemeConstants.primaryColor,
+                ),
+                title: Text(
+                  'Split Equally',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(
+                  'Everyone pays the same.',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: ThemeConstants.blackColor60,
+                  ),
+                ),
+                trailing: Radio<String>(
+                  value: 'equally',
+                  groupValue: _selectedMethod,
+                  activeColor: ThemeConstants.primaryColor,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedMethod = value;
+                    });
+                  },
+                ),
               ),
             ),
             verticalSpaceMedium,
 
-            ListTile(
-              title: const Text('Split Equally'),
-              leading: Radio<String>(
-                value: 'equally',
-                groupValue: _selectedMethod,
-                onChanged: (String? value) {
-                  setState(() {
-                    _selectedMethod = value;
-                  });
-                  // print('Split Equally selected');
-                },
+            // Item-Based Splitting Option
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedMethod = 'item_based';
+                });
+              },
+              child: ListTile(
+                leading: const Icon(
+                  Icons.pie_chart,
+                  color: ThemeConstants.primaryColor,
+                ),
+                title: Text(
+                  'Item-Based Splitting',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(
+                  'Each item is split equally among the people sharing it.',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: ThemeConstants.blackColor60,
+                  ),
+                ),
+                trailing: Radio<String>(
+                  value: 'item_based',
+                  groupValue: _selectedMethod,
+                  activeColor: ThemeConstants.primaryColor,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedMethod = value;
+                    });
+                  },
+                ),
               ),
             ),
-            verticalSpaceMedium,
-
-            // Option for Item-based Splitting
-            ListTile(
-              title: const Text('Item Based Splitting'),
-              leading: Radio<String>(
-                value: 'item_based',
-                groupValue: _selectedMethod,
-                onChanged: (String? value) {
-                  setState(() {
-                    _selectedMethod = value;
-                  });
-                  // print('Item Based Splitting selected');
-                },
-              ),
-            ),
-
             const Spacer(),
 
+            // Place Order Button
             ElevatedButton(
               onPressed: () {
-                viewModel.placeOrder();
-                // print('Order Placed');
+                viewModel.placeOrder(_selectedMethod);
               },
               style: ElevatedButton.styleFrom(
-                minimumSize:
-                    const Size(double.infinity, 50), // Full width button
+                backgroundColor: ThemeConstants.primaryColor,
+                minimumSize: Size(double.infinity, 50.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
               ),
-              child: const Text('Place Order'),
+              child: Text(
+                'Place Order',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: ThemeConstants.whiteColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ],
         ),

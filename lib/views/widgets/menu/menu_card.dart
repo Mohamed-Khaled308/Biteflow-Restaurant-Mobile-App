@@ -1,5 +1,6 @@
 import 'package:biteflow/models/menu_item.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
+import 'package:biteflow/views/widgets/dialogues/action_dialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../theme/biteflow_theme.dart';
@@ -30,7 +31,8 @@ class MenuCard extends StatelessWidget {
     final viewModel = context.watch<CartViewModel>();
 
     // Accessing the current theme for colors and text styles
-    final theme = BiteflowTheme.lightTheme(context); // Get light theme from AppTheme
+    final theme =
+        BiteflowTheme.lightTheme(context); // Get light theme from AppTheme
 
     return Card(
       elevation: 5,
@@ -142,16 +144,46 @@ class MenuCard extends StatelessWidget {
             // Add to Cart Button
             GestureDetector(
               onTap: () {
-                viewModel.addItem(
-                    menuItem: MenuItem(
-                        id: DateTime.now().toString(),
-                        title: title,
-                        price: price,
-                        imageUrl: imageUrl,
-                        description: description,
-                        rating: rating,
-                        categoryId: categoryId,
-                        restaurantId: restaurantId));
+                if (viewModel.isCartEmpty ||
+                    viewModel.cart!.restaurantId == restaurantId) {
+                  viewModel.addItem(
+                      menuItem: MenuItem(
+                          id: DateTime.now().toString(),
+                          title: title,
+                          price: price,
+                          imageUrl: imageUrl,
+                          description: description,
+                          rating: rating,
+                          categoryId: categoryId,
+                          restaurantId: restaurantId));
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialogue(
+                        title: 'Switch Restaurant?',
+                        body:
+                            'Adding this item will clear your current cart. Do you want to continue?',
+                        actionLabel: 'Yes, Proceed',
+                        onAction: () {
+                          viewModel.addItem(
+                            menuItem: MenuItem(
+                              id: DateTime.now().toString(),
+                              title: title,
+                              price: price,
+                              imageUrl: imageUrl,
+                              description: description,
+                              rating: rating,
+                              categoryId: categoryId,
+                              restaurantId: restaurantId,
+                            ),
+                          );
+                          // viewModel.leaveCart();
+                        },
+                      );
+                    },
+                  );
+                }
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),

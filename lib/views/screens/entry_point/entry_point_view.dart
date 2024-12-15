@@ -19,6 +19,7 @@ class EntryPointView extends StatelessWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _navigationService.replaceWith(const LoginView());
       });
+      return const SizedBox.shrink();
     }
 
     return ChangeNotifierProvider(

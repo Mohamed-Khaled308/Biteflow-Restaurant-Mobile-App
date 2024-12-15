@@ -1,4 +1,5 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
@@ -12,6 +13,9 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartItemViewModel>();
+    final isCurrentUserOwner =
+        viewModel.cartItem.userId == getIt<UserProvider>().user!.id;
+
     return BottomAppBar(
       height: 90.h,
       elevation: 10,
@@ -38,12 +42,12 @@ class BottomBar extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: viewModel.itemQuantity > 1
+                  onPressed: isCurrentUserOwner && viewModel.itemQuantity > 1
                       ? () => viewModel.updateItemQuantity(-1)
                       : null,
                   icon: Icon(
                     Icons.remove,
-                    color: viewModel.itemQuantity > 1
+                    color: isCurrentUserOwner && viewModel.itemQuantity > 1
                         ? ThemeConstants.blackColor
                         : ThemeConstants.greyColor,
                   ),
@@ -60,12 +64,12 @@ class BottomBar extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: viewModel.itemQuantity < 99
+                  onPressed: isCurrentUserOwner && viewModel.itemQuantity < 99
                       ? () => viewModel.updateItemQuantity(1)
                       : null,
                   icon: Icon(
                     Icons.add,
-                    color: viewModel.itemQuantity < 99
+                    color: isCurrentUserOwner && viewModel.itemQuantity < 99
                         ? ThemeConstants.blackColor
                         : ThemeConstants.greyColor,
                   ),
@@ -76,14 +80,16 @@ class BottomBar extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: viewModel.busy
-                      ? null
-                      : () {
+                  onPressed: isCurrentUserOwner && !viewModel.busy
+                      ? () {
                           viewModel.updateItem();
                           getIt<NavigationService>().pop();
-                        },
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ThemeConstants.primaryColor,
+                    backgroundColor: isCurrentUserOwner
+                        ? ThemeConstants.primaryColor
+                        : ThemeConstants.greyColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),

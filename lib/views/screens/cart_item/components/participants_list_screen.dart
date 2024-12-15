@@ -1,5 +1,7 @@
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
+import 'package:biteflow/views/widgets/dialogues/action_dialogue.dart';
 import 'package:biteflow/views/widgets/user/user_avatar.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +19,21 @@ class ParticipantsListScreen extends StatelessWidget {
     getIt<Logger>().d('rebuild');
     final cartViewModel = context.watch<CartViewModel>();
     final cartItemViewModel = context.watch<CartItemViewModel>();
-    final cartParticipants = cartViewModel.cart.participants;
+    final cartParticipants = cartViewModel.cart!.participants;
+
+    // Sort the participants so the one matching the cartItem.userId appears first
+    final cartItemUserId = cartItemViewModel.cartItem.userId;
+    cartParticipants.sort((a, b) {
+      if (a.id == cartItemUserId) return -1; // Move the user to the top
+      if (b.id == cartItemUserId) return 1; // Keep the other user at the bottom
+      return 0; // Keep the rest in the same order
+    });
+
     final itemParticipants = cartItemViewModel.cartItem.participants;
-    final currentUserId = cartItemViewModel.cartItem.userId;
+
+    // Check if the current user is the owner
+    final isCurrentUserOwner =
+        cartItemViewModel.cartItem.userId == getIt<UserProvider>().user!.id;
 
     return Scaffold(
       appBar: AppBar(
@@ -53,12 +67,14 @@ class ParticipantsListScreen extends StatelessWidget {
                 item.status == ParticipantStatus.done);
 
             return ListTile(
-              onTap: () {
-                final isSelected = cartItemViewModel.selectedParticipants
-                    .contains(participant);
-                cartItemViewModel.toggleParticipantSelection(
-                    participant, !isSelected);
-              },
+              onTap: isCurrentUserOwner
+                  ? () {
+                      final isSelected = cartItemViewModel.selectedParticipants
+                          .contains(participant);
+                      cartItemViewModel.toggleParticipantSelection(
+                          participant, !isSelected);
+                    }
+                  : null,
               leading: UserAvatar(
                   userId: participant.id, userName: participant.name),
               title: Text(
@@ -71,63 +87,68 @@ class ParticipantsListScreen extends StatelessWidget {
               subtitle: Text(
                 isInItemParticipants
                     ? (isPending
-                        ? 'Invited'
-                        : (currentUserId == participant.id
-                            ? 'Owner'
-                            : 'Accepted'))
-                    : 'Uninvited',
+                        ? 'Pending' // Invitation sent but not accepted yet
+                        : (cartItemUserId == participant.id
+                            ? 'Owner' // For the owner of the cart item
+                            : 'Joined')) // Invitation accepted
+                    : 'Not Invited', // Not invited yet
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: ThemeConstants.blackColor60,
                 ),
               ),
-              trailing: isInItemParticipants
-                  ? (isPending
-                      ? Text(
-                          'Pending',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: ThemeConstants.primaryColor),
-                        )
-                      : (isAccepted && currentUserId != participant.id)
-                          ? IconButton(
-                              icon: const Icon(
-                                Icons.delete,
-                                color: ThemeConstants.errorColor,
+              trailing: isCurrentUserOwner
+                  ? (isInItemParticipants
+                      ? (isPending
+                          ? Text(
+                              'Pending',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: ThemeConstants.primaryColor,
                               ),
-                              onPressed: () {
-                                // Show confirmation dialog before removing
-                                _showRemoveConfirmationDialog(
-                                    context, cartItemViewModel, participant);
-                              },
                             )
-                          : null)
-                  : Checkbox(
-                      value: cartItemViewModel.selectedParticipants
-                          .contains(participant),
-                      onChanged: (bool? value) {
-                        if (value != null) {
-                          cartItemViewModel.toggleParticipantSelection(
-                              participant, value);
-                        }
-                      },
-                    ),
+                          : (isAccepted && cartItemUserId != participant.id)
+                              ? IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: ThemeConstants.errorColor,
+                                  ),
+                                  onPressed: () {
+                                    // Show confirmation dialog before removing
+                                    _showRemoveConfirmationDialog(context,
+                                        cartItemViewModel, participant);
+                                  },
+                                )
+                              : null)
+                      : Checkbox(
+                          value: cartItemViewModel.selectedParticipants
+                              .contains(participant),
+                          onChanged: (bool? value) {
+                            if (value != null) {
+                              cartItemViewModel.toggleParticipantSelection(
+                                  participant, value);
+                            }
+                          },
+                        ))
+                  : null,
             );
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: cartItemViewModel.selectedParticipants.isEmpty
-            ? null
-            : cartItemViewModel.sendInvitations,
-        backgroundColor: cartItemViewModel.selectedParticipants.isEmpty
-            ? ThemeConstants.greyColor 
-            : ThemeConstants.primaryColor,
-        child: const Icon(
-          Icons.send,
-          color: ThemeConstants.whiteColor,
-        ),
-      ),
+      floatingActionButton: isCurrentUserOwner
+          ? FloatingActionButton(
+              onPressed: cartItemViewModel.selectedParticipants.isEmpty
+                  ? null
+                  : cartItemViewModel.sendInvitations,
+              backgroundColor: cartItemViewModel.selectedParticipants.isEmpty
+                  ? ThemeConstants.greyColor
+                  : ThemeConstants.primaryColor,
+              child: const Icon(
+                Icons.send,
+                color: ThemeConstants.whiteColor,
+              ),
+            )
+          : null,
     );
   }
 
@@ -136,26 +157,14 @@ class ParticipantsListScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Remove ${participant.name}'),
-          content: const Text(
-              'Are you sure you want to remove this user from the item?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                cartItemViewModel.removeParticipantFromItem(participant.id);
-                Navigator.of(context).pop();
-              },
-              child: const Text('Remove'),
-            ),
-          ],
-        );
+        return ActionDialogue(
+            title: 'Remove ${participant.name}',
+            body: 'Are you sure you want to remove this user from the item?',
+            actionLabel: 'Remove',
+            onAction: () {
+              cartItemViewModel.removeParticipantFromItem(participant.id);
+              Navigator.of(context).pop();
+            });
       },
     );
   }

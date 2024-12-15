@@ -1,5 +1,6 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RoleButton extends StatelessWidget {
   final String role;
@@ -18,23 +19,39 @@ class RoleButton extends StatelessWidget {
     final isSelected = role == selectedRole;
 
     return Expanded(
-      child: OutlinedButton(
-        onPressed: () => onPressed(role),
-        style: OutlinedButton.styleFrom(
-          backgroundColor: isSelected
-              ? ThemeConstants.primaryColor
-              : ThemeConstants.whiteColor,
-          side: const BorderSide(color: ThemeConstants.greyColor),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          ),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: ThemeConstants.blackColor.withOpacity(0.15),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : null,
         ),
-        child: Text(
-          role,
-          style: TextStyle(
-            color: isSelected
-                ? ThemeConstants.whiteColor
-                : ThemeConstants.blackColor,
+        child: OutlinedButton(
+          onPressed: () => onPressed(role),
+          style: OutlinedButton.styleFrom(
+            backgroundColor: isSelected
+                ? ThemeConstants.primaryColor
+                : ThemeConstants.whiteColor,
+            side: isSelected
+                ? BorderSide.none
+                : const BorderSide(color: ThemeConstants.greyColor),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          child: Text(
+            role,
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: isSelected
+                  ? ThemeConstants.whiteColor
+                  : ThemeConstants.blackColor,
+            ),
           ),
         ),
       ),
