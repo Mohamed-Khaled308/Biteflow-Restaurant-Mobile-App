@@ -1,6 +1,5 @@
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/services/payment_service.dart';
-import 'package:logger/logger.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/core/utils/result.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -10,7 +9,19 @@ import 'package:biteflow/core/utils/price_calculator.dart';
 
 class PaymentViewModel extends BaseModel {
   final PaymentService _paymentService = getIt<PaymentService>();
-  final Logger _logger = getIt<Logger>();
+  final Set<String> _busyOrders = {};
+
+  bool isBusy(String orderId) => _busyOrders.contains(orderId);
+
+  void setBusyForOrder(String orderId, bool isBusy) {
+    if (isBusy) {
+      _busyOrders.add(orderId);
+    } else {
+      _busyOrders.remove(orderId);
+    }
+    notifyListeners();
+  }
+
 
   Future<void> initiatePayment(double amount) async { // creates payment intent and payment sheet
     setBusy(true);
@@ -34,7 +45,6 @@ class PaymentViewModel extends BaseModel {
       );
     }
     else{
-      _logger.e(result.error);
     }
   }
 }

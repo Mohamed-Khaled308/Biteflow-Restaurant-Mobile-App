@@ -11,7 +11,7 @@ class RestaurantOnboardingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => getIt<RestaurantOnboardingViewModel>(),
-      child: RestaurantOnboardingScreen(),
+      child: const RestaurantOnboardingScreen(),
     );
   }
 }

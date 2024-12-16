@@ -1,6 +1,5 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/services/navigation_service.dart';
-import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:biteflow/views/screens/feedback/feedback_view.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:biteflow/views/screens/manager_menu/components/categories_list.d
 import 'package:biteflow/views/screens/manager_menu/components/create_item_category.dart';
 import 'package:biteflow/views/screens/manager_menu/components/items_list.dart';
 import 'package:biteflow/locator.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 
 class ManagerMenuScreen extends StatefulWidget {
   const ManagerMenuScreen({super.key});
@@ -34,12 +34,12 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
       });
   }
 
-  @override
-  // ignore: must_call_super
-  void dispose() {
-    // _scrollController.dispose();
-    // super.dispose();
-  }
+  // @override
+  // // ignore: must_call_super
+  // void dispose() {
+  //   // _scrollController.dispose();
+  //   // super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -229,22 +229,50 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: () => _showCreateItemSheet(context, viewModel),
-                      icon: const Icon(Icons.add),
-                      label: const Text('Add First Item'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: ThemeConstants.whiteColor,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
+                    // ElevatedButton.icon(
+                    //   onPressed: () {
+                    //     showModalBottomSheet(
+                    //         context: context,
+                    //         isScrollControlled: true,
+                    //         shape: const RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.vertical(
+                    //             top: Radius.circular(20),
+                    //           ),
+                    //         ),
+                    //         builder: (context) {
+                    //           return ChangeNotifierProvider.value(
+                    //             value: viewModel,
+                    //             child: SizedBox(
+                    //               height:
+                    //                   MediaQuery.of(context).size.height * 0.75,
+                    //               child: CreateItemCategory(
+                    //                   categories: viewModel.categories),
+                    //             ),
+                    //           );
+                    //           // return ChangeNotifierProvider(
+                    //           //   create: (_) => getIt<ManagerCreateItemViewModel>(),
+                    //           //   child: SizedBox(
+                    //           //     height: MediaQuery.of(context).size.height * 0.75,
+                    //           //     child: CreateItemCategory(
+                    //           //         categories: viewModel.categories),
+                    //           //   ),
+                    //           // );
+                    //         });
+                    //   },
+                    //   icon: const Icon(Icons.add),
+                    //   label: const Text('Add First Item'),
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: Theme.of(context).primaryColor,
+                    //     foregroundColor: ThemeConstants.whiteColor,
+                    //     padding: const EdgeInsets.symmetric(
+                    //       horizontal: 24,
+                    //       vertical: 16,
+                    //     ),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -276,7 +304,33 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showCreateItemSheet(context, viewModel),
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              builder: (context) {
+                return ChangeNotifierProvider.value(
+                  value: viewModel,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    child: CreateItemCategory(categories: viewModel.categories),
+                  ),
+                );
+                // return ChangeNotifierProvider(
+                //   create: (_) => getIt<ManagerCreateItemViewModel>(),
+                //   child: SizedBox(
+                //     height: MediaQuery.of(context).size.height * 0.75,
+                //     child: CreateItemCategory(
+                //         categories: viewModel.categories),
+                //   ),
+                // );
+              });
+        },
         backgroundColor: Theme.of(context).primaryColor,
         icon: const Icon(Icons.add, color: ThemeConstants.whiteColor),
         label: const Text(
@@ -287,26 +341,26 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
     );
   }
 
-  void _showCreateItemSheet(BuildContext context, ManagerMenuViewModel viewModel) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (context) {
-        return ChangeNotifierProvider(
-          create: (_) => getIt<ManagerCreateItemViewModel>(),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.75,
-            child: CreateItemCategory(
-              categories: viewModel.categories ?? [],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // void _showCreateItemSheet(BuildContext context, ManagerMenuViewModel viewModel) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(
+  //         top: Radius.circular(20),
+  //       ),
+  //     ),
+  //     builder: (context) {
+  //       return ChangeNotifierProvider(
+  //         create: (_) => getIt<ManagerCreateItemViewModel>(),
+  //         child: SizedBox(
+  //           height: MediaQuery.of(context).size.height * 0.75,
+  //           child: CreateItemCategory(
+  //             categories: viewModel.categories ?? [],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }

@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
@@ -20,71 +19,133 @@ class SplitScreenState extends State<SplitScreen> {
     final viewModel = context.read<CartViewModel>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Choose Splitting Method',
-          style: TextStyle(color: ThemeConstants.whiteColor),
+        title: Text(
+          'Splitting Options',
+          style: TextStyle(
+            color: Theme.of(context).secondaryHeaderColor,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        backgroundColor: ThemeConstants.primaryColor,
-        iconTheme: const IconThemeData(
-          color: ThemeConstants.whiteColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        iconTheme:  IconThemeData(
+          color: Theme.of(context).secondaryHeaderColor,
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Choose splitting method',
+              'How would you like to split the bill?',
               style: TextStyle(
-                fontSize: 24.sp,
+                fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
+                color: Theme.of(context).secondaryHeaderColor,
+              ),
+            ),
+            verticalSpaceLarge,
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedMethod = 'equally';
+                });
+              },
+              child: ListTile(
+                leading:  Icon(
+                  Icons.group,
+                  color: Theme.of(context).primaryColor,
+                ),
+                title: Text(
+                  'Split Equally',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(
+                  'Everyone pays the same.',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+                trailing: Radio<String>(
+                  value: 'equally',
+                  groupValue: _selectedMethod,
+                  activeColor: Theme.of(context).primaryColor,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedMethod = value;
+                    });
+                  },
+                ),
               ),
             ),
             verticalSpaceMedium,
 
-            ListTile(
-              title: const Text('Split Equally'),
-              leading: Radio<String>(
-                value: 'equally',
-                groupValue: _selectedMethod,
-                onChanged: (String? value) {
-                  setState(() {
-                    _selectedMethod = value;
-                  });
-                  // print('Split Equally selected');
-                },
+            // Item-Based Splitting Option
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedMethod = 'item_based';
+                });
+              },
+              child: ListTile(
+                leading:  Icon(
+                  Icons.pie_chart,
+                  color: Theme.of(context).primaryColor,
+                ),
+                title: Text(
+                  'Item-Based Splitting',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(
+                  'Each item is split equally among the people sharing it.',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+                trailing: Radio<String>(
+                  value: 'item_based',
+                  groupValue: _selectedMethod,
+                  activeColor: Theme.of(context).primaryColor,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _selectedMethod = value;
+                    });
+                  },
+                ),
               ),
             ),
-            verticalSpaceMedium,
-
-            // Option for Item-based Splitting
-            ListTile(
-              title: const Text('Item Based Splitting'),
-              leading: Radio<String>(
-                value: 'item_based',
-                groupValue: _selectedMethod,
-                onChanged: (String? value) {
-                  setState(() {
-                    _selectedMethod = value;
-                  });
-                  // print('Item Based Splitting selected');
-                },
-              ),
-            ),
-
             const Spacer(),
 
+            // Place Order Button
             ElevatedButton(
               onPressed: () {
-                viewModel.placeOrder();
-                // print('Order Placed');
+                viewModel.placeOrder(_selectedMethod);
               },
               style: ElevatedButton.styleFrom(
-                minimumSize:
-                    const Size(double.infinity, 50), // Full width button
+                backgroundColor: Theme.of(context).primaryColor,
+                minimumSize: Size(double.infinity, 50.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
               ),
-              child: const Text('Place Order'),
+              child: Text(
+                'Place Order',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Theme.of(context).secondaryHeaderColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ],
         ),

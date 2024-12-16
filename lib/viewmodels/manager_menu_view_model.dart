@@ -8,13 +8,11 @@ import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/manager.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
-import 'package:logger/logger.dart';
 
 
 class ManagerMenuViewModel extends BaseModel {
 
   // variables
-  final Logger _logger = getIt<Logger>();
   final Manager _authenticatedManager = getIt<UserProvider>().user as Manager;
   Restaurant? _authenticatedManagerRestaurant;
   List<Category>? _categories;
@@ -83,7 +81,6 @@ class ManagerMenuViewModel extends BaseModel {
       _authenticatedManagerRestaurant = restaurantResult.data;
     }
     else{
-      _logger.e(restaurantResult.error);
     }
   }
 
@@ -94,7 +91,6 @@ class ManagerMenuViewModel extends BaseModel {
     }
     else{
       _categories = [];
-      _logger.e(categoriesData.error);
     }
   }
 
@@ -104,8 +100,79 @@ class ManagerMenuViewModel extends BaseModel {
       _menuItems = menuItemsData.data;
     }
     else{
-      _logger.e(menuItemsData.error);
     }
   }
+
+
+  // Tracks which page (create item or create category) to show
+  bool _isCreatingItem = true;
+
+  // for create item
+  String? _itemCategoryId;
+
+  // needed services and viewmodels
+  // final ManagerMenuViewModel _managerMenuViewModel = getIt<ManagerMenuViewModel>();
+  final CategoryService _categoryService = getIt<CategoryService>();
+  final MenuItemService _menuItemService = getIt<MenuItemService>();
+
+  // getters and setters
+  String? get itemCategoryId => _itemCategoryId;
+  bool get isCreatingItem => _isCreatingItem;
+  set isCreatingItem(bool value) {
+    _isCreatingItem = value;
+    notifyListeners();
+  }
+  set itemCategoryId(String? value) {
+    _itemCategoryId = value;
+    notifyListeners();
+  }
+
+  // state management methods
+  void updateIsCreatingItem(bool isCreatingItem) {
+    _isCreatingItem = isCreatingItem;
+    notifyListeners();
+  }
+
+  // database related methods
+  Future<void> createCategory(String categoryName) async {
+    // setBusy(true);
+
+    Category newCategory = Category(
+      id: _categoryService.generateCategoryId(),
+      title: categoryName,
+      restaurantId: authenticatedManagerRestaurant!.id,
+    );
+    await _categoryService.createCategory(newCategory);
+    await reloadCategoriesAndMenuItems();
+
+    // setBusy(false);
+  }
+
+  Future<void> createItem(String itemName, String itemPrice,
+      String itemDescription, String itemImageUrl) async {
+    
+    // setBusy(true);
+
+
+    MenuItem newMenuItem = MenuItem(
+      id: _menuItemService.generateMenuItemId(),
+      title: itemName,
+      price: double.parse(itemPrice),
+      imageUrl: itemImageUrl,
+      description: itemDescription,
+      rating: 5,
+      categoryId: _itemCategoryId!,
+      restaurantId: authenticatedManagerRestaurant!.id,
+    );
+    await _menuItemService.createMenuItem(newMenuItem);
+    await reloadCategoriesAndMenuItems();
+
+
+    
+    // setBusy(false);
+  }
+
+
+
 
 }

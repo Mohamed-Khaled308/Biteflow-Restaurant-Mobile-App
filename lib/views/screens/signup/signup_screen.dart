@@ -73,7 +73,7 @@ class _SignupScreenState extends State<SignupScreen> {
             padding: const EdgeInsets.all(ThemeConstants.defaultPadding),
             child: Center(
               child: SizedBox(
-                width: 320.w,
+                width: 300.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -110,13 +110,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           ? SizedBox(
                               width: 16.w,
                               height: 16.h,
-                              child: const CircularProgressIndicator(
-                                color: ThemeConstants.primaryColor,
+                              child:  CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
                               ),
                             )
                           : const Text('Sign up'),
                     ),
-                    verticalSpaceMassive,
+                    verticalSpaceLarge,
+                    verticalSpaceLarge,
                     verticalSpaceSmall,
                     verticalSpaceTiny,
                     GestureDetector(
@@ -124,10 +125,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                           Text(
                             'Already have an account?',
                             style:
-                                TextStyle(color: ThemeConstants.blackColor60),
+                                TextStyle(color: Theme.of(context).secondaryHeaderColor),
                           ),
                           SizedBox(width: 4.w),
                           const Text(
@@ -186,7 +187,7 @@ class _SignupScreenState extends State<SignupScreen> {
               errorMessage,
               style: TextStyle(
                 color: ThemeConstants.errorColor,
-                fontSize: 14.sp,
+                fontSize: 12.5.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -6,12 +6,10 @@ import 'package:biteflow/services/firestore/category_service.dart';
 import 'package:biteflow/services/firestore/menu_item_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
-import 'package:logger/logger.dart';
 import '../models/category.dart';
 import '../models/menu_item.dart';
 
 class MenuViewModel extends BaseModel {
-  final Logger _logger = getIt<Logger>();
 
   // Private fields
   String? _selectedCategoryId = 'c1';
@@ -86,7 +84,6 @@ class MenuViewModel extends BaseModel {
       _restaurant = restaurantResult.data;
       notifyListeners();
     } else {
-      _logger.e(restaurantResult.error);
     }
   }
 
@@ -104,7 +101,6 @@ class MenuViewModel extends BaseModel {
       }
       notifyListeners();
     } else {
-      _logger.e(categoriesData.error);
     }
   }
 
@@ -115,7 +111,6 @@ class MenuViewModel extends BaseModel {
       _menuItems = menuItemsData.data;
       notifyListeners();
     } else {
-      _logger.e(menuItemsData.error);
     }
   }
 }

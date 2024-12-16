@@ -39,7 +39,7 @@ class _CategoriesListState extends State<CategoriesList> {
                         category.title,
                         style: TextStyle(
                           color: viewModel.selectedCategoryId == category.id
-                              ? Colors.white
+                              ? Theme.of(context).secondaryHeaderColor
                               : Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                       ),

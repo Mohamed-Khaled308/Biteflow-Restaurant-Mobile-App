@@ -2,6 +2,7 @@ import 'package:biteflow/viewmodels/signup_view_model.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_textfield.dart';
 import 'package:biteflow/views/screens/signup/components/role_button.dart';
 import 'package:biteflow/views/widgets/utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,17 +36,23 @@ class SignupForm extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              RoleButton(
-                role: 'Client',
-                selectedRole: viewModel.selectedRole,
-                onPressed: viewModel.setRole,
+              SizedBox(
+                width: 130.w,
+                child: RoleButton(
+                  role: 'Client',
+                  selectedRole: viewModel.selectedRole,
+                  onPressed: viewModel.setRole,
+                ),
               ),
-              RoleButton(
-                role: 'Manager',
-                selectedRole: viewModel.selectedRole,
-                onPressed: viewModel.setRole,
+              SizedBox(
+                width: 130.w,
+                child: RoleButton(
+                  role: 'Manager',
+                  selectedRole: viewModel.selectedRole,
+                  onPressed: viewModel.setRole,
+                ),
               ),
             ],
           ),

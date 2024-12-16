@@ -153,7 +153,7 @@ class RestaurantListTile extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 14.sp,
-                          color: ThemeConstants.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                         // SizedBox(width: 4.w),
                         // Text(

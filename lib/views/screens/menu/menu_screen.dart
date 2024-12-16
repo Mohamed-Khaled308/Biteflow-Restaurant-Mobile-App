@@ -1,15 +1,17 @@
 import 'package:biteflow/locator.dart';
+// import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/models/category.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/menu_view_model.dart';
-import 'package:biteflow/views/screens/cart/cart_view.dart';
+import 'package:biteflow/views/widgets/cart/cart_icon.dart';
 import 'package:biteflow/views/screens/feedback/feedback_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/menu/menu_item_grid.dart';
 import '../../widgets/menu/menu_card.dart';
+
 
 class MenuScreen extends StatefulWidget {
   final String restaurantId;
@@ -49,7 +51,7 @@ class _MenuScreenState extends State<MenuScreen> {
     super.dispose();
   }
 
-  Widget _buildItemList(MenuViewModel viewModel) {
+  Widget _buildItemList(MenuViewModel viewModel, CartViewModel cartViewModel) {
     final totalFilteredItemCount = viewModel.filteredItems.length;
 
     if (totalFilteredItemCount < 3) {
@@ -78,6 +80,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           imageUrl: item.imageUrl,
                           title: item.title,
                           price: item.price,
+                          discountPercentage: item.discountPercentage,
                           onTap: () {
                             showModalBottomSheet(
                               context: context,
@@ -98,6 +101,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                       rating: item.rating,
                                       categoryId: item.categoryId,
                                       restaurantId: widget.restaurantId,
+                                      discountPercentage: item.discountPercentage,
+
                                     ),
                                   ),
                                 );
@@ -131,6 +136,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   imageUrl: item.imageUrl,
                   title: item.title,
                   price: item.price,
+                  discountPercentage: item.discountPercentage,
                   onTap: () {
                     viewModel.selectedItem = item;
                     showModalBottomSheet(
@@ -149,6 +155,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           rating: item.rating,
                           categoryId: item.categoryId,
                           restaurantId: widget.restaurantId,
+                          discountPercentage: item.discountPercentage,
                         );
                       },
                     );
@@ -166,6 +173,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MenuViewModel>();
+    final cartViewModel = context.watch<CartViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -184,12 +192,16 @@ class _MenuScreenState extends State<MenuScreen> {
             },
             icon: const Icon(Icons.feedback),
           ),
-          IconButton(
-            onPressed: () {
-              getIt<NavigationService>().navigateTo(const CartView());
-            },
-            icon: const Icon(Icons.shopping_cart_sharp),
+          Visibility(
+            visible: !cartViewModel.isCartEmpty,
+            child: const CartIcon(),
           ),
+          // IconButton(
+          //   onPressed: () {
+          //     getIt<NavigationService>().navigateTo(const CartView());
+          //   },
+          //   icon: const Icon(Icons.shopping_cart_sharp),
+          // ),
         ],
       ),
       body: CustomScrollView(
@@ -273,7 +285,7 @@ class _MenuScreenState extends State<MenuScreen> {
           // Items
           SliverLayoutBuilder(
             builder: (BuildContext context, SliverConstraints constraints) {
-              return _buildItemList(viewModel);
+              return _buildItemList(viewModel, cartViewModel);
             },
           ),
         ],
@@ -314,7 +326,8 @@ class CategoriesHeaderDelegate extends SliverPersistentHeaderDelegate {
               margin: const EdgeInsets.symmetric(horizontal: 6),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? theme.primaryColor : theme.cardColor,
+                color: isSelected ? Theme.of(context).primaryColor
+                    : theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   if (isSelected)
@@ -329,7 +342,8 @@ class CategoriesHeaderDelegate extends SliverPersistentHeaderDelegate {
                 child: Text(
                   category.title,
                   style: TextStyle(
-                    color: isSelected ? Colors.white : theme.textTheme.bodyMedium?.color,
+                    color: isSelected ? Theme.of(context).secondaryHeaderColor
+                        : theme.textTheme.bodyMedium?.color,
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),

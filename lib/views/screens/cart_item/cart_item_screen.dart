@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
 import 'package:biteflow/views/screens/cart_item/components/add_participants.dart';
 import 'package:biteflow/views/screens/cart_item/components/bottom_bar.dart';
@@ -39,31 +38,18 @@ class CartItemScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              viewModel.cartItem.menuItem.title,
-                              style: TextStyle(
-                                color: ThemeConstants.blackColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24.sp,
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(),
-                            ),
-                            const Icon(Icons.star, color: Colors.amber),
-                            SizedBox(width: 4.w),
-                            Text(viewModel.cartItem.menuItem.rating.toString()),
-                            SizedBox(
-                              width: 8.w,
-                            )
-                          ],
+                        Text(
+                          viewModel.cartItem.menuItem.title,
+                          style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.sp,
+                          ),
                         ),
                         Text(
                           viewModel.cartItem.menuItem.description,
                           style: TextStyle(
-                            color: ThemeConstants.blackColor60,
+                            color: Theme.of(context).secondaryHeaderColor,
                             fontSize: 16.sp,
                           ),
                         ),

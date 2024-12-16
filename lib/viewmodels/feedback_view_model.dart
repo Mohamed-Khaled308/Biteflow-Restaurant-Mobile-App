@@ -14,7 +14,7 @@ class FeedbackViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
   List<Comment>? _comments;
-  Map<String, User> _users = {};
+  final Map<String, User> _users = {};
   
   bool get isLoading => _isLoading;
   String? get error => _error;

@@ -24,14 +24,15 @@ import 'package:biteflow/viewmodels/login_view_model.dart';
 import 'package:biteflow/viewmodels/manager_offers_view_model.dart';
 import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:biteflow/viewmodels/manager_promotional_offers_view_model.dart';
+import 'package:biteflow/viewmodels/profile_view_model.dart';
 import 'package:biteflow/viewmodels/rating_view_model.dart';
 import 'package:biteflow/viewmodels/restaurant_onboarding_view_model.dart';
 import 'package:biteflow/viewmodels/signup_view_model.dart';
 import 'package:biteflow/viewmodels/order_view_model.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
-import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
-import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:biteflow/viewmodels/menu_view_model.dart';
 import 'package:biteflow/viewmodels/payment_view_model.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
@@ -70,20 +71,22 @@ void setupLocator() {
   getIt.registerFactory<OrderViewModel>(() => OrderViewModel());
   getIt.registerFactory<MenuViewModel>(() => MenuViewModel());
   getIt.registerFactory<PaymentViewModel>(() => PaymentViewModel());
+  getIt.registerFactory<ProfileViewModel>(() => ProfileViewModel());
   getIt.registerLazySingleton<ModeViewModel>(() => ModeViewModel());
 
-  getIt.registerFactory<ManagerCreateItemViewModel>(
-      () => ManagerCreateItemViewModel());
-  getIt.registerFactory<ManagerOrdersDetailsViewModel>(
-      () => ManagerOrdersDetailsViewModel());
+  // getIt.registerFactory<ManagerCreateItemViewModel>(
+  //     () => ManagerCreateItemViewModel());
+  // getIt.registerFactory<ManagerOrdersDetailsViewModel>(
+  //     () => ManagerOrdersDetailsViewModel());
   getIt.registerFactory<ManagerOffersViewModel>(() => ManagerOffersViewModel());
   getIt.registerFactory<ClientOffersViewModel>(() => ClientOffersViewModel());
-  getIt.registerLazySingleton<ManagerOrdersViewModel>(
-      () => ManagerOrdersViewModel());
-  getIt.registerLazySingleton<ManagerMenuViewModel>(
-      () => ManagerMenuViewModel());
-  getIt.registerLazySingleton<ClientOrdersViewModel>(
-      () => ClientOrdersViewModel());
+  // getIt.registerLazySingleton<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
+  // getIt.registerLazySingleton<ManagerMenuViewModel>(() => ManagerMenuViewModel());
+  getIt.registerFactory<ManagerMenuViewModel>(() => ManagerMenuViewModel());
+  getIt.registerFactory<ManagerOrdersViewModel>(() => ManagerOrdersViewModel());
+
+  // getIt.registerLazySingleton<ClientOrdersViewModel>(() => ClientOrdersViewModel());
+  getIt.registerFactory<ClientOrdersViewModel>(() => ClientOrdersViewModel());
 
   getIt.registerFactory<ManagerPromotionalOffersViewModel>(
       () => ManagerPromotionalOffersViewModel());

@@ -1,4 +1,5 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
@@ -12,13 +13,16 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartItemViewModel>();
+    final isCurrentUserOwner =
+        viewModel.cartItem.userId == getIt<UserProvider>().user!.id;
+
     return BottomAppBar(
       height: 90.h,
       elevation: 10,
-      color: ThemeConstants.whiteColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Container(
         decoration: BoxDecoration(
-          color: ThemeConstants.whiteColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: ThemeConstants.blackColor.withOpacity(0.1),
@@ -38,13 +42,13 @@ class BottomBar extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: viewModel.itemQuantity > 1
+                  onPressed: isCurrentUserOwner && viewModel.itemQuantity > 1
                       ? () => viewModel.updateItemQuantity(-1)
                       : null,
                   icon: Icon(
                     Icons.remove,
-                    color: viewModel.itemQuantity > 1
-                        ? ThemeConstants.blackColor
+                    color: isCurrentUserOwner && viewModel.itemQuantity > 1
+                        ? Theme.of(context).secondaryHeaderColor
                         : ThemeConstants.greyColor,
                   ),
                 ),
@@ -53,20 +57,20 @@ class BottomBar extends StatelessWidget {
                   child: Text(
                     viewModel.itemQuantity.toString(),
                     style: TextStyle(
-                      color: ThemeConstants.blackColor,
+                      color: Theme.of(context).secondaryHeaderColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 20.sp,
                     ),
                   ),
                 ),
                 IconButton(
-                  onPressed: viewModel.itemQuantity < 99
+                  onPressed: isCurrentUserOwner && viewModel.itemQuantity < 99
                       ? () => viewModel.updateItemQuantity(1)
                       : null,
                   icon: Icon(
                     Icons.add,
-                    color: viewModel.itemQuantity < 99
-                        ? ThemeConstants.blackColor
+                    color: isCurrentUserOwner && viewModel.itemQuantity < 99
+                        ? Theme.of(context).secondaryHeaderColor
                         : ThemeConstants.greyColor,
                   ),
                 ),
@@ -76,14 +80,16 @@ class BottomBar extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: viewModel.busy
-                      ? null
-                      : () {
+                  onPressed: isCurrentUserOwner && !viewModel.busy
+                      ? () {
                           viewModel.updateItem();
                           getIt<NavigationService>().pop();
-                        },
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ThemeConstants.primaryColor,
+                    backgroundColor: isCurrentUserOwner
+                        ? Theme.of(context).primaryColor
+                        : ThemeConstants.greyColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),
@@ -94,8 +100,8 @@ class BottomBar extends StatelessWidget {
                     'Update item',
                     style: TextStyle(
                       color: viewModel.busy
-                          ? ThemeConstants.blackColor
-                          : ThemeConstants.whiteColor,
+                          ? Theme.of(context).secondaryHeaderColor
+                          : Theme.of(context).secondaryHeaderColor,
                       fontSize: 16.sp,
                     ),
                   ),
@@ -107,9 +113,9 @@ class BottomBar extends StatelessWidget {
                       child: SizedBox(
                         width: 24.w,
                         height: 24.h,
-                        child: const CircularProgressIndicator(
+                        child:  CircularProgressIndicator(
                           strokeWidth: 2.5,
-                          color: ThemeConstants.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ),

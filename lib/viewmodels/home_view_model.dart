@@ -4,7 +4,6 @@ import 'package:biteflow/models/restaurant.dart';
 import 'package:biteflow/services/firestore/promotional_offer_service.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart'; 
 import 'package:biteflow/viewmodels/base_model.dart';
-import 'package:logger/logger.dart';
 
 class HomeViewModel extends BaseModel {
   List<Restaurant> bestPickRestaurants = [];
@@ -13,7 +12,6 @@ class HomeViewModel extends BaseModel {
   
   final _restaurantService = getIt<RestaurantService>();
   final _promotionalOfferService = getIt<PromotionalOfferService>();
-  final Logger _logger = getIt<Logger>();
 
   HomeViewModel() {
     loadData();  // Changed from loadRestaurants() to loadData()
@@ -37,7 +35,6 @@ class HomeViewModel extends BaseModel {
   Future<void> _loadRestaurants() async {
     var result = await _restaurantService.getAllRestaurants();
     if (result.error != null) {
-      _logger.e('Error fetching restaurants: ${result.error}');
     } else {
       allRestaurants = result.data!;
       
@@ -51,7 +48,6 @@ class HomeViewModel extends BaseModel {
   Future<void> _loadPromotionalOffers() async {
     var result = await _promotionalOfferService.getAllActiveOffers();
     if (result.error != null) {
-      _logger.e('Error fetching offers: ${result.error}');
     } else {
       promotionalOffers = result.data!;
     }

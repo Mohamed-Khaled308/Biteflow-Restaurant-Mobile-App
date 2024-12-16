@@ -1,6 +1,7 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/order_full_clients_payment.dart';
-import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
+import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ManagerOrdersDetailsViewModel>();
+    final viewModel = context.watch<ManagerOrdersViewModel>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 5, 25, 15),
       child: Column(
@@ -86,8 +87,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Row(
                           children: [
-                            const Icon(Icons.person,
-                                size: 20, color: ThemeConstants.blackColor80),
+                             Icon(Icons.person,
+                                size: 20, color: Theme.of(context).secondaryHeaderColor),
                             const SizedBox(width: 8),
                             Text(
                               orderFullClientsPayment.client.name,

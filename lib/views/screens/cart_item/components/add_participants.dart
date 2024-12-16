@@ -39,15 +39,15 @@ class AddParticipants extends StatelessWidget {
             Text(
               'Participants',
               style: TextStyle(
-                color: ThemeConstants.blackColor,
+                color: Theme.of(context).secondaryHeaderColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.sp,
               ),
             ),
             SizedBox(width: 16.w),
-            const Icon(
+             Icon(
               Icons.person_add,
-              color: ThemeConstants.primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
             Expanded(child: Container()),
             SizedBox(
@@ -76,7 +76,7 @@ class AddParticipants extends StatelessWidget {
                             '+${doneParticipants.length - 5}',
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: Colors.white,
+                              color: Theme.of(context).secondaryHeaderColor,
                             ),
                           ),
                         ),

@@ -1,8 +1,9 @@
 // Import statements
 import 'package:biteflow/models/category.dart';
 import 'package:biteflow/services/navigation_service.dart';
-import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/image_view_model.dart'; // Import ImageViewModel
+import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart'; // Import GetIt
 import 'package:provider/provider.dart';
@@ -96,7 +97,7 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ManagerCreateItemViewModel>();
+    final viewModel = context.watch<ManagerMenuViewModel>();
     return Container(
       height: 600, // Adjusted height to accommodate image picker
       padding: const EdgeInsets.all(16),
@@ -115,7 +116,7 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
     );
   }
 
-  Widget _buildHeader(ManagerCreateItemViewModel viewModel) {
+  Widget _buildHeader(ManagerMenuViewModel viewModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -136,7 +137,7 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
     );
   }
 
-  Widget _buildCreateCategory(ManagerCreateItemViewModel viewModel) {
+  Widget _buildCreateCategory(ManagerMenuViewModel viewModel) {
     return Form(
       key: categoryFormKey,
       child: Column(
@@ -178,7 +179,7 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
     );
   }
 
-  Widget _buildCreateItem(ManagerCreateItemViewModel viewModel) {
+  Widget _buildCreateItem(ManagerMenuViewModel viewModel) {
     bool categoriesAvailable =
         widget.categories != null && widget.categories!.isNotEmpty;
     return Padding(

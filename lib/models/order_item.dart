@@ -66,6 +66,7 @@ class OrderItem extends Item {
     data['quantity'] = quantity;
     data['notes'] = notes;
     data['discountPercentage'] = discountPercentage;
+    data['participants'] = participants.map((participant) => participant.toJson()).toList();
     return data;
   }
 }

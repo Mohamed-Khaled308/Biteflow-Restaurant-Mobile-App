@@ -2,8 +2,7 @@ import 'package:biteflow/viewmodels/login_view_model.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_textfield.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:biteflow/core/constants/theme_constants.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatelessWidget {
@@ -31,6 +30,8 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: <Widget>[
           verticalSpaceLarge,
+          verticalSpaceMedium,
+          verticalSpaceTiny,
           CustomTextField(
             controller: emailController,
             labelText: 'Email *',
@@ -49,16 +50,6 @@ class LoginForm extends StatelessWidget {
             obscureText: true,
             focusNode: passwordFocusNode,
           ),
-          Padding(
-            padding: EdgeInsets.all(8.w),
-            child:
-                const Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Text(
-                'Forgot Password?',
-                style: TextStyle(color: ThemeConstants.blackColor60),
-              ),
-            ]),
-          )
         ],
       ),
     );

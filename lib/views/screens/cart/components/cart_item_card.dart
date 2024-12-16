@@ -19,7 +19,7 @@ class CartItemCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius:
             BorderRadius.circular(ThemeConstants.defaultBorderRadious),
         boxShadow: [
@@ -46,6 +46,7 @@ class CartItemCard extends StatelessWidget {
                 CartItemThumbnail(cartItem: cartItem),
                 SizedBox(width: 16.w),
                 CartItemDescription(cartItem: cartItem),
+                SizedBox(width: 8.w),
                 CartItemParticipant(cartItem: cartItem),
               ],
             ),

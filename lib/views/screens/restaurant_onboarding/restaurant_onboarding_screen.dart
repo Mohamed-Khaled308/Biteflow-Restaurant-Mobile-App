@@ -1,14 +1,13 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/restaurant_onboarding_view_model.dart'; 
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:biteflow/viewmodels/image_view_model.dart'; // Import ImageViewModel
+import 'package:biteflow/viewmodels/image_view_model.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_button.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_subtitle.dart';
 import 'package:biteflow/views/widgets/auth/components/auth_title.dart';
 import 'package:provider/provider.dart';
-import 'package:get_it/get_it.dart'; // Import GetIt 
+import 'package:get_it/get_it.dart';
 import 'package:biteflow/views/screens/restaurant_onboarding/components/restaurant_onboarding_form.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 
@@ -214,8 +213,8 @@ class _RestaurantOnboardingScreenState extends State<RestaurantOnboardingScreen>
                           ? SizedBox(
                               width: 16.w,
                               height: 16.h,
-                              child: const CircularProgressIndicator(
-                                color: ThemeConstants.primaryColor,
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
                               ),
                             )
                           : const Text('Save and Continue'),

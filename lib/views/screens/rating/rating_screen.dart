@@ -1,6 +1,9 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
+import 'package:biteflow/locator.dart';
+import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/rating_view_model.dart';
+import 'package:biteflow/views/screens/home/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +74,7 @@ class _RatingScreenState extends State<RatingScreen> {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Rate Restaurant'),
-          backgroundColor: ThemeConstants.primaryColor,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: const Center(
           child: Text('Please login to rate restaurants'),
@@ -85,13 +88,12 @@ class _RatingScreenState extends State<RatingScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Rate Restaurant'),
-          backgroundColor: ThemeConstants.primaryColor,
+          backgroundColor: Theme.of(context).primaryColor,
           actions: [
             TextButton.icon(
               onPressed: () => _onWillPop().then((shouldPop) {
                 if (shouldPop) {
-                  // Navigator.of(context).pop();
-                  //TODO: Uncomment the above line after implementing the cart
+                  getIt<NavigationService>().pop();
                 }
               }),
               icon: const Icon(Icons.close, color: ThemeConstants.whiteColor),
@@ -186,7 +188,7 @@ class _RatingScreenState extends State<RatingScreen> {
                                 _rating,
                                 _commentController.text,
                               );
-                              if (success && mounted) {
+                              if (success && context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Thank you for your rating!'),
@@ -194,8 +196,8 @@ class _RatingScreenState extends State<RatingScreen> {
                                         ThemeConstants.successColor,
                                   ),
                                 );
-                                // Navigator.of(context).pop();
-                                // TODO: Uncomment the above line after implementing the cart
+                                // Navigator.popUntil(context, (route) => route.isFirst);
+                                getIt<NavigationService>().popUntil(HomeView);
                               }
                             },
                       style: ElevatedButton.styleFrom(

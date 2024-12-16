@@ -3,11 +3,12 @@ import 'package:biteflow/models/order_clients_payment.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/client_orders_view_model.dart';
 import 'package:biteflow/views/screens/order_details/order_details_view.dart';
+import 'package:biteflow/views/screens/rating/rating_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
-// import 'package:flutter_stripe/flutter_stripe.dart';
-// import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/payment_view_model.dart';
 
 class ClientsOrdersList extends StatefulWidget {
@@ -18,12 +19,11 @@ class ClientsOrdersList extends StatefulWidget {
 }
 
 class _ClientsOrdersListState extends State<ClientsOrdersList> {
-  double totalAmount = 0;
-  
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ClientOrdersViewModel>();
     final paymentViewModel = context.watch<PaymentViewModel>();
+    double totalAmount = 0;
     return Expanded(
       child: viewModel.orders!.isEmpty
           ? const Center(
@@ -44,7 +44,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                 final order = viewModel.orders![index];
                 return Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
@@ -59,7 +59,6 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
-                        
                         for (final OrderClientsPayment orderClientsPayment
                             in order.orderClientsPayment) {
                           if (orderClientsPayment.userId ==
@@ -157,50 +156,77 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                     ),
                                     if (orderClientsPayment.isPaid == false)
                                       ElevatedButton(
-                                        onPressed: paymentViewModel.busy
-                                            ? null
-                                            : () async {
-                                                // await paymentViewModel
-                                                //     .initiatePayment(totalAmount);
-                                                // Stripe.instance
-                                                //     .presentPaymentSheet()
-                                                //     .then((value) {
-                                                //   paymentViewModel
-                                                //       .setBusy(false);
-                                                //   if (context.mounted) {
-                                                //     ScaffoldMessenger.of(
-                                                //             context)
-                                                //         .showSnackBar(
-                                                //       const SnackBar(
-                                                //         content: Text(
-                                                //             'Payment Successful'),
-                                                //         backgroundColor:
-                                                //             ThemeConstants
-                                                //                 .successColor,
-                                                //       ),
-                                                //     );
-                                                //   }
-                                                //   /***  here we can make the required updates to the UI and db ***/
-                                                // }).catchError((e) {
-                                                //   paymentViewModel
-                                                //       .setBusy(false);
-                                                //   if (context.mounted) {
-                                                //     ScaffoldMessenger.of(
-                                                //             context)
-                                                //         .showSnackBar(
-                                                //       const SnackBar(
-                                                //         content: Text(
-                                                //             'Payment process was interrupted. Please try again.'),
-                                                //         backgroundColor:
-                                                //             ThemeConstants
-                                                //                 .errorColor,
-                                                //       ),
-                                                //     );
-                                                //   }
-                                                // });
-                                              },
+                                        onPressed: /*paymentViewModel.busy */
+                                            paymentViewModel.isBusy(order.id)
+                                                ? null
+                                                : () async {
+                                                    paymentViewModel
+                                                        .setBusyForOrder(
+                                                            order.id, true);
+                                                    for (final OrderClientsPayment orderClientsPayment
+                                                        in order
+                                                            .orderClientsPayment) {
+                                                      if (orderClientsPayment
+                                                              .userId ==
+                                                          viewModel.clientLogged
+                                                              .id) {
+                                                        totalAmount =
+                                                            orderClientsPayment
+                                                                .amount;
+                                                      }
+                                                    }
+                                                    // print('totolAmount= $totalAmount');
+                                                    await paymentViewModel
+                                                        .initiatePayment(
+                                                            totalAmount);
+                                                    Stripe.instance
+                                                        .presentPaymentSheet()
+                                                        .then((value) {
+                                                      paymentViewModel
+                                                          .setBusyForOrder(
+                                                              order.id, false);
+                                                      paymentViewModel
+                                                          .setBusy(false);
+                                                      if (context.mounted) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Payment Successful'),
+                                                            backgroundColor:
+                                                                ThemeConstants
+                                                                    .successColor,
+                                                          ),
+                                                        );
+                                                      }
+                                                      viewModel
+                                                          .updateOrderClientPaymentStatus(
+                                                              order.id);
+                                                    }).catchError((e) {
+                                                      paymentViewModel
+                                                          .setBusyForOrder(
+                                                              order.id, false);
+                                                      paymentViewModel
+                                                          .setBusy(false);
+                                                      if (context.mounted) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Payment process was interrupted. Please try again.'),
+                                                            backgroundColor:
+                                                                ThemeConstants
+                                                                    .errorColor,
+                                                          ),
+                                                        );
+                                                      }
+                                                    });
+                                                  },
                                         style: ElevatedButton.styleFrom(
-                                          foregroundColor: Colors.white,
+                                          foregroundColor: Theme.of(context)
+                                              .secondaryHeaderColor,
                                           backgroundColor: Colors.blue,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -218,6 +244,45 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                       ),
                                   ],
                                 ),
+                            if (order.status == 'served')
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Rate Now ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Theme.of(context).secondaryHeaderColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Theme.of(context)
+                                          .secondaryHeaderColor,
+                                      backgroundColor: Colors.blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                    ),
+                                    child: const Text(
+                                      'Rate Now',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      getIt<NavigationService>().navigateTo(
+                                          RatingView(
+                                              restaurantId:
+                                                  order.restaurantId));
+                                    },
+                                  ),
+                                ],
+                              )
                           ],
                         ),
                       ),

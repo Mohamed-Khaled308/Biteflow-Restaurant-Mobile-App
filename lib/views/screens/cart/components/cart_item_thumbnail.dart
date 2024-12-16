@@ -62,7 +62,7 @@ class CartItemThumbnail extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.circular(ThemeConstants.defaultBorderRadious),
-                color: Colors.white.withOpacity(1),
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
               ),
               height: 40.h,
               child: Row(
@@ -82,14 +82,14 @@ class CartItemThumbnail extends StatelessWidget {
                                 : ThemeConstants.greyColor)
                         : Icon(Icons.remove,
                             color: cartItem.userId == userProvider.user!.id
-                                ? ThemeConstants.blackColor
+                                ? Theme.of(context).secondaryHeaderColor
                                 : ThemeConstants.greyColor),
                   ),
                   Text(
                     '${cartItem.quantity}',
                     style: TextStyle(
                       color: cartItem.userId == userProvider.user!.id
-                          ? ThemeConstants.blackColor
+                          ? Theme.of(context).secondaryHeaderColor
                           : ThemeConstants.greyColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14.sp,
