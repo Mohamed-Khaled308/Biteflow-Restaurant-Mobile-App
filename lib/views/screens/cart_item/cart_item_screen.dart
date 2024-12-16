@@ -38,26 +38,13 @@ class CartItemScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              viewModel.cartItem.menuItem.title,
-                              style: TextStyle(
-                                color: Theme.of(context).secondaryHeaderColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24.sp,
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(),
-                            ),
-                            const Icon(Icons.star, color: Colors.amber),
-                            SizedBox(width: 4.w),
-                            Text(viewModel.cartItem.menuItem.rating.toString()),
-                            SizedBox(
-                              width: 8.w,
-                            )
-                          ],
+                        Text(
+                          viewModel.cartItem.menuItem.title,
+                          style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.sp,
+                          ),
                         ),
                         Text(
                           viewModel.cartItem.menuItem.description,

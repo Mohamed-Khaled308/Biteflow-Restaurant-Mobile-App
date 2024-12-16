@@ -30,6 +30,8 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: <Widget>[
           verticalSpaceLarge,
+          verticalSpaceMedium,
+          verticalSpaceTiny,
           CustomTextField(
             controller: emailController,
             labelText: 'Email *',
@@ -48,16 +50,6 @@ class LoginForm extends StatelessWidget {
             obscureText: true,
             focusNode: passwordFocusNode,
           ),
-          Padding(
-            padding: EdgeInsets.all(8.w),
-            child:
-                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Text(
-                'Forgot Password?',
-                style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
-              ),
-            ]),
-          )
         ],
       ),
     );

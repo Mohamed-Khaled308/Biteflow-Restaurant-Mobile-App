@@ -1,3 +1,4 @@
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:flutter/material.dart';
 import '../../theme/biteflow_theme.dart';
 
@@ -5,6 +6,7 @@ class MenuItemGrid extends StatelessWidget {
   final String imageUrl;
   final String title;
   final double price;
+  final double discountPercentage;
   final VoidCallback onTap;
 
   const MenuItemGrid({
@@ -13,6 +15,7 @@ class MenuItemGrid extends StatelessWidget {
     required this.title,
     required this.price,
     required this.onTap,
+    required this.discountPercentage,
   });
 
   @override
@@ -56,21 +59,46 @@ class MenuItemGrid extends StatelessWidget {
 
               // Price Section
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    price.toStringAsFixed(2),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).secondaryHeaderColor,
+                  // Check if there's a discount and show old price if applicable
+                  if (discountPercentage > 0)
+                    Row(
+                      children: [
+                        Text(
+                          price.toStringAsFixed(2), // Old price
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            decoration:
+                                TextDecoration.lineThrough, // Dashed effect
+                          ),
+                        ),
+
+                        const SizedBox(
+                            width: 8), // Space between old and new prices
+                      ],
                     ),
-                  ),
-                  Image.asset(
-                    'assets/images/EGP.png',
-                    color: Theme.of(context).secondaryHeaderColor,
-                    width: 22,
-                    height: 22,
+
+                  // New discounted price
+                  Row(
+                    children: [
+                      Text(
+                        (price * (1 - discountPercentage / 100))
+                            .toStringAsFixed(2), // New price
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: discountPercentage > 0
+                              ? theme.primaryColor
+                              : ThemeConstants
+                                  .blackColor, // Highlighted color for the new price
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      const Text('\$'),
+                    ],
                   ),
                 ],
               ),

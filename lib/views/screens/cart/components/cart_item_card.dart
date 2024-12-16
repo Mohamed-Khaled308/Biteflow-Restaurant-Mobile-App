@@ -46,6 +46,7 @@ class CartItemCard extends StatelessWidget {
                 CartItemThumbnail(cartItem: cartItem),
                 SizedBox(width: 16.w),
                 CartItemDescription(cartItem: cartItem),
+                SizedBox(width: 8.w),
                 CartItemParticipant(cartItem: cartItem),
               ],
             ),
