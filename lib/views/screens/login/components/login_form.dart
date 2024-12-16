@@ -2,7 +2,7 @@ import 'package:biteflow/viewmodels/login_view_model.dart';
 import 'package:biteflow/views/widgets/auth/components/custom_textfield.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatelessWidget {
