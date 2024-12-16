@@ -1,9 +1,6 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
-// import 'package:biteflow/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
-// import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:biteflow/views/screens/manager_orders/components/order_bottom_sheet.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
 
@@ -39,9 +36,9 @@ class _OrdersListState extends State<OrdersList> {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).scaffoldBackgroundColor,
                                 borderRadius: BorderRadius.circular(10),
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    color: ThemeConstants.blackColor20,
+                                    color: Theme.of(context).secondaryHeaderColor,
                                     blurRadius: 5,
                                     spreadRadius: 2,
                                   ),

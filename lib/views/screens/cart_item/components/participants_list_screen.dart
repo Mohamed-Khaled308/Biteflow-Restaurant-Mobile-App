@@ -106,7 +106,7 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                       : 'Not Invited', // Not invited yet
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: ThemeConstants.blackColor60,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
                 trailing: isCurrentUserOwner
@@ -116,7 +116,7 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                                 'Pending',
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: ThemeConstants.primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               )
                             : (isAccepted && cartItemUserId != participant.id)

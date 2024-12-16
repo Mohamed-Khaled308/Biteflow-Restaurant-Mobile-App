@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:flutter/material.dart';
 import '../../theme/biteflow_theme.dart';
 
@@ -91,9 +90,8 @@ class MenuItemGrid extends StatelessWidget {
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: discountPercentage > 0
-                              ? theme.primaryColor
-                              : ThemeConstants
-                                  .blackColor, // Highlighted color for the new price
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).secondaryHeaderColor, // Highlighted color for the new price
                         ),
                       ),
                       const SizedBox(width: 4),

@@ -190,7 +190,7 @@ class _RestaurantOnboardingScreenState extends State<RestaurantOnboardingScreen>
                                     color: Colors.black54,
                                     borderRadius: BorderRadius.circular(4),
                                   ),
-                                  child: const Text(
+                                  child:  const Text(
                                     'Change Image',
                                     style: TextStyle(color: Colors.white),
                                   ),

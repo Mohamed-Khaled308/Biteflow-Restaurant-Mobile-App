@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/menu_item.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/widgets/dialogues/action_dialogue.dart';
@@ -70,7 +69,7 @@ class MenuCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: theme.primaryColor.withOpacity(0.7),
+                    color: Theme.of(context).primaryColor.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -79,8 +78,8 @@ class MenuCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         rating.toStringAsFixed(1),
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style:  TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
@@ -147,9 +146,8 @@ class MenuCard extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: discountPercentage > 0
-                            ? theme.primaryColor
-                            : ThemeConstants
-                                .blackColor, // Highlighted color for the new price
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).secondaryHeaderColor, // Highlighted color for the new price
                       ),
                     ),
                     const SizedBox(width: 4),

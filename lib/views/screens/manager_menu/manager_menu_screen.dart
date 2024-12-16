@@ -52,9 +52,9 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
           title: const Text(''),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         ),
-        body: const Center(
+        body:  Center(
           child: CircularProgressIndicator(
-            backgroundColor: ThemeConstants.blackColor40,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             color: ThemeConstants.blackColor80,
           ),
         ),
@@ -81,17 +81,17 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
         ),
         title: Text(
           viewModel.authenticatedManagerRestaurant!.name,
-          style: const TextStyle(
+          style:  TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
-            color: ThemeConstants.whiteColor,
+            color: Theme.of(context).secondaryHeaderColor,
           ),
         ),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
-              color: Colors.black26,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(8),
             ),
             child: IconButton(
@@ -102,9 +102,9 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                   ),
                 );
               },
-              icon: const Icon(
+              icon:  Icon(
                 Icons.rate_review_rounded,
-                color: ThemeConstants.whiteColor,
+                color: Theme.of(context).secondaryHeaderColor,
               ),
               tooltip: 'View Restaurant Feedback',
             ),
@@ -156,7 +156,7 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                       left: 20,
                       right: 20,
                       child: Card(
-                        color: Colors.black45,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
@@ -174,8 +174,8 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                               Text(
                                 viewModel.authenticatedManagerRestaurant!.rating
                                     .toStringAsFixed(1),
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style:  TextStyle(
+                                  color: Theme.of(context).secondaryHeaderColor,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -184,7 +184,7 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                               Text(
                                 '(${viewModel.authenticatedManagerRestaurant!.reviewCount} reviews)',
                                 style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: Theme.of(context).secondaryHeaderColor.withOpacity(0.8),
                                   fontSize: 14,
                                 ),
                               ),
@@ -333,10 +333,10 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
               });
         },
         backgroundColor: Theme.of(context).primaryColor,
-        icon: const Icon(Icons.add, color: ThemeConstants.whiteColor),
-        label: const Text(
+        icon:  Icon(Icons.add, color: Theme.of(context).secondaryHeaderColor),
+        label:  Text(
           'Add Item',
-          style: TextStyle(color: ThemeConstants.whiteColor),
+          style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
         ),
       ),
     );

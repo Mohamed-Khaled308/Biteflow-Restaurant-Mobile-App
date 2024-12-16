@@ -55,7 +55,7 @@ class MembersFilter extends StatelessWidget {
               bottom: -2.h,
               child: CircleAvatar(
                 radius: 8.r,
-                backgroundColor: ThemeConstants.whiteColor,
+                backgroundColor: Colors.white,
                 child: Icon(
                   Icons.filter_list,
                   size: 12.sp,
