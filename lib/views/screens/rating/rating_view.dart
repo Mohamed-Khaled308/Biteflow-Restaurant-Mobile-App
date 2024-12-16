@@ -5,13 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class RatingView extends StatelessWidget {
-  const RatingView({super.key});
+  final String restaurantId;
+  const RatingView({super.key, required this.restaurantId});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => getIt<RatingViewModel>(),
-      child: RatingScreen(),
+      child: RatingScreen(restaurantId: restaurantId,),
     );
   }
 }

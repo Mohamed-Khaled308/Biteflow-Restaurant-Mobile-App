@@ -135,7 +135,7 @@ class ManagerMenuViewModel extends BaseModel {
 
   // database related methods
   Future<void> createCategory(String categoryName) async {
-    setBusy(true);
+    // setBusy(true);
 
     Category newCategory = Category(
       id: _categoryService.generateCategoryId(),
@@ -145,13 +145,13 @@ class ManagerMenuViewModel extends BaseModel {
     await _categoryService.createCategory(newCategory);
     await reloadCategoriesAndMenuItems();
 
-    setBusy(false);
+    // setBusy(false);
   }
 
   Future<void> createItem(String itemName, String itemPrice,
       String itemDescription, String itemImageUrl) async {
     
-    setBusy(true);
+    // setBusy(true);
 
 
     MenuItem newMenuItem = MenuItem(
@@ -169,7 +169,7 @@ class ManagerMenuViewModel extends BaseModel {
 
 
     
-    setBusy(false);
+    // setBusy(false);
   }
 
 

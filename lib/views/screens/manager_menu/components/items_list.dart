@@ -50,7 +50,7 @@ class _ItemsListState extends State<ItemsList> {
     return Expanded(
       child: SingleChildScrollView(
         child: viewModel.menuItemsOfSelectedCategory!.isEmpty
-            ? const Text('No items')
+            ? const Center(child: Text('No items'))
             : Column(
                 children: viewModel.menuItemsOfSelectedCategory!
                     .map((item) => GestureDetector(

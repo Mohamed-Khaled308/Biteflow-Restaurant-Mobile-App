@@ -56,19 +56,20 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'RESTAURANTS AT',
+              'RESTAURANTS',
               style: TextStyle(
-                fontSize: 14.sp,
-                color: ThemeConstants.greyColor,
+                fontSize: 17.sp,
+                color: ThemeConstants.whiteColor,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              'Helwan',
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: Theme.of(context).secondaryHeaderColor,
-              ),
-            ),
+            // Text(
+            //   'Helwan',
+            //   style: TextStyle(
+            //     fontSize: 20.sp,
+            //     color: Theme.of(context).secondaryHeaderColor,
+            //   ),
+            // ),
           ],
         ),
         iconTheme:  IconThemeData(

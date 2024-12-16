@@ -2,6 +2,7 @@ import 'package:biteflow/core/providers/notification_provider.dart';
 import 'package:biteflow/services/auth_service.dart';
 import 'package:biteflow/services/firestore/cart_service.dart';
 import 'package:biteflow/services/firestore/category_service.dart';
+import 'package:biteflow/services/firestore/comment_service.dart';
 import 'package:biteflow/services/firestore/menu_item_service.dart';
 import 'package:biteflow/services/firestore/offer_notification_service.dart';
 import 'package:biteflow/services/firestore/promotional_offer_service.dart';
@@ -16,6 +17,7 @@ import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/viewmodels/client_orders_view_model.dart';
 import 'package:biteflow/viewmodels/client_offers_view_model.dart';
 import 'package:biteflow/viewmodels/entry_point_view_model.dart';
+import 'package:biteflow/viewmodels/feedback_view_model.dart';
 import 'package:biteflow/viewmodels/home_view_model.dart';
 import 'package:biteflow/viewmodels/image_view_model.dart';
 import 'package:biteflow/viewmodels/login_view_model.dart';
@@ -86,20 +88,19 @@ void setupLocator() {
   // getIt.registerLazySingleton<ClientOrdersViewModel>(() => ClientOrdersViewModel());
   getIt.registerFactory<ClientOrdersViewModel>(() => ClientOrdersViewModel());
 
-   getIt.registerFactory<ManagerPromotionalOffersViewModel>(
-    () => ManagerPromotionalOffersViewModel()
-  );
+  getIt.registerFactory<ManagerPromotionalOffersViewModel>(
+      () => ManagerPromotionalOffersViewModel());
 
   getIt.registerLazySingleton<PromotionalOfferService>(
-    () => PromotionalOfferService()
-  );
+      () => PromotionalOfferService());
 
-  getIt.registerLazySingleton<ImageService>(
-    () => ImageService()
-  );
+  getIt.registerLazySingleton<ImageService>(() => ImageService());
 
-  getIt.registerFactory<ImageViewModel>(() => ImageViewModel(getIt<ImageService>()));
+  getIt.registerFactory<ImageViewModel>(
+      () => ImageViewModel(getIt<ImageService>()));
   getIt.registerFactoryParam<CartItemViewModel, String, void>(
       (itemId, _) => CartItemViewModel(itemId: itemId));
 
+  getIt.registerFactory(() => FeedbackViewModel());
+  getIt.registerLazySingleton(() => CommentService());
 }
