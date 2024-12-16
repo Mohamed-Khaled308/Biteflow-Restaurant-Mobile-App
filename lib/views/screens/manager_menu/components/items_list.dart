@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:biteflow/models/menu_item.dart';
 
 class ItemsList extends StatefulWidget {
