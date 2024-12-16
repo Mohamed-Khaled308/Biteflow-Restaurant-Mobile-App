@@ -197,6 +197,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                                   viewModel.updateOrderClientPaymentStatus(
                                                       order.id);
                                                 }).catchError((e) {
+                                                  paymentViewModel.setBusyForOrder(order.id, false);
                                                   paymentViewModel
                                                       .setBusy(false);
                                                   if (context.mounted) {
