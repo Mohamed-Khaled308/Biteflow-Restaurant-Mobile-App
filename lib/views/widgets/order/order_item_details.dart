@@ -85,12 +85,7 @@ class OrderItemDetails extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  OrderItemCardTrait(
-                    Icons.star,
-                    isClientInItems ? Colors.amber.shade600 : Colors.green,
-                    'Rating: ${orderItem.rating}',
-                    isClientInItems ? Colors.amber.shade900 : Theme.of(context).secondaryHeaderColor,
-                  ),
+                  
                   OrderItemCardTrait(
                     Icons.price_change_rounded,
                     isClientInItems ? Colors.purple.shade600 : Colors.red,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:biteflow/models/menu_item.dart';
 
 class ItemsList extends StatefulWidget {
@@ -88,30 +87,7 @@ class _ItemsListState extends State<ItemsList> {
                                           style: const TextStyle(
                                               fontSize: 14, color: Colors.grey),
                                         ),
-                                        Row(
-                                          children: [
-                                            RatingBarIndicator(
-                                              rating: item.rating,
-                                              itemBuilder: (context, index) =>
-                                                  const Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                              ),
-                                              itemCount: 5,
-                                              itemSize: 16,
-                                              direction: Axis.horizontal,
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              item.rating.toStringAsFixed(1),
-                                              style:  TextStyle(
-                                                color: Theme.of(context).secondaryHeaderColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        )
+                                        
                                       ]),
                                 ],
                               ),
