@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/offer_notification.dart';
 import 'package:biteflow/services/firestore/offer_notification_service.dart';

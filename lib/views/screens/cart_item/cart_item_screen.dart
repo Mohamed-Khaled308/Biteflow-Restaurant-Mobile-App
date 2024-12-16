@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
 import 'package:biteflow/views/screens/cart_item/components/add_participants.dart';
 import 'package:biteflow/views/screens/cart_item/components/bottom_bar.dart';

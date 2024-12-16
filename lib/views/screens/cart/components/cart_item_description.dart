@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
 import 'package:biteflow/views/widgets/utils.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:biteflow/core/constants/theme_constants.dart';
 
 class AuthSubtitle extends StatelessWidget {
   final String subtitle;
