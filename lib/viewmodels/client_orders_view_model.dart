@@ -35,6 +35,7 @@ class ClientOrdersViewModel extends BaseModel {
     // setBusy(true);
 
     await _fetchClientOrders();
+    notifyListeners();
 
     // setBusy(false);
   }
