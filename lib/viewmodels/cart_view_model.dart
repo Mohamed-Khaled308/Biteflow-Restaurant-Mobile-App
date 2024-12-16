@@ -318,6 +318,7 @@ class CartViewModel extends BaseModel {
       for (final item in _cart!.items) {
         if (filterUserId == null) {
           total += item.menuItem.price * item.quantity;
+          totalDiscount += getItemDiscount(item);
         } else {
           List<CartParticipant> doneParticipants = item.participants
               .where(
@@ -330,12 +331,14 @@ class CartViewModel extends BaseModel {
           if (isFilterUserInParticipants) {
             double amountPerUser = item.menuItem.price * item.quantity;
             amountPerUser /= doneParticipants.length;
+            final discountPerUser =
+                getItemDiscount(item) / doneParticipants.length;
             total += amountPerUser;
+            totalDiscount += discountPerUser;
           }
         }
 
         // Add the item-specific discount to the total discount
-        totalDiscount += getItemDiscount(item);
       }
     }
 
@@ -348,7 +351,24 @@ class CartViewModel extends BaseModel {
 
     if (_cart != null) {
       for (final item in _cart!.items) {
-        totalDiscount += getItemDiscount(item);
+        if (filterUserId == null) {
+          // Calculate discount for all items
+          totalDiscount += getItemDiscount(item);
+        } else {
+          List<CartParticipant> doneParticipants = item.participants
+              .where(
+                  (participant) => participant.status == ParticipantStatus.done)
+              .toList();
+
+          bool isFilterUserInParticipants = doneParticipants
+              .any((participant) => participant.id == filterUserId);
+
+          if (isFilterUserInParticipants) {
+            double discountPerUser =
+                getItemDiscount(item) / doneParticipants.length;
+            totalDiscount += discountPerUser;
+          }
+        }
       }
     }
 
@@ -420,7 +440,9 @@ class CartViewModel extends BaseModel {
           doneParticipants.any((p) => p.id == participant.id);
 
       if (isParticipantInList) {
-        double amountPerUser = item.menuItem.price * item.quantity;
+        double amountPerUser = item.menuItem.price *
+            (1 - item.menuItem.discountPercentage / 100) *
+            item.quantity;
 
         amountPerUser /= doneParticipants.length;
 

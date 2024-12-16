@@ -16,8 +16,8 @@ class CartItemDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final discountPercentage = cartItem.menuItem.discountPercentage;
-    final price = cartItem.menuItem.price;
-    final newPrice = price * (1 - discountPercentage) * cartItem.quantity;
+    final price = cartItem.menuItem.price * cartItem.quantity;
+    final newPrice = price * (1 - discountPercentage / 100) * cartItem.quantity;
 
     return Expanded(
       child: Column(

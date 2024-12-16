@@ -154,7 +154,7 @@ class _CartScreenState extends State<CartScreen> {
                         color: Colors.black87,
                       ),
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: 16.h),
 
                     // Subtotal (before discount)
                     Row(
@@ -181,7 +181,7 @@ class _CartScreenState extends State<CartScreen> {
                     if (viewModel.totalDiscount > 0)
                       Column(
                         children: [
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 6.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -205,7 +205,7 @@ class _CartScreenState extends State<CartScreen> {
                         ],
                       ),
 
-                    SizedBox(height: 8.h),
+                    SizedBox(height: 6.h),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

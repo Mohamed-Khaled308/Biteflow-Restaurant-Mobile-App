@@ -12,11 +12,24 @@ class MembersFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartViewModel>();
-    final filteredUser =
-        viewModel.filterUserId != null && viewModel.cart != null
-            ? viewModel.cart!.participants.firstWhere(
-                (participant) => participant.id == viewModel.filterUserId)
-            : null;
+
+    var filteredUser;
+    if (viewModel.filterUserId == null ||
+        viewModel.cart == null ||
+        !viewModel.cart!.participants.any(
+          (participant) => participant.id == viewModel.filterUserId,
+        )) {
+      filteredUser = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (viewModel.filterUserId != null) {
+          viewModel.setFilter(null);
+        }
+      });
+    } else {
+      filteredUser = viewModel.cart!.participants.firstWhere(
+        (participant) => participant.id == viewModel.filterUserId,
+      );
+    }
 
     return IconButton(
       icon: SizedBox(

@@ -151,7 +151,8 @@ class MenuCard extends StatelessWidget {
                           description: description,
                           rating: rating,
                           categoryId: categoryId,
-                          restaurantId: restaurantId));
+                          restaurantId: restaurantId,
+                          discountPercentage: discountPercentage));
                 } else {
                   showDialog(
                     context: context,
@@ -172,6 +173,7 @@ class MenuCard extends StatelessWidget {
                               rating: rating,
                               categoryId: categoryId,
                               restaurantId: restaurantId,
+                              discountPercentage: discountPercentage,
                             ),
                           );
                           // viewModel.leaveCart();
