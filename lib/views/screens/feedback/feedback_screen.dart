@@ -101,8 +101,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                       backgroundColor: Theme.of(context).primaryColor.withOpacity(0.8),
                                       child: Text(
                                         user?.name.substring(0, 1).toUpperCase() ?? '?',
-                                        style: const TextStyle(
-                                          color: Colors.white,
+                                        style: TextStyle(
+                                          color: Theme.of(context).secondaryHeaderColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
                                         ),

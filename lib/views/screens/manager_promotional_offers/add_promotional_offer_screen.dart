@@ -200,9 +200,9 @@ class _AddPromotionalOfferScreenState extends State<AddPromotionalOfferScreen> {
                                     color: Theme.of(context).secondaryHeaderColor,
                                     borderRadius: BorderRadius.circular(4),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     'Change Image',
-                                    style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ),

@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
               'RESTAURANTS',
               style: TextStyle(
                 fontSize: 17.sp,
-                color: ThemeConstants.whiteColor,
+                color: Theme.of(context).secondaryHeaderColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -126,8 +126,9 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.camera_alt_rounded)),
           IconButton(
             icon: Stack(
+              clipBehavior: Clip.none,
               children: [
-                const Icon(Icons.local_offer),
+                const Icon(Icons.notifications),
                 StreamBuilder<DocumentSnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('users')
@@ -156,8 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     if (unseenOffers > 0) {
                       return Positioned(
-                        right: 0,
-                        top: 0,
+                        right: -8,
+                        top: -8,
                         child: CircleAvatar(
                           radius: 10,
                           backgroundColor: Colors.red,
