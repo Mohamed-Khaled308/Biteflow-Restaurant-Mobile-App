@@ -51,13 +51,13 @@ class MenuCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: theme.primaryColor.withOpacity(0.7),
+                    color: Theme.of(context).primaryColor.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     title,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.white,
+                      color: Theme.of(context).secondaryHeaderColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -68,7 +68,7 @@ class MenuCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: theme.primaryColor.withOpacity(0.7),
+                    color: Theme.of(context).primaryColor.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -86,8 +86,8 @@ class MenuCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         rating.toStringAsFixed(1),
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style:  TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
@@ -129,12 +129,13 @@ class MenuCard extends StatelessWidget {
                   style: theme.textTheme.bodyLarge?.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
                 const SizedBox(width: 4),
                 Image.asset(
                   'assets/images/EGP.png',
+                  color : Theme.of(context).secondaryHeaderColor,
                   width: 22,
                   height: 22,
                 ),
@@ -188,14 +189,14 @@ class MenuCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: theme.primaryColor,
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 alignment: Alignment.center,
                 child: Text(
                   'Add to Cart',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.white,
+                    color: Theme.of(context).secondaryHeaderColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),

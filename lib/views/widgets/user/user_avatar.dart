@@ -40,7 +40,7 @@ class UserAvatar extends StatelessWidget {
           avatarText,
           style: TextStyle(
             fontSize: 12.sp,
-            color: Colors.white,
+            color: Theme.of(context).secondaryHeaderColor,
           ),
         ),
       ),

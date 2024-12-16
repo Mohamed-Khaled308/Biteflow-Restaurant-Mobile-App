@@ -24,7 +24,7 @@ class CartItemDescription extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
-              color: ThemeConstants.blackColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -42,7 +42,7 @@ class CartItemDescription extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
-              color: ThemeConstants.blackColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ),
           ),
         ],

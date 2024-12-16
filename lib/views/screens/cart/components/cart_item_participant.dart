@@ -60,7 +60,7 @@ class CartItemParticipant extends StatelessWidget {
                           '+${doneParticipants.length - 2}',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: Colors.white,
+                            color: Theme.of(context).secondaryHeaderColor,
                           ),
                         ),
                       ),

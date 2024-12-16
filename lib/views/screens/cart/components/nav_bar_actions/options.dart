@@ -33,7 +33,7 @@ class Options extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
                 onTap: () {
@@ -70,7 +70,7 @@ class Options extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
                 onTap: () {

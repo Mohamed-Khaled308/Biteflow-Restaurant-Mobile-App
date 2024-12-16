@@ -32,7 +32,7 @@ class ActionDialogue extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
-                color: ThemeConstants.primaryColor,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             SizedBox(height: 12.h),
@@ -68,7 +68,7 @@ class ActionDialogue extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ThemeConstants.primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),
@@ -80,7 +80,7 @@ class ActionDialogue extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Theme.of(context).secondaryHeaderColor,
                     ),
                   ),
                 ),

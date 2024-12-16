@@ -47,15 +47,15 @@ class _OrderUpdateStatusState extends State<OrderUpdateStatus> {
                 children: [
                   Text(
                     status.toUpperCase(),
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 16,
-                      color: ThemeConstants.blackColor60,
+                      color: Theme.of(context).secondaryHeaderColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Icon(
                     StatusIconColor.getStatusIcon(status),
-                    color: ThemeConstants.blackColor80,
+                    color: Theme.of(context).secondaryHeaderColor,
                     size: 20,
                   ),
                 ],

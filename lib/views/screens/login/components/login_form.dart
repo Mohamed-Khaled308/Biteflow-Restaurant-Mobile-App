@@ -52,10 +52,10 @@ class LoginForm extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(8.w),
             child:
-                const Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               Text(
                 'Forgot Password?',
-                style: TextStyle(color: ThemeConstants.blackColor60),
+                style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
               ),
             ]),
           )

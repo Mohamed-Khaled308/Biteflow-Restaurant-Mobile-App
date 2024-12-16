@@ -63,11 +63,12 @@ class MenuItemGrid extends StatelessWidget {
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Theme.of(context).secondaryHeaderColor,
                     ),
                   ),
                   Image.asset(
                     'assets/images/EGP.png',
+                    color: Theme.of(context).secondaryHeaderColor,
                     width: 22,
                     height: 22,
                   ),

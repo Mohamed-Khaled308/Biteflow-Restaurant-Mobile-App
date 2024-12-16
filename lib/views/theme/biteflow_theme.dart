@@ -10,8 +10,9 @@ class BiteflowTheme {
     return ThemeData(
       brightness: Brightness.light,
       fontFamily: 'Plus Jakarta',
-      primarySwatch: ThemeConstants.primaryMaterialColor,
+      primarySwatch: ThemeConstants.blackText,
       primaryColor: ThemeConstants.primaryColor,
+      secondaryHeaderColor: Colors.black,
       scaffoldBackgroundColor: Colors.white,
       iconTheme: const IconThemeData(color: ThemeConstants.blackColor),
       textTheme: const TextTheme(
@@ -33,8 +34,9 @@ class BiteflowTheme {
     return ThemeData(
       brightness: Brightness.dark,
       fontFamily: 'Plus Jakarta',
-      primarySwatch: ThemeConstants.primaryMaterialColor,
-      primaryColor: ThemeConstants.primaryColor,
+      primarySwatch: ThemeConstants.whiteText,
+      primaryColor: ThemeConstants.primaryColorDark,
+      secondaryHeaderColor: Colors.white,
       scaffoldBackgroundColor: ThemeConstants.blackColor,
       iconTheme: const IconThemeData(color: ThemeConstants.whiteColor),
       textTheme: const TextTheme(

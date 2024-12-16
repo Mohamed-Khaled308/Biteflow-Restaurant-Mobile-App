@@ -110,8 +110,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           ? SizedBox(
                               width: 16.w,
                               height: 16.h,
-                              child: const CircularProgressIndicator(
-                                color: ThemeConstants.primaryColor,
+                              child:  CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
                               ),
                             )
                           : const Text('Sign up'),
@@ -125,10 +125,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                           Text(
                             'Already have an account?',
                             style:
-                                TextStyle(color: ThemeConstants.blackColor60),
+                                TextStyle(color: Theme.of(context).secondaryHeaderColor),
                           ),
                           SizedBox(width: 4.w),
                           const Text(

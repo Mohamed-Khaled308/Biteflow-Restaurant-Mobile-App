@@ -216,7 +216,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                                 });
                                               },
                                         style: ElevatedButton.styleFrom(
-                                          foregroundColor: Colors.white,
+                                          foregroundColor: Theme.of(context).secondaryHeaderColor,
                                           backgroundColor: Colors.blue,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:

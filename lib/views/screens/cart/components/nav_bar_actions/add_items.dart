@@ -19,9 +19,9 @@ class AddItems extends StatelessWidget {
           MenuView(restaurantId: viewModel.cart!.restaurantId),
         );
       },
-      child: const Text(
+      child:  Text(
         'Add Items',
-        style: TextStyle(color: ThemeConstants.whiteColor),
+        style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
       ),
     );
   }

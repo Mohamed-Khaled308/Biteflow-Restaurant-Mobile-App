@@ -31,18 +31,18 @@ class _ManagerOrdersScreenState extends State<ManagerOrdersScreen> {
         title: viewModel.busy
             ? const Text('Loading...')
             : Text('${viewModel.authenticatedManagerRestaurant!.name} Orders',
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  color: ThemeConstants.whiteColor,
+                  color: Theme.of(context).secondaryHeaderColor,
                 )),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: viewModel.busy
-          ? const Center(
+          ?  Center(
               child: CircularProgressIndicator(
-              backgroundColor: ThemeConstants.blackColor40,
-              color: ThemeConstants.blackColor80,
+              backgroundColor: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ))
           : const Column(
               children: [

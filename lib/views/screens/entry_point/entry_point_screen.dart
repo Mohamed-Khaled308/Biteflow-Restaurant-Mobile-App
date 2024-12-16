@@ -19,7 +19,7 @@ class EntryPointScreen extends StatelessWidget {
           viewModel.updateIndex(value);
         },
         currentIndex: viewModel.selectedIndex,
-        activeColor: ThemeConstants.primaryColor,
+        activeColor: Theme.of(context).primaryColor,
         inactiveColor: ThemeConstants.greyColor,
         items: List.generate(
           viewModel.navItems.length,
@@ -30,7 +30,7 @@ class EntryPointScreen extends StatelessWidget {
               width: 30,
               colorFilter: ColorFilter.mode(
                 index == viewModel.selectedIndex
-                    ? ThemeConstants.primaryColor
+                    ? Theme.of(context).primaryColor
                     : ThemeConstants.greyColor,
                 BlendMode.srcIn,
               ),

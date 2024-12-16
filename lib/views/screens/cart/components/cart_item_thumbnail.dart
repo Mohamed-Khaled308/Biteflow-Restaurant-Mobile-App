@@ -82,14 +82,14 @@ class CartItemThumbnail extends StatelessWidget {
                                 : ThemeConstants.greyColor)
                         : Icon(Icons.remove,
                             color: cartItem.userId == userProvider.user!.id
-                                ? ThemeConstants.blackColor
+                                ? Theme.of(context).secondaryHeaderColor
                                 : ThemeConstants.greyColor),
                   ),
                   Text(
                     '${cartItem.quantity}',
                     style: TextStyle(
                       color: cartItem.userId == userProvider.user!.id
-                          ? ThemeConstants.blackColor
+                          ? Theme.of(context).secondaryHeaderColor
                           : ThemeConstants.greyColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14.sp,

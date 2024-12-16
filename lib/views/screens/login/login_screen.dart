@@ -100,8 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? SizedBox(
                               width: 18.w,
                               height: 16.h,
-                              child: const CircularProgressIndicator(
-                                color: ThemeConstants.primaryColor,
+                              child:  CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
                               ),
                             )
                           : const Text('Log in'),
@@ -147,9 +147,9 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+           Text(
             'Don\'t have an account?',
-            style: TextStyle(color: ThemeConstants.blackColor60),
+            style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
           ),
           SizedBox(
             width: 4.w,

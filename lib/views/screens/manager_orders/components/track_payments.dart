@@ -52,10 +52,10 @@ class _TrackPaymentsState extends State<TrackPayments> {
                           children: [
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   Icons.person,
                                   size: 20,
-                                  color: ThemeConstants.blackColor80,
+                                  color: Theme.of(context).secondaryHeaderColor,
                                 ),
                                 const SizedBox(width: 8),
                                 Text(

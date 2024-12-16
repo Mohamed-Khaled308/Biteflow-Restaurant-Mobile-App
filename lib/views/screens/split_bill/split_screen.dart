@@ -23,14 +23,14 @@ class SplitScreenState extends State<SplitScreen> {
         title: Text(
           'Splitting Options',
           style: TextStyle(
-            color: ThemeConstants.whiteColor,
+            color: Theme.of(context).secondaryHeaderColor,
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
-        backgroundColor: ThemeConstants.primaryColor,
-        iconTheme: const IconThemeData(
-          color: ThemeConstants.whiteColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        iconTheme:  IconThemeData(
+          color: Theme.of(context).secondaryHeaderColor,
         ),
       ),
       body: Padding(
@@ -43,7 +43,7 @@ class SplitScreenState extends State<SplitScreen> {
               style: TextStyle(
                 fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
-                color: ThemeConstants.blackColor,
+                color: Theme.of(context).secondaryHeaderColor,
               ),
             ),
             verticalSpaceLarge,
@@ -55,9 +55,9 @@ class SplitScreenState extends State<SplitScreen> {
                 });
               },
               child: ListTile(
-                leading: const Icon(
+                leading:  Icon(
                   Icons.group,
-                  color: ThemeConstants.primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
                 title: Text(
                   'Split Equally',
@@ -70,13 +70,13 @@ class SplitScreenState extends State<SplitScreen> {
                   'Everyone pays the same.',
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: ThemeConstants.blackColor60,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
                 trailing: Radio<String>(
                   value: 'equally',
                   groupValue: _selectedMethod,
-                  activeColor: ThemeConstants.primaryColor,
+                  activeColor: Theme.of(context).primaryColor,
                   onChanged: (String? value) {
                     setState(() {
                       _selectedMethod = value;
@@ -95,9 +95,9 @@ class SplitScreenState extends State<SplitScreen> {
                 });
               },
               child: ListTile(
-                leading: const Icon(
+                leading:  Icon(
                   Icons.pie_chart,
-                  color: ThemeConstants.primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
                 title: Text(
                   'Item-Based Splitting',
@@ -110,13 +110,13 @@ class SplitScreenState extends State<SplitScreen> {
                   'Each item is split equally among the people sharing it.',
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: ThemeConstants.blackColor60,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
                 trailing: Radio<String>(
                   value: 'item_based',
                   groupValue: _selectedMethod,
-                  activeColor: ThemeConstants.primaryColor,
+                  activeColor: Theme.of(context).primaryColor,
                   onChanged: (String? value) {
                     setState(() {
                       _selectedMethod = value;
@@ -133,7 +133,7 @@ class SplitScreenState extends State<SplitScreen> {
                 viewModel.placeOrder(_selectedMethod);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: ThemeConstants.primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
                 minimumSize: Size(double.infinity, 50.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
@@ -143,7 +143,7 @@ class SplitScreenState extends State<SplitScreen> {
                 'Place Order',
                 style: TextStyle(
                   fontSize: 16.sp,
-                  color: ThemeConstants.whiteColor,
+                  color: Theme.of(context).secondaryHeaderColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),

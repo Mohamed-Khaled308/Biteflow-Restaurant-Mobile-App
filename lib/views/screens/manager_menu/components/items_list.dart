@@ -104,8 +104,8 @@ class _ItemsListState extends State<ItemsList> {
                                             const SizedBox(width: 4),
                                             Text(
                                               item.rating.toStringAsFixed(1),
-                                              style: const TextStyle(
-                                                color: Colors.white,
+                                              style:  TextStyle(
+                                                color: Theme.of(context).secondaryHeaderColor,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                               ),

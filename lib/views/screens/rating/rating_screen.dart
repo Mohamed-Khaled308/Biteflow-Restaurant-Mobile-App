@@ -41,7 +41,7 @@ class RatingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rate Your Dishes'),
-        backgroundColor: ThemeConstants.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         children: [
@@ -82,7 +82,7 @@ class RatingScreen extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: ThemeConstants.primaryColor,
+                            backgroundColor: Theme.of(context).primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   ThemeConstants.defaultBorderRadious),
@@ -92,10 +92,10 @@ class RatingScreen extends StatelessWidget {
                               horizontal: 24.0,
                             ),
                           ),
-                          child: const Text(
+                          child:  Text(
                             'Submit',
                             style: TextStyle(
-                              color: ThemeConstants.whiteColor,
+                              color: Theme.of(context).secondaryHeaderColor,
                               fontSize: 16,
                             ),
                           ),

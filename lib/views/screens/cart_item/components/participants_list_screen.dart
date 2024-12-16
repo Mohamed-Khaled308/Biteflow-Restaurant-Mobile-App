@@ -42,12 +42,12 @@ class ParticipantsListScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            color: ThemeConstants.whiteColor,
+            color: Theme.of(context).secondaryHeaderColor,
           ),
         ),
-        backgroundColor: ThemeConstants.primaryColor,
-        iconTheme: const IconThemeData(
-          color: ThemeConstants.whiteColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        iconTheme:  IconThemeData(
+          color: Theme.of(context).secondaryHeaderColor,
         ),
       ),
       body: Padding(
@@ -94,7 +94,7 @@ class ParticipantsListScreen extends StatelessWidget {
                     : 'Not Invited', // Not invited yet
                 style: TextStyle(
                   fontSize: 14.sp,
-                  color: ThemeConstants.blackColor60,
+                  color: Theme.of(context).secondaryHeaderColor,
                 ),
               ),
               trailing: isCurrentUserOwner
@@ -104,7 +104,7 @@ class ParticipantsListScreen extends StatelessWidget {
                               'Pending',
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: ThemeConstants.primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             )
                           : (isAccepted && cartItemUserId != participant.id)
@@ -142,10 +142,10 @@ class ParticipantsListScreen extends StatelessWidget {
                   : cartItemViewModel.sendInvitations,
               backgroundColor: cartItemViewModel.selectedParticipants.isEmpty
                   ? ThemeConstants.greyColor
-                  : ThemeConstants.primaryColor,
-              child: const Icon(
+                  : Theme.of(context).primaryColor,
+              child:  Icon(
                 Icons.send,
-                color: ThemeConstants.whiteColor,
+                color: Theme.of(context).secondaryHeaderColor,
               ),
             )
           : null,

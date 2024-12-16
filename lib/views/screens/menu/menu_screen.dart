@@ -61,10 +61,10 @@ class _MenuScreenState extends State<MenuScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu',
-            style: TextStyle(color: ThemeConstants.whiteColor)),
-        iconTheme: const IconThemeData(
-          color: ThemeConstants.whiteColor,
+        title:  Text('Menu',
+            style: TextStyle(color: Theme.of(context).secondaryHeaderColor)),
+        iconTheme:  IconThemeData(
+          color: Theme.of(context).secondaryHeaderColor,
         ),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
@@ -268,7 +268,7 @@ class CategoriesHeaderDelegate extends SliverPersistentHeaderDelegate {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: selectedCategoryId == category.id
-                    ? theme.primaryColor
+                    ? Theme.of(context).primaryColor
                     : theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -277,7 +277,7 @@ class CategoriesHeaderDelegate extends SliverPersistentHeaderDelegate {
                   category.title,
                   style: TextStyle(
                     color: selectedCategoryId == category.id
-                        ? Colors.white
+                        ? Theme.of(context).secondaryHeaderColor
                         : theme.textTheme.bodyMedium?.color,
                   ),
                 ),

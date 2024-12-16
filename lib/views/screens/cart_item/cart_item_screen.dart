@@ -44,7 +44,7 @@ class CartItemScreen extends StatelessWidget {
                             Text(
                               viewModel.cartItem.menuItem.title,
                               style: TextStyle(
-                                color: ThemeConstants.blackColor,
+                                color: Theme.of(context).secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24.sp,
                               ),
@@ -63,7 +63,7 @@ class CartItemScreen extends StatelessWidget {
                         Text(
                           viewModel.cartItem.menuItem.description,
                           style: TextStyle(
-                            color: ThemeConstants.blackColor60,
+                            color: Theme.of(context).secondaryHeaderColor,
                             fontSize: 16.sp,
                           ),
                         ),

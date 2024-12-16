@@ -15,7 +15,7 @@ class AuthSubtitle extends StatelessWidget {
         child: Text(
           subtitle,
           style: TextStyle(
-            color: ThemeConstants.blackColor60,
+            color: Theme.of(context).secondaryHeaderColor,
             fontSize: 22.sp,
           ),
           textAlign: TextAlign.center,

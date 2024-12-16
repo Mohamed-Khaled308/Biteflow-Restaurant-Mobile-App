@@ -33,7 +33,7 @@ class PaymentSummary extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Theme.of(context).secondaryHeaderColor,
             ),
           ),
           SizedBox(height: 8.h),
@@ -52,7 +52,7 @@ class PaymentSummary extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Theme.of(context).secondaryHeaderColor,
                 ),
               ),
             ],
