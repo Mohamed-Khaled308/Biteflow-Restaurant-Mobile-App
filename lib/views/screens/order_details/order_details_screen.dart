@@ -12,6 +12,17 @@ class OrderDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final viewModel = context.watch<OrderViewModel>();
+    double total = 0;
+    double discount = 0;
+    double discountTotal = 0;
+    for (final item in items) {
+      total += item.price * item.quantity;
+    }
+    for (final item in items) {
+      discountTotal += item.price * item.quantity * item.discountPercentage / 100;
+    }
+    discount = total - discountTotal;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Details'),
@@ -25,7 +36,7 @@ class OrderDetailsScreen extends StatelessWidget {
               itemCount: items.length,
             ),
           ),
-          PaymentSummary(totalAmount),
+          PaymentSummary(total , discount , discountTotal),
         ],
       ),
     );
