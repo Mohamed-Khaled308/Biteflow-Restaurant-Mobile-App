@@ -11,6 +11,19 @@ import 'package:biteflow/core/utils/price_calculator.dart';
 class PaymentViewModel extends BaseModel {
   final PaymentService _paymentService = getIt<PaymentService>();
   final Logger _logger = getIt<Logger>();
+  final Set<String> _busyOrders = {};
+
+  bool isBusy(String orderId) => _busyOrders.contains(orderId);
+
+  void setBusyForOrder(String orderId, bool isBusy) {
+    if (isBusy) {
+      _busyOrders.add(orderId);
+    } else {
+      _busyOrders.remove(orderId);
+    }
+    notifyListeners();
+  }
+
 
   Future<void> initiatePayment(double amount) async { // creates payment intent and payment sheet
     setBusy(true);
