@@ -1,8 +1,10 @@
 import 'package:biteflow/models/category.dart';
 import 'package:biteflow/models/menu_item.dart';
+import 'package:biteflow/models/promotional_offer.dart';
 import 'package:biteflow/models/restaurant.dart';
 import 'package:biteflow/services/firestore/category_service.dart';
 import 'package:biteflow/services/firestore/menu_item_service.dart';
+import 'package:biteflow/services/firestore/promotional_offer_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
@@ -162,7 +164,17 @@ class ManagerMenuViewModel extends BaseModel {
     // setBusy(true);
     submitButtonClicked = true;
 
-
+    double discountPercentage = 0.0;
+    final promotionalOffersData = await getIt<PromotionalOfferService>().getActiveOffersByRestaurantId(authenticatedManagerRestaurant!.id);
+    if(promotionalOffersData.isSuccess){
+      final activeOffers = promotionalOffersData.data;
+      // print('activeOffers: $activeOffers');
+      if(activeOffers != null && activeOffers.isNotEmpty){
+          PromotionalOffer offer = activeOffers.first;
+          discountPercentage = offer.discount;
+      }
+    }
+    // print('discountPercentage: $discountPercentage');
     MenuItem newMenuItem = MenuItem(
       id: _menuItemService.generateMenuItemId(),
       title: itemName,
@@ -172,6 +184,7 @@ class ManagerMenuViewModel extends BaseModel {
       rating: 5,
       categoryId: _itemCategoryId!,
       restaurantId: authenticatedManagerRestaurant!.id,
+      discountPercentage: discountPercentage,
     );
     await _menuItemService.createMenuItem(newMenuItem);
     await reloadCategoriesAndMenuItems();

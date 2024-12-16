@@ -91,4 +91,24 @@ class PromotionalOfferService {
       return Result(error: e.toString());
     }
   }
+
+  Future<Result<List<PromotionalOffer>>> getActiveOffersByRestaurantId(String restaurantId) async {
+    try {
+      QuerySnapshot allOffersSnapshot = await _offers
+        .where('restaurantId', isEqualTo: restaurantId)
+        .get();
+
+      List<PromotionalOffer> allOffers = allOffersSnapshot.docs.map((doc) {
+        return PromotionalOffer.fromData(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      List<PromotionalOffer> activeOffers = allOffers.where((offer) {
+        return offer.isActive && offer.endDate.isAfter(DateTime.now());
+      }).toList();
+
+      return Result(data: activeOffers);
+    } catch (e) {
+      return Result(error: e.toString());
+    }
+  }
 }
