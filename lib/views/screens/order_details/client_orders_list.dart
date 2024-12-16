@@ -24,38 +24,59 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
     final viewModel = context.watch<ClientOrdersViewModel>();
     final paymentViewModel = context.watch<PaymentViewModel>();
     double totalAmount = 0;
+
     return Expanded(
       child: viewModel.orders!.isEmpty
-          ? const Center(
-              child: Text(
-                'No orders yet',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.receipt_long_outlined,
+                    size: 64,
+                    color: Colors.grey.shade400,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No orders yet',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Your order history will appear here',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                ],
               ),
             )
           : RefreshIndicator(
-            color: Theme.of(context).primaryColor,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            onRefresh: () async {
-              await viewModel.reloadClientOrdersData();
-            },
-            child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              color: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              onRefresh: () async {
+                await viewModel.reloadClientOrdersData();
+              },
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 itemCount: viewModel.orders!.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                separatorBuilder: (context, index) => const SizedBox(height: 16),
                 itemBuilder: (context, index) {
                   final order = viewModel.orders![index];
                   return Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.shade200,
-                          blurRadius: 8,
+                          blurRadius: 12,
+                          spreadRadius: 2,
                           offset: const Offset(0, 4),
                         ),
                       ],
@@ -63,7 +84,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                         onTap: () {
                           for (final OrderClientsPayment orderClientsPayment
                               in order.orderClientsPayment) {
@@ -80,19 +101,28 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                           );
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
-                                  Icon(
-                                    StatusIconColor.getStatusIcon(order.status),
-                                    color: StatusIconColor.getStatusColor(
-                                        order.status),
-                                    size: 36,
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: StatusIconColor.getStatusColor(
+                                              order.status)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Icon(
+                                      StatusIconColor.getStatusIcon(order.status),
+                                      color: StatusIconColor.getStatusColor(
+                                          order.status),
+                                      size: 32,
+                                    ),
                                   ),
-                                  const SizedBox(width: 12),
+                                  const SizedBox(width: 16),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -102,15 +132,16 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                           'Order #${order.orderNumber}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 20,
+                                            fontSize: 22,
                                           ),
                                         ),
-                                        const SizedBox(height: 4),
+                                        const SizedBox(height: 6),
                                         Text(
                                           'Total: \$${order.totalAmount.toStringAsFixed(2)}',
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 18,
                                             color: Colors.grey[700],
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ],
@@ -118,26 +149,28 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                   ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
+                                        horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
                                       color: StatusIconColor.getStatusColor(
                                               order.status)
                                           .withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
                                       order.status.toUpperCase(),
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w600,
                                         color: StatusIconColor.getStatusColor(
                                             order.status),
-                                        fontSize: 13,
+                                        fontSize: 14,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 16),
+                              const Divider(height: 1),
+                              const SizedBox(height: 16),
                               for (final OrderClientsPayment orderClientsPayment
                                   in order.orderClientsPayment)
                                 if (orderClientsPayment.userId ==
@@ -147,104 +180,120 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        orderClientsPayment.isPaid == false
-                                            ? 'Payment pending'
-                                            : 'Payment completed',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color:
-                                              orderClientsPayment.isPaid == false
-                                                  ? Colors.orange
-                                                  : Colors.green,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            orderClientsPayment.isPaid
+                                                ? Icons.check_circle
+                                                : Icons.pending_outlined,
+                                            color: orderClientsPayment.isPaid
+                                                ? Colors.green
+                                                : Colors.orange,
+                                            size: 24,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            orderClientsPayment.isPaid
+                                                ? 'Payment completed'
+                                                : 'Payment pending',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: orderClientsPayment.isPaid
+                                                  ? Colors.green
+                                                  : Colors.orange,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      if (orderClientsPayment.isPaid == false)
-                                        ElevatedButton(
-                                          onPressed: /*paymentViewModel.busy */
-                                              paymentViewModel.isBusy(order.id)
-                                                  ? null
-                                                  : () async {
-                                                      paymentViewModel
-                                                          .setBusyForOrder(
-                                                              order.id, true);
-                                                      for (final OrderClientsPayment orderClientsPayment
-                                                          in order
-                                                              .orderClientsPayment) {
-                                                        if (orderClientsPayment
-                                                                .userId ==
-                                                            viewModel.clientLogged
-                                                                .id) {
-                                                          totalAmount =
-                                                              orderClientsPayment
-                                                                  .amount;
-                                                        }
-                                                      }
-                                                      // print('totolAmount= $totalAmount');
-                                                      await paymentViewModel
-                                                          .initiatePayment(
-                                                              totalAmount);
-                                                      Stripe.instance
-                                                          .presentPaymentSheet()
-                                                          .then((value) {
-                                                        paymentViewModel
-                                                            .setBusyForOrder(
-                                                                order.id, false);
-                                                        paymentViewModel
-                                                            .setBusy(false);
-                                                        if (context.mounted) {
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                            const SnackBar(
-                                                              content: Text(
-                                                                  'Payment Successful'),
-                                                              backgroundColor:
-                                                                  ThemeConstants
-                                                                      .successColor,
-                                                            ),
-                                                          );
-                                                        }
+                                      if (!orderClientsPayment.isPaid)
+                                        ElevatedButton.icon(
+                                          onPressed: paymentViewModel
+                                                  .isBusy(order.id)
+                                              ? null
+                                              : () async {
+                                                  paymentViewModel
+                                                      .setBusyForOrder(
+                                                          order.id, true);
+                                                  for (final OrderClientsPayment
+                                                      orderClientsPayment
+                                                      in order
+                                                          .orderClientsPayment) {
+                                                    if (orderClientsPayment
+                                                            .userId ==
                                                         viewModel
-                                                            .updateOrderClientPaymentStatus(
-                                                                order.id);
-                                                      }).catchError((e) {
-                                                        paymentViewModel
-                                                            .setBusyForOrder(
-                                                                order.id, false);
-                                                        paymentViewModel
-                                                            .setBusy(false);
-                                                        if (context.mounted) {
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                            const SnackBar(
-                                                              content: Text(
-                                                                  'Payment process was interrupted. Please try again.'),
-                                                              backgroundColor:
-                                                                  ThemeConstants
-                                                                      .errorColor,
-                                                            ),
-                                                          );
-                                                        }
-                                                      });
-                                                    },
+                                                            .clientLogged.id) {
+                                                      totalAmount =
+                                                          orderClientsPayment
+                                                              .amount;
+                                                    }
+                                                  }
+                                                  await paymentViewModel
+                                                      .initiatePayment(
+                                                          totalAmount);
+                                                  Stripe.instance
+                                                      .presentPaymentSheet()
+                                                      .then((value) {
+                                                    paymentViewModel
+                                                        .setBusyForOrder(
+                                                            order.id, false);
+                                                    paymentViewModel
+                                                        .setBusy(false);
+                                                    if (context.mounted) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Payment Successful'),
+                                                          backgroundColor:
+                                                              ThemeConstants
+                                                                  .successColor,
+                                                        ),
+                                                      );
+                                                    }
+                                                    viewModel
+                                                        .updateOrderClientPaymentStatus(
+                                                            order.id);
+                                                  }).catchError((e) {
+                                                    paymentViewModel
+                                                        .setBusyForOrder(
+                                                            order.id, false);
+                                                    paymentViewModel
+                                                        .setBusy(false);
+                                                    if (context.mounted) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Payment process was interrupted. Please try again.'),
+                                                          backgroundColor:
+                                                              ThemeConstants
+                                                                  .errorColor,
+                                                        ),
+                                                      );
+                                                    }
+                                                  });
+                                                },
                                           style: ElevatedButton.styleFrom(
-                                            foregroundColor: Theme.of(context)
-                                                .secondaryHeaderColor,
+                                            foregroundColor: Colors.white,
                                             backgroundColor: Colors.blue,
+                                            elevation: 2,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(8),
+                                                  BorderRadius.circular(10),
                                             ),
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 16, vertical: 8),
+                                                horizontal: 20, vertical: 12),
                                           ),
-                                          child: const Text(
+                                          icon: const Icon(Icons.payment,
+                                              size: 20),
+                                          label: const Text(
                                             'Pay Now',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 16,
                                             ),
                                           ),
                                         ),
@@ -253,38 +302,34 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                               if (order.status == 'served')
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      'Rate Now ',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).secondaryHeaderColor,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    ElevatedButton(
+                                    ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(
-                                        foregroundColor: Theme.of(context)
-                                            .secondaryHeaderColor,
+                                        foregroundColor: Colors.white,
                                         backgroundColor: Colors.blue,
+                                        elevation: 2,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 8),
+                                            horizontal: 20, vertical: 12),
                                       ),
-                                      child: const Text(
+                                      icon: const Icon(Icons.rate_review,
+                                          size: 20),
+                                      label: const Text(
                                         'Rate Now',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
+                                          fontSize: 16,
                                         ),
                                       ),
                                       onPressed: () {
                                         getIt<NavigationService>().navigateTo(
-                                            RatingView(
-                                                restaurantId:
-                                                    order.restaurantId));
+                                          RatingView(
+                                              restaurantId: order.restaurantId),
+                                        );
                                       },
                                     ),
                                   ],
@@ -297,7 +342,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                   );
                 },
               ),
-          ),
+            ),
     );
   }
 }
