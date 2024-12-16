@@ -1,4 +1,5 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/widgets/user/user_avatar.dart';
 import 'package:biteflow/views/widgets/user/user_card.dart';
@@ -13,7 +14,7 @@ class MembersFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartViewModel>();
 
-    var filteredUser;
+    CartParticipant? filteredUser;
     if (viewModel.filterUserId == null ||
         viewModel.cart == null ||
         !viewModel.cart!.participants.any(
