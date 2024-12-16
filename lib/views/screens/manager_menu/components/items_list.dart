@@ -88,30 +88,7 @@ class _ItemsListState extends State<ItemsList> {
                                           style: const TextStyle(
                                               fontSize: 14, color: Colors.grey),
                                         ),
-                                        Row(
-                                          children: [
-                                            RatingBarIndicator(
-                                              rating: item.rating,
-                                              itemBuilder: (context, index) =>
-                                                  const Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                              ),
-                                              itemCount: 5,
-                                              itemSize: 16,
-                                              direction: Axis.horizontal,
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              item.rating.toStringAsFixed(1),
-                                              style:  TextStyle(
-                                                color: Theme.of(context).secondaryHeaderColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        )
+                                        
                                       ]),
                                 ],
                               ),
