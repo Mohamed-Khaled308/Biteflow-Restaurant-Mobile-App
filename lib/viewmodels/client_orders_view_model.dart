@@ -18,7 +18,7 @@ class ClientOrdersViewModel extends BaseModel {
   Future<void> _fetchClientOrders() async {
     final ordersData = await getIt<OrderService>()
         .getOrdersByClient(_clientLogged.id);
-    print('loggedin id = ${_clientLogged.id}');
+    // print('loggedin id = ${_clientLogged.id}');
     // print()
     if(ordersData.isSuccess){
       _orders = ordersData.data;

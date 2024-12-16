@@ -91,12 +91,12 @@ Future<Result<void>> updateOrderClientPaymentStatus(String orderId, String clien
   // update order status
   Future<Result<bool>> updateOrderStatus(String orderId, String status) async {
     try {
-      print('orderId = $orderId');
+      // print('orderId = $orderId');
       await _orders.doc(orderId).update({'status': status});
       return Result(data: true);
-    } catch (e, stackTrace) {
+    } catch (e) {
       // _logger.e('Error updating order status', e, stackTrace);
-      print('stackTrace = $stackTrace');
+      // print('stackTrace = $stackTrace');
       return Result(error: e.toString());
     }
   }
