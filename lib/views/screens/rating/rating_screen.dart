@@ -96,10 +96,10 @@ class _RatingScreenState extends State<RatingScreen> {
                   getIt<NavigationService>().pop();
                 }
               }),
-              icon: const Icon(Icons.close, color: ThemeConstants.whiteColor),
-              label: const Text(
+              icon:  Icon(Icons.close, color: Theme.of(context).secondaryHeaderColor),
+              label: Text(
                 'Discard',
-                style: TextStyle(color: ThemeConstants.whiteColor),
+                style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
               ),
             ),
           ],
@@ -201,7 +201,7 @@ class _RatingScreenState extends State<RatingScreen> {
                               }
                             },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: ThemeConstants.primaryColor,
+                        backgroundColor: Theme.of(context).primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                             ThemeConstants.defaultBorderRadious,
@@ -213,12 +213,12 @@ class _RatingScreenState extends State<RatingScreen> {
                         ),
                       ),
                       child: viewModel.isLoading
-                          ? const CircularProgressIndicator(
-                              color: ThemeConstants.whiteColor)
-                          : const Text(
+                          ?  CircularProgressIndicator(
+                              color: Theme.of(context).secondaryHeaderColor)
+                          :  Text(
                               'Submit Rating',
                               style: TextStyle(
-                                color: ThemeConstants.whiteColor,
+                                color: Theme.of(context).secondaryHeaderColor,
                                 fontSize: 16,
                               ),
                             ),

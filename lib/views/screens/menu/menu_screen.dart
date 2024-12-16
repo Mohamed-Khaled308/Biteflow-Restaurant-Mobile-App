@@ -332,7 +332,7 @@ class CategoriesHeaderDelegate extends SliverPersistentHeaderDelegate {
                 boxShadow: [
                   if (isSelected)
                     BoxShadow(
-                      color: theme.primaryColor.withOpacity(0.3),
+                      color: Theme.of(context).primaryColor.withOpacity(0.3),
                       blurRadius: 5,
                       offset: const Offset(0, 3),
                     ),

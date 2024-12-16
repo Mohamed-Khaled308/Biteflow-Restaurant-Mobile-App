@@ -100,7 +100,7 @@ class _ManagerPromotionalOffersScreenState
                       decoration:  InputDecoration(
                         labelText: 'Offer Title',
                         border: const OutlineInputBorder(),
-                        fillColor: Theme.of(context).secondaryHeaderColor, // Background color of the input
+                        fillColor: Theme.of(context).scaffoldBackgroundColor, // Background color of the input
                         filled: true, // Enables the background color
                       ),
                     ),

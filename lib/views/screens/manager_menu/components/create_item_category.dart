@@ -333,10 +333,10 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.black54,
+                              color: Theme.of(context).secondaryHeaderColor,
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: const Text(
+                            child:  const Text(
                               'Change Image',
                               style: TextStyle(color: Colors.white),
                             ),

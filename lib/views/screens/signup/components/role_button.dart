@@ -24,7 +24,7 @@ class RoleButton extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: ThemeConstants.blackColor.withOpacity(0.15),
+                    color: Theme.of(context).secondaryHeaderColor.withOpacity(0.15),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),

@@ -63,7 +63,7 @@ class CartItemDescription extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
-                      color: ThemeConstants.primaryColor,
+                      color: Theme.of(context).primaryColor,
                       overflow:
                           TextOverflow.clip // Highlighted color for new price
                       ),

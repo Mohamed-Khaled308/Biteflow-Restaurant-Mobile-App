@@ -32,9 +32,9 @@ class _OrdersListState extends State<OrdersList> {
                             decoration: BoxDecoration(
                               color: Theme.of(context).scaffoldBackgroundColor,
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
+                              boxShadow:  [
                                 BoxShadow(
-                                  color: ThemeConstants.blackColor20,
+                                  color: Theme.of(context).secondaryHeaderColor,
                                   blurRadius: 5,
                                   spreadRadius: 2,
                                 ),
