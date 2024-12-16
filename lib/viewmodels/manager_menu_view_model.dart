@@ -106,6 +106,7 @@ class ManagerMenuViewModel extends BaseModel {
 
   // Tracks which page (create item or create category) to show
   bool _isCreatingItem = true;
+  bool _submitButtonClicked = false;
 
   // for create item
   String? _itemCategoryId;
@@ -118,12 +119,17 @@ class ManagerMenuViewModel extends BaseModel {
   // getters and setters
   String? get itemCategoryId => _itemCategoryId;
   bool get isCreatingItem => _isCreatingItem;
+  bool get submitButtonClicked => _submitButtonClicked;
   set isCreatingItem(bool value) {
     _isCreatingItem = value;
     notifyListeners();
   }
   set itemCategoryId(String? value) {
     _itemCategoryId = value;
+    notifyListeners();
+  }
+  set submitButtonClicked(bool value) {
+    _submitButtonClicked = value;
     notifyListeners();
   }
 
@@ -136,6 +142,7 @@ class ManagerMenuViewModel extends BaseModel {
   // database related methods
   Future<void> createCategory(String categoryName) async {
     // setBusy(true);
+    submitButtonClicked = true;
 
     Category newCategory = Category(
       id: _categoryService.generateCategoryId(),
@@ -145,6 +152,7 @@ class ManagerMenuViewModel extends BaseModel {
     await _categoryService.createCategory(newCategory);
     await reloadCategoriesAndMenuItems();
 
+    submitButtonClicked = false;
     // setBusy(false);
   }
 
@@ -152,6 +160,7 @@ class ManagerMenuViewModel extends BaseModel {
       String itemDescription, String itemImageUrl) async {
     
     // setBusy(true);
+    submitButtonClicked = true;
 
 
     MenuItem newMenuItem = MenuItem(
@@ -168,7 +177,7 @@ class ManagerMenuViewModel extends BaseModel {
     await reloadCategoriesAndMenuItems();
 
 
-    
+    submitButtonClicked = false;
     // setBusy(false);
   }
 

@@ -49,8 +49,8 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Loading...'),
-          backgroundColor: Theme.of(context).primaryColor,
+          title: const Text(''),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         ),
         body:  Center(
           child: CircularProgressIndicator(
@@ -111,6 +111,7 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
           ),
         ],
       ),
+      
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
