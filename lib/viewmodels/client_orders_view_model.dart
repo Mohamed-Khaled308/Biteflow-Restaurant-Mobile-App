@@ -31,6 +31,13 @@ class ClientOrdersViewModel extends BaseModel {
     setBusy(false);
   }
 
+  Future<void> reloadClientOrdersData() async {
+    // setBusy(true);
+
+    await _fetchClientOrders();
+
+    // setBusy(false);
+  }
   Future<void> updateOrderClientPaymentStatus(String orderId) async {
     setBusy(true);
 

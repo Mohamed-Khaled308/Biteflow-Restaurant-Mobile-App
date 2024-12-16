@@ -78,17 +78,56 @@ class _ItemsListState extends State<ItemsList> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 4),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '\$${item.price.toStringAsFixed(2)}',
-                                          style: const TextStyle(
-                                              fontSize: 14, color: Colors.grey),
-                                        ),
+                                  if (item.discountPercentage > 0)
+            Row(
+              children: [
+                Text(
+                  item.price.toStringAsFixed(2), // Old price
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                    decoration:
+                        TextDecoration.lineThrough, // Strikethrough effect
+                  ),
+                ),
+                const SizedBox(width: 4), // Space between old and new prices
+                Text(
+                  '${(item.price * (1 - item.discountPercentage/100)).toStringAsFixed(2)} \$', // New discounted price
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColor,
+                      overflow:
+                          TextOverflow.clip // Highlighted color for new price
+                      ),
+                ),
+              ],
+            )
+          else
+            Row(
+              children: [
+                Text(
+                  '${item.price.toStringAsFixed(2)} \$',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+              ],
+            ),
+                                  // Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.spaceBetween,
+                                  //     children: [
+                                  //       Text(
+                                  //         '\$${item.price.toStringAsFixed(2)}',
+                                  //         style: const TextStyle(
+                                  //             fontSize: 14, color: Colors.grey),
+                                  //       ),
                                         
-                                      ]),
+                                  //     ]),
                                 ],
                               ),
                             ),

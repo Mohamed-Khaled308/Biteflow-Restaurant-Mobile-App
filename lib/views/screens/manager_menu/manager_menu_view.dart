@@ -1,4 +1,5 @@
 // import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:biteflow/views/screens/manager_menu/manager_menu_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class ManagerMenuView extends StatelessWidget {
     //   child: const ManagerMenuScreen(),
     // );
 
+    
     return const ManagerMenuScreen();
 
   }

@@ -28,7 +28,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: viewModel.busy
-            ? const Text('Loading...')
+            ? const Text('')
             : Text("${viewModel.clientLogged.name} 's Orders",
                 style:  TextStyle(
                   fontSize: 20.0,

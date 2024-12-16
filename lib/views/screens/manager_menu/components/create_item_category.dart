@@ -159,7 +159,7 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
           const SizedBox(height: 30),
           Center(
             child: ElevatedButton(
-              onPressed: viewModel.busy
+              onPressed: viewModel.submitButtonClicked
                   ? null // disable the button if the view model is busy
                   : () async {
                       if (!categoryFormKey.currentState!.validate()) {
@@ -353,7 +353,7 @@ class _CreateItemCategoryState extends State<CreateItemCategory> {
               const SizedBox(height: 24),
               // Save Item Button
               ElevatedButton(
-                onPressed: viewModel.busy
+                onPressed: viewModel.submitButtonClicked
                     ? null // disable the button if the view model is busy
                     : () async {
                         if (!itemFormKey.currentState!.validate()) {

@@ -71,7 +71,7 @@ class _OrderUpdateStatusState extends State<OrderUpdateStatus> {
           const SizedBox(height: 16),
           Center(
             child: ElevatedButton(
-              onPressed: viewModel.busy
+              onPressed: viewModel.clickedUpdateStatus
                   ? null // Disable button when busy
                   : () async {
                       if (viewModel.selectedStatus != '') {

@@ -111,7 +111,7 @@ class _ManagerPromotionalOffersScreenState
                         DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(2023),
+                          firstDate: DateTime.now(),
                           lastDate: DateTime(2101),
                         );
 
@@ -166,7 +166,8 @@ class _ManagerPromotionalOffersScreenState
                               _addOffer();
                               _offerController.text = initialTitle;
                               _endDate = initialEndDate;
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
+                              // getIt<NavigationService>().pop();
                             }
                           },
                           style: ElevatedButton.styleFrom(

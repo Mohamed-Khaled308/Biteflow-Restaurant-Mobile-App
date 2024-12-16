@@ -66,12 +66,18 @@ class ManagerOrdersViewModel extends BaseModel {
   List<OrderFullClientsPayment>? _selectedOrderFullClientsPayment;
   String selectedStatus = '';
   bool _isLoadingClients = false;
+  bool _clickedUpdateStatus = false;
 
   List<OrderFullClientsPayment>? get selectedOrderFullClientsPayment => _selectedOrderFullClientsPayment;
   Order? get selectedOrder => _selectedOrder;
   bool get isLoadingClients => _isLoadingClients;
+  bool get clickedUpdateStatus => _clickedUpdateStatus;
   void setSelectedOrder(Order order) {
     _selectedOrder = order;
+    notifyListeners();
+  }
+  void setClickedUpdateStatus(bool value) {
+    _clickedUpdateStatus = value;
     notifyListeners();
   }
   
@@ -93,7 +99,8 @@ class ManagerOrdersViewModel extends BaseModel {
   }
 
   Future<void> updateOrderStatus() async{
-    setBusy(true);
+    // setBusy(true);
+    setClickedUpdateStatus(true);
 
     /*Result<bool> res = */await _orderService.updateOrderStatus(_selectedOrder!.id, selectedStatus);
     // print(res.data);
@@ -101,7 +108,8 @@ class ManagerOrdersViewModel extends BaseModel {
 
     await reloadOrdersData();
     
-    setBusy(false);
+    setClickedUpdateStatus(false);
+    // setBusy(false);
   }
 
   double getPaidAmount(){

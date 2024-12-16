@@ -36,261 +36,268 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                 ),
               ),
             )
-          : ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              itemCount: viewModel.orders!.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final order = viewModel.orders![index];
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade200,
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
+          : RefreshIndicator(
+            color: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            onRefresh: () async {
+              await viewModel.reloadClientOrdersData();
+            },
+            child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                itemCount: viewModel.orders!.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final order = viewModel.orders![index];
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(12),
-                      onTap: () {
-                        for (final OrderClientsPayment orderClientsPayment
-                            in order.orderClientsPayment) {
-                          if (orderClientsPayment.userId ==
-                              viewModel.clientLogged.id) {
-                            totalAmount = orderClientsPayment.amount;
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade200,
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () {
+                          for (final OrderClientsPayment orderClientsPayment
+                              in order.orderClientsPayment) {
+                            if (orderClientsPayment.userId ==
+                                viewModel.clientLogged.id) {
+                              totalAmount = orderClientsPayment.amount;
+                            }
                           }
-                        }
-                        getIt<NavigationService>().navigateTo(
-                          OrderDetailsView(
-                            items: order.items,
-                            totalAmount: totalAmount,
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  StatusIconColor.getStatusIcon(order.status),
-                                  color: StatusIconColor.getStatusColor(
-                                      order.status),
-                                  size: 36,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Order #${order.orderNumber}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Total: \$${order.totalAmount.toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
+                          getIt<NavigationService>().navigateTo(
+                            OrderDetailsView(
+                              items: order.items,
+                              totalAmount: totalAmount,
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    StatusIconColor.getStatusIcon(order.status),
                                     color: StatusIconColor.getStatusColor(
-                                            order.status)
-                                        .withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(8),
+                                        order.status),
+                                    size: 36,
                                   ),
-                                  child: Text(
-                                    order.status.toUpperCase(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: StatusIconColor.getStatusColor(
-                                          order.status),
-                                      fontSize: 13,
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Order #${order.orderNumber}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'Total: \$${order.totalAmount.toStringAsFixed(2)}',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            for (final OrderClientsPayment orderClientsPayment
-                                in order.orderClientsPayment)
-                              if (orderClientsPayment.userId ==
-                                      viewModel.clientLogged.id &&
-                                  order.status == 'accepted')
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: StatusIconColor.getStatusColor(
+                                              order.status)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      order.status.toUpperCase(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: StatusIconColor.getStatusColor(
+                                            order.status),
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              for (final OrderClientsPayment orderClientsPayment
+                                  in order.orderClientsPayment)
+                                if (orderClientsPayment.userId ==
+                                        viewModel.clientLogged.id &&
+                                    order.status == 'accepted')
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        orderClientsPayment.isPaid == false
+                                            ? 'Payment pending'
+                                            : 'Payment completed',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color:
+                                              orderClientsPayment.isPaid == false
+                                                  ? Colors.orange
+                                                  : Colors.green,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      if (orderClientsPayment.isPaid == false)
+                                        ElevatedButton(
+                                          onPressed: /*paymentViewModel.busy */
+                                              paymentViewModel.isBusy(order.id)
+                                                  ? null
+                                                  : () async {
+                                                      paymentViewModel
+                                                          .setBusyForOrder(
+                                                              order.id, true);
+                                                      for (final OrderClientsPayment orderClientsPayment
+                                                          in order
+                                                              .orderClientsPayment) {
+                                                        if (orderClientsPayment
+                                                                .userId ==
+                                                            viewModel.clientLogged
+                                                                .id) {
+                                                          totalAmount =
+                                                              orderClientsPayment
+                                                                  .amount;
+                                                        }
+                                                      }
+                                                      // print('totolAmount= $totalAmount');
+                                                      await paymentViewModel
+                                                          .initiatePayment(
+                                                              totalAmount);
+                                                      Stripe.instance
+                                                          .presentPaymentSheet()
+                                                          .then((value) {
+                                                        paymentViewModel
+                                                            .setBusyForOrder(
+                                                                order.id, false);
+                                                        paymentViewModel
+                                                            .setBusy(false);
+                                                        if (context.mounted) {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            const SnackBar(
+                                                              content: Text(
+                                                                  'Payment Successful'),
+                                                              backgroundColor:
+                                                                  ThemeConstants
+                                                                      .successColor,
+                                                            ),
+                                                          );
+                                                        }
+                                                        viewModel
+                                                            .updateOrderClientPaymentStatus(
+                                                                order.id);
+                                                      }).catchError((e) {
+                                                        paymentViewModel
+                                                            .setBusyForOrder(
+                                                                order.id, false);
+                                                        paymentViewModel
+                                                            .setBusy(false);
+                                                        if (context.mounted) {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            const SnackBar(
+                                                              content: Text(
+                                                                  'Payment process was interrupted. Please try again.'),
+                                                              backgroundColor:
+                                                                  ThemeConstants
+                                                                      .errorColor,
+                                                            ),
+                                                          );
+                                                        }
+                                                      });
+                                                    },
+                                          style: ElevatedButton.styleFrom(
+                                            foregroundColor: Theme.of(context)
+                                                .secondaryHeaderColor,
+                                            backgroundColor: Colors.blue,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16, vertical: 8),
+                                          ),
+                                          child: const Text(
+                                            'Pay Now',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                              if (order.status == 'served')
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      orderClientsPayment.isPaid == false
-                                          ? 'Payment pending'
-                                          : 'Payment completed',
+                                      'Rate Now ',
                                       style: TextStyle(
                                         fontSize: 16,
-                                        color:
-                                            orderClientsPayment.isPaid == false
-                                                ? Colors.orange
-                                                : Colors.green,
+                                        color: Theme.of(context).secondaryHeaderColor,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    if (orderClientsPayment.isPaid == false)
-                                      ElevatedButton(
-                                        onPressed: /*paymentViewModel.busy */
-                                            paymentViewModel.isBusy(order.id)
-                                                ? null
-                                                : () async {
-                                                    paymentViewModel
-                                                        .setBusyForOrder(
-                                                            order.id, true);
-                                                    for (final OrderClientsPayment orderClientsPayment
-                                                        in order
-                                                            .orderClientsPayment) {
-                                                      if (orderClientsPayment
-                                                              .userId ==
-                                                          viewModel.clientLogged
-                                                              .id) {
-                                                        totalAmount =
-                                                            orderClientsPayment
-                                                                .amount;
-                                                      }
-                                                    }
-                                                    // print('totolAmount= $totalAmount');
-                                                    await paymentViewModel
-                                                        .initiatePayment(
-                                                            totalAmount);
-                                                    Stripe.instance
-                                                        .presentPaymentSheet()
-                                                        .then((value) {
-                                                      paymentViewModel
-                                                          .setBusyForOrder(
-                                                              order.id, false);
-                                                      paymentViewModel
-                                                          .setBusy(false);
-                                                      if (context.mounted) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Payment Successful'),
-                                                            backgroundColor:
-                                                                ThemeConstants
-                                                                    .successColor,
-                                                          ),
-                                                        );
-                                                      }
-                                                      viewModel
-                                                          .updateOrderClientPaymentStatus(
-                                                              order.id);
-                                                    }).catchError((e) {
-                                                      paymentViewModel
-                                                          .setBusyForOrder(
-                                                              order.id, false);
-                                                      paymentViewModel
-                                                          .setBusy(false);
-                                                      if (context.mounted) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Payment process was interrupted. Please try again.'),
-                                                            backgroundColor:
-                                                                ThemeConstants
-                                                                    .errorColor,
-                                                          ),
-                                                        );
-                                                      }
-                                                    });
-                                                  },
-                                        style: ElevatedButton.styleFrom(
-                                          foregroundColor: Theme.of(context)
-                                              .secondaryHeaderColor,
-                                          backgroundColor: Colors.blue,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 8),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Theme.of(context)
+                                            .secondaryHeaderColor,
+                                        backgroundColor: Colors.blue,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
                                         ),
-                                        child: const Text(
-                                          'Pay Now',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
+                                      ),
+                                      child: const Text(
+                                        'Rate Now',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      onPressed: () {
+                                        getIt<NavigationService>().navigateTo(
+                                            RatingView(
+                                                restaurantId:
+                                                    order.restaurantId));
+                                      },
+                                    ),
                                   ],
-                                ),
-                            if (order.status == 'served')
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Rate Now ',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Theme.of(context).secondaryHeaderColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: Theme.of(context)
-                                          .secondaryHeaderColor,
-                                      backgroundColor: Colors.blue,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                    ),
-                                    child: const Text(
-                                      'Rate Now',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      getIt<NavigationService>().navigateTo(
-                                          RatingView(
-                                              restaurantId:
-                                                  order.restaurantId));
-                                    },
-                                  ),
-                                ],
-                              )
-                          ],
+                                )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+          ),
     );
   }
 }
