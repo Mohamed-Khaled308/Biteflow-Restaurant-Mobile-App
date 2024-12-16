@@ -27,27 +27,40 @@ class EntryPointView extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    ManagerMenuViewModel managerMenuViewModel = getIt<ManagerMenuViewModel>();
-    managerMenuViewModel.loadRestaurantData(); // can be made automatic in constructor
-    ManagerOrdersViewModel managerOrdersViewModel = getIt<ManagerOrdersViewModel>();
-    managerOrdersViewModel.loadOrdersData();
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => getIt<EntryPointViewModel>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => getIt<ClientOrdersViewModel>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => managerMenuViewModel,
-        ),
-        ChangeNotifierProvider(
-          create: (_) => managerOrdersViewModel,
-        ),
-      ],
-      child: const EntryPointScreen(),
-    );
+    if(userProvider.user!.role == 'Manager'){
+      ManagerMenuViewModel managerMenuViewModel = getIt<ManagerMenuViewModel>();
+      managerMenuViewModel.loadRestaurantData(); // can be made automatic in constructor
+      ManagerOrdersViewModel managerOrdersViewModel = getIt<ManagerOrdersViewModel>();
+      managerOrdersViewModel.loadOrdersData();
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => getIt<EntryPointViewModel>(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => managerMenuViewModel,
+          ),
+          ChangeNotifierProvider(
+            create: (_) => managerOrdersViewModel,
+          ),
+        ],
+        child: const EntryPointScreen(),
+      );
+    } else {
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => getIt<EntryPointViewModel>(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => getIt<ClientOrdersViewModel>(),
+          ),
+        ],
+        child: const EntryPointScreen(),
+      );
+    }
+
+    
     // return ChangeNotifierProvider(
     //   create: (_) => getIt<EntryPointViewModel>(),
     //   child: const EntryPointScreen(),
