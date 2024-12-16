@@ -302,7 +302,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                               if (order.status == 'served')
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                      MainAxisAlignment.end,
                                   children: [
                                     ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(
