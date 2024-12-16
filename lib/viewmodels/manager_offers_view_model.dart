@@ -6,10 +6,8 @@ import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
 // import 'package:biteflow/services/firestore/order_service.dart';
 import 'package:biteflow/locator.dart';
-import 'package:logger/logger.dart';
 
 class ManagerOffersViewModel extends BaseModel {
-  final Logger _logger = getIt<Logger>();
   final Manager _authenticatedManager = getIt<UserProvider>().user as Manager;
   Restaurant? _authenticatedManagerRestaurant;
 
@@ -37,7 +35,6 @@ class ManagerOffersViewModel extends BaseModel {
     if (restaurantResult.isSuccess) {
       _authenticatedManagerRestaurant = restaurantResult.data;
     } else {
-      _logger.e(restaurantResult.error);
     }
   }
 

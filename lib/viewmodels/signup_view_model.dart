@@ -6,12 +6,10 @@ import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/views/screens/entry_point/entry_point_view.dart';
 import 'package:biteflow/views/screens/login/login_view.dart';
 import 'package:biteflow/views/screens/restaurant_onboarding/restaurant_onboarding_view.dart';
-import 'package:logger/logger.dart';
 
 class SignupViewModel extends BaseModel {
   final UserProvider _userProvider = getIt<UserProvider>();
   final NavigationService _navigationService = getIt<NavigationService>();
-  final _logger = getIt<Logger>();
 
   String _selectedRole = 'Client';
   String get selectedRole => _selectedRole;
@@ -119,7 +117,6 @@ class SignupViewModel extends BaseModel {
     } else {
       _generalError =
           result.error ?? 'Google sign-in failed. Please try again.';
-      _logger.e(_generalError);
       notifyListeners();
     }
     setBusy(false);
@@ -134,7 +131,6 @@ class SignupViewModel extends BaseModel {
     } else {
       _generalError =
           result.error ?? 'Facebook sign-in failed. Please try again.';
-      _logger.e(_generalError);
       notifyListeners();
     }
     setBusy(false);

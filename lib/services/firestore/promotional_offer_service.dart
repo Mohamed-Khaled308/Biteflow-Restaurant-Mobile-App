@@ -1,13 +1,10 @@
-import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/promotional_offer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:biteflow/core/utils/result.dart';
-import 'package:logger/logger.dart';
 
 class PromotionalOfferService {
   final CollectionReference _offers =
       FirebaseFirestore.instance.collection('promotionalOffers');
-  final Logger _logger = getIt<Logger>();
 
   String generateId() {
     return _offers.doc().id;
@@ -45,7 +42,6 @@ class PromotionalOfferService {
       await _offers.doc(offer.id).set(offer.toJson());
       return Result(data: true);
     } catch (e) {
-      _logger.e(e.toString());
       return Result(error: e.toString());
     }
   }
@@ -65,7 +61,6 @@ class PromotionalOfferService {
 
       return Result(data: offers);
     } catch (e) {
-      _logger.e(e.toString());
       return Result(error: e.toString());
     }
   }
@@ -84,7 +79,6 @@ class PromotionalOfferService {
 
       return Result(data: offers);
     } catch (e) {
-      _logger.e(e.toString());
       return Result(error: e.toString());
     }
   }

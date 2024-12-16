@@ -12,14 +12,12 @@ import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 class CartViewModel extends BaseModel {
   final _navigationService = getIt<NavigationService>();
   final _userProvider = getIt<UserProvider>();
   final _cartService = getIt<CartService>();
   final _orderService = getIt<OrderService>();
-  final _logger = getIt<Logger>();
 
   Stream<Cart>? _cartStream;
   Stream<Cart>? get cartStream => _cartStream;
@@ -110,6 +108,14 @@ class CartViewModel extends BaseModel {
     CartParticipant participant = CartParticipant(
         id: _userProvider.user!.id, name: _userProvider.user!.name);
     await _cartService.addParticipantToCart(cartId, participant);
+    _cart = (await _cartService.getCartById(cartId)).data;
+    if (_cart!.isDeleted ||
+        !_cart!.participants
+            .any((participant) => participant.id == _cart!.creatorId)) {
+      cleanUpCart();
+    } else {
+      notifyListeners();
+    }
   }
 
   Future<void> leaveCart() async {
@@ -135,8 +141,6 @@ class CartViewModel extends BaseModel {
     await _removeAllParticipants();
 
     // await _cartService.deleteCart(_cart!.id);
-
-    _logger.d('Creator left. Cart and participants removed.');
   }
 
   Future<void> _handleParticipantLeaving(CartParticipant participant) async {
@@ -158,9 +162,7 @@ class CartViewModel extends BaseModel {
       item.participants.removeWhere((p) => p.id == participant.id);
 
       final result = await _cartService.updateItemInCart(_cart!.id, item);
-      if (!result.isSuccess) {
-        _logger.e('Error updating item ${item.menuItem.id}: ${result.error}');
-      }
+      if (!result.isSuccess) {}
     }
   }
 
@@ -199,9 +201,7 @@ class CartViewModel extends BaseModel {
     if (result.isSuccess) {
       _cart = cart;
       joinCart(cartId);
-    } else {
-      _logger.e(result.error);
-    }
+    } else {}
   }
 
   int _findItem(String itemId) {
@@ -252,9 +252,7 @@ class CartViewModel extends BaseModel {
         _navigationService.navigateTo(const CartView());
         setIsCartOpen = true;
       }
-    } else {
-      _logger.e(result.error);
-    }
+    } else {}
   }
 
   Future<void> removeItem(String itemId) async {
@@ -264,9 +262,7 @@ class CartViewModel extends BaseModel {
     final result = await _cartService.removeItem(_cart!.id, itemId);
     if (result.isSuccess) {
       notifyListeners();
-    } else {
-      _logger.e(result.error);
-    }
+    } else {}
   }
 
   CartItem _findAndUpdateItem(String itemId, {int? quantity, String? notes}) {
@@ -293,9 +289,7 @@ class CartViewModel extends BaseModel {
       int idx = _findItem(itemId);
       _cart!.items[idx] = updatedItem;
       notifyListeners();
-    } else {
-      _logger.e(result.error);
-    }
+    } else {}
   }
 
   Future<void> updateItemNotes(String itemId, String notes) async {
@@ -305,35 +299,80 @@ class CartViewModel extends BaseModel {
       int idx = _findItem(itemId);
       _cart!.items[idx] = updatedItem;
       notifyListeners();
-    } else {
-      _logger.e(result.error);
+    } else {}
+  }
+
+  double getItemDiscount(CartItem item) {
+    if (item.menuItem.discountPercentage > 0) {
+      return (item.menuItem.price * item.quantity) *
+          (item.menuItem.discountPercentage / 100);
     }
+    return 0.0;
   }
 
   double get totalAmount {
     double total = 0;
+    double totalDiscount = 0;
 
     if (_cart != null) {
       for (final item in _cart!.items) {
         if (filterUserId == null) {
           total += item.menuItem.price * item.quantity;
+          totalDiscount += getItemDiscount(item);
         } else {
-          bool isFilterUserInParticipants = item.participants
+          List<CartParticipant> doneParticipants = item.participants
+              .where(
+                  (participant) => participant.status == ParticipantStatus.done)
+              .toList();
+
+          bool isFilterUserInParticipants = doneParticipants
               .any((participant) => participant.id == filterUserId);
+
           if (isFilterUserInParticipants) {
             double amountPerUser = item.menuItem.price * item.quantity;
-
-            if (item.participants.isNotEmpty) {
-              amountPerUser /= item.participants.length;
-            }
-
+            amountPerUser /= doneParticipants.length;
+            final discountPerUser =
+                getItemDiscount(item) / doneParticipants.length;
             total += amountPerUser;
+            totalDiscount += discountPerUser;
+          }
+        }
+
+        // Add the item-specific discount to the total discount
+      }
+    }
+
+    // Apply total discount to the total amount
+    return total - totalDiscount;
+  }
+
+  double get totalDiscount {
+    double totalDiscount = 0;
+
+    if (_cart != null) {
+      for (final item in _cart!.items) {
+        if (filterUserId == null) {
+          // Calculate discount for all items
+          totalDiscount += getItemDiscount(item);
+        } else {
+          List<CartParticipant> doneParticipants = item.participants
+              .where(
+                  (participant) => participant.status == ParticipantStatus.done)
+              .toList();
+
+          bool isFilterUserInParticipants = doneParticipants
+              .any((participant) => participant.id == filterUserId);
+
+          if (isFilterUserInParticipants) {
+            double discountPerUser =
+                getItemDiscount(item) / doneParticipants.length;
+            totalDiscount += discountPerUser;
           }
         }
       }
     }
 
-    return total;
+    return totalDiscount;
   }
 
   void acceptInvitation(String itemId) async {
@@ -352,11 +391,8 @@ class CartViewModel extends BaseModel {
     final result = await _cartService.updateItemInCart(_cart!.id, updatedItem);
     if (result.isSuccess) {
       _cart!.items[idx] = updatedItem;
-      _logger.d('notified listeners');
       notifyListeners();
-    } else {
-      _logger.e(result.error);
-    }
+    } else {}
   }
 
   void cancelInvitation(String itemId) async {
@@ -372,9 +408,7 @@ class CartViewModel extends BaseModel {
     if (result.isSuccess) {
       _cart!.items[idx] = updatedItem;
       notifyListeners();
-    } else {
-      _logger.e(result.error);
-    }
+    } else {}
   }
 
   void toggleParticipantStatus() async {
@@ -391,21 +425,26 @@ class CartViewModel extends BaseModel {
 
     if (result.isSuccess) {
       notifyListeners();
-    } else {
-      _logger.e('Error updating participant status: ${result.error}');
-    }
+    } else {}
   }
 
   double getAmount(CartParticipant participant) {
     double total = 0;
 
     for (final item in _cart!.items) {
+      List<CartParticipant> doneParticipants = item.participants
+          .where((p) => p.status == ParticipantStatus.done)
+          .toList();
+
       bool isParticipantInList =
-          item.participants.any((p) => p.id == participant.id);
+          doneParticipants.any((p) => p.id == participant.id);
 
       if (isParticipantInList) {
-        double amountPerUser = item.menuItem.price * item.quantity;
-        amountPerUser /= item.participants.length;
+        double amountPerUser = item.menuItem.price *
+            (1 - item.menuItem.discountPercentage / 100) *
+            item.quantity;
+
+        amountPerUser /= doneParticipants.length;
 
         total += amountPerUser;
       }
@@ -416,7 +455,6 @@ class CartViewModel extends BaseModel {
 
   void placeOrder(final splittingMethod) async {
     if (_cart == null) {
-      _logger.e('No active cart to place an order.');
       return;
     }
     _filterUserId = null;
@@ -466,19 +504,15 @@ class CartViewModel extends BaseModel {
       final result = await _orderService.placeOrder(order);
 
       if (result.isSuccess) {
-        _logger.d('Order placed successfully: ${order.id}');
-
         _cartService.softDeleteCart(_cart!.id);
-      } else {
-        _logger.e('Error placing order: ${result.error}');
-      }
+      } else {}
     } catch (e) {
-      _logger.e('Unexpected error while placing order: $e');
+      // error
     }
   }
 
   int _generateOrderNumber() {
     final now = DateTime.now();
-    return now.millisecondsSinceEpoch % 100000; // this is a dummy number
+    return (now.millisecondsSinceEpoch.abs() ~/ 10000) - 173430000;
   }
 }

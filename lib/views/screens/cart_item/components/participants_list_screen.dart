@@ -3,7 +3,6 @@ import 'package:biteflow/locator.dart';
 import 'package:biteflow/viewmodels/cart_item_view_model.dart';
 import 'package:biteflow/views/widgets/dialogues/action_dialogue.dart';
 import 'package:biteflow/views/widgets/user/user_avatar.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
@@ -11,13 +10,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:biteflow/core/constants/theme_constants.dart';
 
-class ParticipantsListScreen extends StatelessWidget {
+class ParticipantsListScreen extends StatefulWidget {
   const ParticipantsListScreen({super.key});
 
   @override
+  State<ParticipantsListScreen> createState() => _ParticipantsListScreenState();
+}
+
+class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
+  Future<void> _triggerRebuild() async {
+    // Simulate a slight delay for the refresh indicator
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {}); // Triggers a rebuild
+  }
+
+  @override
   Widget build(BuildContext context) {
-    getIt<Logger>().d('rebuild');
-    final cartViewModel = context.watch<CartViewModel>();
+    final cartViewModel = context.read<CartViewModel>();
     final cartItemViewModel = context.watch<CartItemViewModel>();
     final cartParticipants = cartViewModel.cart!.participants;
 
@@ -50,89 +59,93 @@ class ParticipantsListScreen extends StatelessWidget {
           color: ThemeConstants.whiteColor,
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        child: ListView.builder(
-          itemCount: cartParticipants.length,
-          itemBuilder: (context, index) {
-            final participant = cartParticipants[index];
+      body: RefreshIndicator(
+        onRefresh: _triggerRebuild,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: ListView.builder(
+            itemCount: cartParticipants.length,
+            itemBuilder: (context, index) {
+              final participant = cartParticipants[index];
 
-            final isInItemParticipants =
-                itemParticipants.any((item) => item.id == participant.id);
-            final isPending = itemParticipants.any((item) =>
-                item.id == participant.id &&
-                item.status == ParticipantStatus.pending);
-            final isAccepted = itemParticipants.any((item) =>
-                item.id == participant.id &&
-                item.status == ParticipantStatus.done);
+              final isInItemParticipants =
+                  itemParticipants.any((item) => item.id == participant.id);
+              final isPending = itemParticipants.any((item) =>
+                  item.id == participant.id &&
+                  item.status == ParticipantStatus.pending);
+              final isAccepted = itemParticipants.any((item) =>
+                  item.id == participant.id &&
+                  item.status == ParticipantStatus.done);
 
-            return ListTile(
-              onTap: isCurrentUserOwner
-                  ? () {
-                      final isSelected = cartItemViewModel.selectedParticipants
-                          .contains(participant);
-                      cartItemViewModel.toggleParticipantSelection(
-                          participant, !isSelected);
-                    }
-                  : null,
-              leading: UserAvatar(
-                  userId: participant.id, userName: participant.name),
-              title: Text(
-                participant.name,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
+              return ListTile(
+                onTap: isCurrentUserOwner && !isInItemParticipants
+                    ? () {
+                        final isSelected = cartItemViewModel
+                            .selectedParticipants
+                            .contains(participant);
+                        cartItemViewModel.toggleParticipantSelection(
+                            participant, !isSelected);
+                      }
+                    : null, // Uninvited participants can be tapped
+                leading: UserAvatar(
+                    userId: participant.id, userName: participant.name),
+                title: Text(
+                  participant.name,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              subtitle: Text(
-                isInItemParticipants
-                    ? (isPending
-                        ? 'Pending' // Invitation sent but not accepted yet
-                        : (cartItemUserId == participant.id
-                            ? 'Owner' // For the owner of the cart item
-                            : 'Joined')) // Invitation accepted
-                    : 'Not Invited', // Not invited yet
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: ThemeConstants.blackColor60,
-                ),
-              ),
-              trailing: isCurrentUserOwner
-                  ? (isInItemParticipants
+                subtitle: Text(
+                  isInItemParticipants
                       ? (isPending
-                          ? Text(
-                              'Pending',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: ThemeConstants.primaryColor,
-                              ),
-                            )
-                          : (isAccepted && cartItemUserId != participant.id)
-                              ? IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: ThemeConstants.errorColor,
-                                  ),
-                                  onPressed: () {
-                                    // Show confirmation dialog before removing
-                                    _showRemoveConfirmationDialog(context,
-                                        cartItemViewModel, participant);
-                                  },
-                                )
-                              : null)
-                      : Checkbox(
-                          value: cartItemViewModel.selectedParticipants
-                              .contains(participant),
-                          onChanged: (bool? value) {
-                            if (value != null) {
-                              cartItemViewModel.toggleParticipantSelection(
-                                  participant, value);
-                            }
-                          },
-                        ))
-                  : null,
-            );
-          },
+                          ? 'Pending' // Invitation sent but not accepted yet
+                          : (cartItemUserId == participant.id
+                              ? 'Owner' // For the owner of the cart item
+                              : 'Joined')) // Invitation accepted
+                      : 'Not Invited', // Not invited yet
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: ThemeConstants.blackColor60,
+                  ),
+                ),
+                trailing: isCurrentUserOwner
+                    ? (isInItemParticipants
+                        ? (isPending
+                            ? Text(
+                                'Pending',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: ThemeConstants.primaryColor,
+                                ),
+                              )
+                            : (isAccepted && cartItemUserId != participant.id)
+                                ? IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: ThemeConstants.errorColor,
+                                    ),
+                                    onPressed: () {
+                                      // Show confirmation dialog before removing
+                                      _showRemoveConfirmationDialog(context,
+                                          cartItemViewModel, participant);
+                                    },
+                                  )
+                                : null)
+                        : Checkbox(
+                            value: cartItemViewModel.selectedParticipants
+                                .contains(participant),
+                            onChanged: (bool? value) {
+                              if (value != null) {
+                                cartItemViewModel.toggleParticipantSelection(
+                                    participant, value);
+                              }
+                            },
+                          ))
+                    : null,
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: isCurrentUserOwner

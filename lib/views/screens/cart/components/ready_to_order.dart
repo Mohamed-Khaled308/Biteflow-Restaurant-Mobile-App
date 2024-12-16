@@ -1,5 +1,6 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/locator.dart';
+import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/screens/split_bill/split_screen.dart';
@@ -15,6 +16,12 @@ class ReadyToOrder extends StatelessWidget {
     final viewModel = context.watch<CartViewModel>();
     final isCreator = viewModel.isCreator;
     final allParticipantsReady = viewModel.checkAllParticipantsDone();
+    final pendingParticipants = viewModel.cart!.participants
+            .where(
+              (participant) => participant.status == ParticipantStatus.pending,
+            )
+            .length -
+        1;
 
     return GestureDetector(
       onTap: viewModel.toggleParticipantStatus,
@@ -23,19 +30,37 @@ class ReadyToOrder extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Text(
-                    // textAlign: TextAlign.center,
-                    allParticipantsReady
-                        ? 'Everyone\'s ready!'
-                        : 'Waiting for others',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: allParticipantsReady
-                          ? ThemeConstants.primaryColor
-                          : Colors.grey,
-                    ),
-                  ),
+                  child: allParticipantsReady
+                      ? Text(
+                          'Everyone\'s ready!',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: ThemeConstants.primaryColor,
+                          ),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Waiting for others',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            SizedBox(height: 2.h),
+                            Text(
+                              textAlign: TextAlign.center,
+                              '$pendingParticipants  remaining',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
                 SizedBox(width: 8.w),
                 ElevatedButton(
