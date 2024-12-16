@@ -62,7 +62,7 @@ class CartItemThumbnail extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius:
                     BorderRadius.circular(ThemeConstants.defaultBorderRadious),
-                color: Colors.white.withOpacity(1),
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
               ),
               height: 40.h,
               child: Row(

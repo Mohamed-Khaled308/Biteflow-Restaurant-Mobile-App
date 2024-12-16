@@ -43,7 +43,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                 final order = viewModel.orders![index];
                 return Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(

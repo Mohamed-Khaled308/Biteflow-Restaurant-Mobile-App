@@ -20,6 +20,37 @@ class ThemeConstants {
     900: Color(0xFF6B0000), // Darkest ruby red
   });
 
+static const MaterialColor whiteText =
+    MaterialColor(0xFFFFFFFF, <int, Color>{
+  50: Color(0xFFFFFAFA), // Slightly off-white
+  100: Color(0xFFFFF5F5), // Very light white-gray
+  200: Color(0xFFFFF0F0), // Softer white
+  300: Color(0xFFFFEBEB), // Mellow white
+  400: Color(0xFFFFE5E5), // Warm white
+  500: Color(0xFFFFFFFF), // Pure white
+  600: Color(0xFFFAFAFA), // Slightly muted white
+  700: Color(0xFFF5F5F5), // Muted white
+  800: Color(0xFFEFEFEF), // Soft grayish-white
+  900: Color(0xFFE0E0E0), // Light gray
+});
+
+static const MaterialColor blackText =
+    MaterialColor(0xFF000000, <int, Color>{
+  50: Color(0xFFFAFAFA), // Very light gray
+  100: Color(0xFFF5F5F5), // Light gray
+  200: Color(0xFFEEEEEE), // Softer gray
+  300: Color(0xFFE0E0E0), // Mellow gray
+  400: Color(0xFFBDBDBD), // Mid gray
+  500: Color(0xFF000000), // Pure black
+  600: Color(0xFF212121), // Very dark gray
+  700: Color(0xFF121212), // Near black
+  800: Color(0xFF0D0D0D), // Almost black
+  900: Color(0xFF000000), // Pure black
+});
+
+
+
+
   static const Color secondaryColor = Color(0xFF6D7434); // Olive Green
 
   static const Color blackColor = Color(0xFF16161E);

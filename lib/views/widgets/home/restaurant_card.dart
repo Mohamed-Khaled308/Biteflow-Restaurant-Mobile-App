@@ -17,7 +17,7 @@ class RestaurantCard extends StatelessWidget {
       width: 120.w,  // Reduced from 160.w
       margin: EdgeInsets.only(right: (ThemeConstants.defaultPadding * 0.75).w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(10.r),  // Reduced from 12.r
         boxShadow: [
           BoxShadow(

@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         builder: (_, child) => MaterialApp(
           title: 'Biteflow',
           theme: BiteflowTheme.lightTheme(context),
-          darkTheme: BiteflowTheme.lightTheme(context),
+          darkTheme: BiteflowTheme.darkTheme(context),
           themeMode: _viewModel.themeMode,
           navigatorKey: getIt<NavigationService>().navigationKey,
           scaffoldMessengerKey: FirebaseNotifications().messengerKey,

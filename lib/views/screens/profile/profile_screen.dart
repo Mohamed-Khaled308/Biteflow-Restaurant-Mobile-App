@@ -1,4 +1,5 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
+import 'package:biteflow/viewmodels/mode_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/viewmodels/profile_view_model.dart';
@@ -10,6 +11,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.watch<ProfileViewModel>();
     final user = viewModel.authenticatedUser;
+    final modeViewModel = context.watch<ModeViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -33,6 +35,21 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
         actions: [
+           IconButton(
+            icon: Icon(
+              Theme.of(context).brightness == Brightness.dark
+                  ? Icons.light_mode_sharp
+                  : Icons.dark_mode_sharp,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
+            onPressed: () {
+              modeViewModel.toggleThemeMode();
+            },
+          ),
+          
+
           IconButton(
             icon: const Icon(Icons.logout),
             color: ThemeConstants.whiteColor,

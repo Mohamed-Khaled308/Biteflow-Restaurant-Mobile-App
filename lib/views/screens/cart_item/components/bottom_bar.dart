@@ -19,10 +19,10 @@ class BottomBar extends StatelessWidget {
     return BottomAppBar(
       height: 90.h,
       elevation: 10,
-      color: ThemeConstants.whiteColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Container(
         decoration: BoxDecoration(
-          color: ThemeConstants.whiteColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
               color: ThemeConstants.blackColor.withOpacity(0.1),

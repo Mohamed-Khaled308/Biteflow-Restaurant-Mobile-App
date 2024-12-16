@@ -27,7 +27,7 @@ class OrderItemDetails extends StatelessWidget {
       decoration: BoxDecoration(
         color: isClientInItems 
           ? Colors.blue.shade50 
-          : Colors.white,
+          : Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
         border: isClientInItems 
           ? Border.all(color: Colors.blue.shade200, width: 2)
