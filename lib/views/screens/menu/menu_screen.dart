@@ -158,6 +158,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               imageUrl: item.imageUrl,
                               title: item.title,
                               price: item.price,
+                              discountPercentage: item.discountPercentage,
                               onTap: () {
                                 showModalBottomSheet(
                                   context: context,
@@ -178,6 +179,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                           rating: item.rating,
                                           categoryId: item.categoryId,
                                           restaurantId: widget.restaurantId,
+                                          discountPercentage:
+                                              item.discountPercentage,
                                         ),
                                       ),
                                     );
@@ -201,6 +204,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         imageUrl: item.imageUrl,
                         title: item.title,
                         price: item.price,
+                        discountPercentage: item.discountPercentage,
                         onTap: () {
                           viewModel.selectedItem =
                               item; // Use the setter to update selectedItem
@@ -213,14 +217,14 @@ class _MenuScreenState extends State<MenuScreen> {
                             ),
                             builder: (context) {
                               return MenuCard(
-                                imageUrl: item.imageUrl,
-                                title: item.title,
-                                description: item.description,
-                                price: item.price,
-                                rating: item.rating,
-                                categoryId: item.categoryId,
-                                restaurantId: widget.restaurantId,
-                              );
+                                  imageUrl: item.imageUrl,
+                                  title: item.title,
+                                  description: item.description,
+                                  price: item.price,
+                                  rating: item.rating,
+                                  categoryId: item.categoryId,
+                                  restaurantId: widget.restaurantId,
+                                  discountPercentage: item.discountPercentage);
                             },
                           );
                         },

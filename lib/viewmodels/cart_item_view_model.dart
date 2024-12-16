@@ -5,7 +5,6 @@ import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/services/firestore/cart_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
-import 'package:logger/logger.dart';
 
 class CartItemViewModel extends BaseModel {
   final _cartService = getIt<CartService>();
@@ -45,7 +44,6 @@ class CartItemViewModel extends BaseModel {
         await _cartService.updateItemInCart(_cartViewModel.cart!.id, cartItem);
     if (result.isSuccess) {
     } else {
-      getIt<Logger>().e(result.error);
     }
     setBusy(false);
   }
@@ -58,7 +56,6 @@ class CartItemViewModel extends BaseModel {
         await _cartService.updateItemInCart(_cartViewModel.cart!.id, cartItem);
     if (result.isSuccess) {
     } else {
-      getIt<Logger>().e(result.error);
     }
     setBusy(false);
     notifyListeners();
@@ -72,7 +69,6 @@ class CartItemViewModel extends BaseModel {
         await _cartService.updateItemInCart(_cartViewModel.cart!.id, cartItem);
     if (result.isSuccess) {
     } else {
-      getIt<Logger>().e(result.error);
     }
     setBusy(false);
     notifyListeners();

@@ -1,14 +1,17 @@
 import 'package:biteflow/core/utils/result.dart';
 import 'package:biteflow/core/utils/auth_helper.dart';
 import 'package:biteflow/locator.dart';
+import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/models/manager.dart';
 import 'package:biteflow/models/client.dart';
 import 'package:biteflow/services/auth_service.dart';
 // import 'package:biteflow/services/firestore/cart_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
+import 'package:biteflow/viewmodels/cart_view_model.dart';
 // import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final AuthService _authService = getIt<AuthService>();
@@ -22,7 +25,7 @@ class UserProvider extends ChangeNotifier {
   User? get user => _user;
   String? get errorMessage => _errorMessage;
 
-  User? get currentUser => _user; 
+  User? get currentUser => _user;
 
   set setUser(User? user) {
     _user = user;
@@ -44,6 +47,12 @@ class UserProvider extends ChangeNotifier {
     final result =
         await _authService.loginWithEmail(email: email, password: password);
     if (result.isSuccess) {
+      final prefs = await SharedPreferences.getInstance();
+      final savedCartId =
+          prefs.getString('cart_${_authService.currentUser!.uid}');
+      if (savedCartId != null) {
+        getIt<CartViewModel>().joinCart(savedCartId);
+      }
       return await _initializeAuthState();
     } else {
       _handleError(result);
@@ -86,7 +95,14 @@ class UserProvider extends ChangeNotifier {
 
     if (result.isSuccess) {
       if (result.data == null) return Result(data: false);
-      return await _initializeAuthState();
+      final init = await _initializeAuthState();
+      final prefs = await SharedPreferences.getInstance();
+      final savedCartId =
+          prefs.getString('cart_${_authService.currentUser!.uid}');
+      if (savedCartId != null) {
+        getIt<CartViewModel>().joinCart(savedCartId);
+      }
+      return init;
     } else {
       _handleError(result);
       return Result(error: _errorMessage);
@@ -162,10 +178,20 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<Result<bool>> logout() async {
+    final currentUser = _user;
+    if (currentUser != null) {
+      Cart? cart = getIt<CartViewModel>().cart;
+      final cartId = cart?.id;
+      if (cartId != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('cart_${currentUser.id}', cartId);
+      }
+    }
+
     final result = await _authService.logout();
     if (result.isSuccess) {
       _setLoggedOutState();
-      // getIt<CartViewModel>().cleanUpCart();
+      getIt<CartViewModel>().cleanUpCart();
       return Result(data: true);
     } else {
       _handleError(result);

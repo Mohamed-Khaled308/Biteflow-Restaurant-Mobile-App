@@ -18,12 +18,16 @@ class CartItemParticipant extends StatelessWidget {
     final doneParticipants = cartItem.participants
         .where((participant) => participant.status == ParticipantStatus.done)
         .toList();
-
+    double leftPadding = doneParticipants.length == 1
+        ? 20
+        : doneParticipants.length == 2
+            ? 10
+            : 0;
     return SizedBox(
       height: 100.h,
       width: 50.w,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
             width: 50.w,
@@ -33,7 +37,7 @@ class CartItemParticipant extends StatelessWidget {
                 // Display first participant's avatar if available
                 if (doneParticipants.isNotEmpty)
                   Positioned(
-                    left: 0,
+                    left: leftPadding,
                     child: UserAvatar(
                         userId: doneParticipants[0].id,
                         userName: doneParticipants[0].name),
@@ -41,7 +45,7 @@ class CartItemParticipant extends StatelessWidget {
                 // Display second participant's avatar if available
                 if (doneParticipants.length > 1)
                   Positioned(
-                    left: 10,
+                    left: 10 + leftPadding,
                     child: UserAvatar(
                         userId: doneParticipants[1].id,
                         userName: doneParticipants[1].name),
@@ -49,7 +53,7 @@ class CartItemParticipant extends StatelessWidget {
                 // If there are more than 2 participants, show the "+X" indicator
                 if (doneParticipants.length > 2)
                   Positioned(
-                    left: 20,
+                    left: 20 + leftPadding,
                     child: SizedBox(
                       width: 30.w,
                       height: 30.h,

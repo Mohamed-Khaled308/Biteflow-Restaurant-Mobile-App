@@ -145,6 +145,7 @@ class _CartScreenState extends State<CartScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 16.h),
                     Text(
                       'Payment Summary',
                       style: TextStyle(
@@ -154,6 +155,58 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     SizedBox(height: 8.h),
+
+                    // Subtotal (before discount)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Subtotal',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '${(viewModel.totalAmount + viewModel.totalDiscount).toStringAsFixed(2)} \$', // Showing subtotal before discount
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    if (viewModel.totalDiscount > 0)
+                      Column(
+                        children: [
+                          SizedBox(height: 8.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Discount',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              Text(
+                                '-${viewModel.totalDiscount.toStringAsFixed(2)} \$',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                    SizedBox(height: 8.h),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -174,8 +227,10 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ],
                     ),
+
                     Divider(height: 32.h),
                     const ReadyToOrder(),
+                    SizedBox(height: 8.h),
                   ],
                 ),
               ),

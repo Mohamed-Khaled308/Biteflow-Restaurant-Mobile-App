@@ -8,13 +8,11 @@ import 'package:biteflow/core/providers/user_provider.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/manager.dart';
 import 'package:biteflow/services/firestore/restaurant_service.dart';
-import 'package:logger/logger.dart';
 
 
 class ManagerMenuViewModel extends BaseModel {
 
   // variables
-  final Logger _logger = getIt<Logger>();
   final Manager _authenticatedManager = getIt<UserProvider>().user as Manager;
   Restaurant? _authenticatedManagerRestaurant;
   List<Category>? _categories;
@@ -83,7 +81,6 @@ class ManagerMenuViewModel extends BaseModel {
       _authenticatedManagerRestaurant = restaurantResult.data;
     }
     else{
-      _logger.e(restaurantResult.error);
     }
   }
 
@@ -94,7 +91,6 @@ class ManagerMenuViewModel extends BaseModel {
     }
     else{
       _categories = [];
-      _logger.e(categoriesData.error);
     }
   }
 
@@ -104,7 +100,6 @@ class ManagerMenuViewModel extends BaseModel {
       _menuItems = menuItemsData.data;
     }
     else{
-      _logger.e(menuItemsData.error);
     }
   }
 

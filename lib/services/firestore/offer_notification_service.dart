@@ -1,14 +1,11 @@
-import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/offer_notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:biteflow/core/constants/firestore_collections.dart';
 import 'package:biteflow/core/utils/result.dart';
-import 'package:logger/logger.dart';
 
 class OfferNotificationService {
   final CollectionReference _offerNotification = FirebaseFirestore.instance
       .collection(FirestoreCollections.offerNotificationCollection);
-  final Logger _logger = getIt<Logger>();
 
 
   String generateofferNotificationId() {
@@ -24,7 +21,6 @@ class OfferNotificationService {
       }).toList();
       return Result(data: offers);
     } catch (e) {
-      _logger.e(e.toString());
       return Result(error: e.toString());
     }
   }

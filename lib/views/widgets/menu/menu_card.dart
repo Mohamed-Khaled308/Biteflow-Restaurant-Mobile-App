@@ -1,8 +1,8 @@
+import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/menu_item.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:biteflow/views/widgets/dialogues/action_dialogue.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../theme/biteflow_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +14,7 @@ class MenuCard extends StatelessWidget {
   final double rating;
   final String categoryId;
   final String restaurantId;
+  final double discountPercentage;
 
   const MenuCard({
     super.key,
@@ -24,6 +25,7 @@ class MenuCard extends StatelessWidget {
     required this.rating,
     required this.categoryId,
     required this.restaurantId,
+    required this.discountPercentage,
   });
 
   @override
@@ -63,38 +65,6 @@ class MenuCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Rating
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: theme.primaryColor.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      RatingBarIndicator(
-                        rating: rating,
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        itemCount: 5,
-                        itemSize: 16,
-                        direction: Axis.horizontal,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        rating.toStringAsFixed(1),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -124,22 +94,48 @@ class MenuCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  price.toStringAsFixed(2),
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                // Check if there's a discount and show old price if applicable
+                if (discountPercentage > 0)
+                  Row(
+                    children: [
+                      Text(
+                        price.toStringAsFixed(2), // Old price
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                          decoration:
+                              TextDecoration.lineThrough, // Dashed effect
+                        ),
+                      ),
+
+                      const SizedBox(
+                          width: 8), // Space between old and new prices
+                    ],
                   ),
-                ),
-                const SizedBox(width: 4),
-                Image.asset(
-                  'assets/images/EGP.png',
-                  width: 22,
-                  height: 22,
+
+                // New discounted price
+                Row(
+                  children: [
+                    Text(
+                      (price * (1 - discountPercentage / 100))
+                          .toStringAsFixed(2), // New price
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: discountPercentage > 0
+                            ? theme.primaryColor
+                            : ThemeConstants
+                                .blackColor, // Highlighted color for the new price
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Text('\$'),
+                  ],
                 ),
               ],
             ),
+
             const SizedBox(height: 10),
             // Add to Cart Button
             GestureDetector(
