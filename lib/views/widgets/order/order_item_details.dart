@@ -5,6 +5,7 @@ import 'package:biteflow/viewmodels/client_orders_view_model.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
 import 'package:biteflow/views/widgets/user/user_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class OrderItemDetails extends StatelessWidget {
@@ -21,6 +22,9 @@ class OrderItemDetails extends StatelessWidget {
         break;
       }
     }
+    final discountPercentage = orderItem.discountPercentage;
+    final price = orderItem.price * orderItem.quantity;
+    final newPrice = price * (1 - discountPercentage / 100) * orderItem.quantity;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -86,12 +90,45 @@ class OrderItemDetails extends StatelessWidget {
                       ),
                     ),
                   
-                  OrderItemCardTrait(
-                    Icons.price_change_rounded,
-                    isClientInItems ? Colors.purple.shade600 : Colors.red,
-                    '${orderItem.price} \$',
-                    isClientInItems ? Colors.purple.shade900 : Theme.of(context).secondaryHeaderColor,
+                  if (discountPercentage > 0)
+            Row(
+              children: [
+                Text(
+                  price.toStringAsFixed(2), // Old price
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                    decoration:
+                        TextDecoration.lineThrough, // Strikethrough effect
                   ),
+                ),
+                const SizedBox(width: 4), // Space between old and new prices
+                Text(
+                  '${newPrice.toStringAsFixed(2)} \$', // New discounted price
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColor,
+                      overflow:
+                          TextOverflow.clip // Highlighted color for new price
+                      ),
+                ),
+              ],
+            )
+          else
+            Row(
+              children: [
+                Text(
+                  '${price.toStringAsFixed(2)} \$',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+              ],
+            ),
                   Row(
                     children: [
                       for (final OrderItemParticipant participant in orderItem.participants)

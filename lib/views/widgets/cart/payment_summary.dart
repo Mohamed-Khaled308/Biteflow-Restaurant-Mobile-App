@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PaymentSummary extends StatelessWidget {
-  const PaymentSummary(this.totalAmount, {super.key});
+  const PaymentSummary(this.totalAmount,this.discount,this.discountTotal, {super.key});
 
   final double totalAmount;
+  final double discount;
+  final double discountTotal;
   final bool isReady = true;
 
   @override
@@ -41,7 +43,7 @@ class PaymentSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Total Amount',
+                'SubTotal',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
@@ -49,6 +51,48 @@ class PaymentSummary extends StatelessWidget {
               ),
               Text(
                 '$totalAmount \$',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).secondaryHeaderColor,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+               Text(
+                'Discount',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              Text(
+                '-$discountTotal \$',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total Amount',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                '$discount \$',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
