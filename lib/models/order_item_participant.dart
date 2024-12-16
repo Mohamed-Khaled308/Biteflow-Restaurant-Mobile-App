@@ -10,5 +10,12 @@ class OrderItemParticipant {
   OrderItemParticipant.fromData(Map<String, dynamic> data)
       : userId = data['userId'],
         userName = data['userName'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'userName': userName,
+    };
+  }
         
 }

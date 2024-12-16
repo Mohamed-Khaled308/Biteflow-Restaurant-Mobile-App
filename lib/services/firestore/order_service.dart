@@ -47,7 +47,7 @@ class OrderService {
 
   Future<Result<String>> placeOrder(biteflow.Order order) async {
     try {
-      final String orderId = generateOrderId();
+      final String orderId = order.id;
       await _orders.doc(orderId).set(order.toJson());
       return Result(data: orderId);
     } catch (e) {
@@ -91,9 +91,12 @@ Future<Result<void>> updateOrderClientPaymentStatus(String orderId, String clien
   // update order status
   Future<Result<bool>> updateOrderStatus(String orderId, String status) async {
     try {
+      // print('orderId = $orderId');
       await _orders.doc(orderId).update({'status': status});
       return Result(data: true);
     } catch (e) {
+      // _logger.e('Error updating order status', e, stackTrace);
+      // print('stackTrace = $stackTrace');
       return Result(error: e.toString());
     }
   }

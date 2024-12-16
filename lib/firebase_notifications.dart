@@ -135,7 +135,7 @@ class FirebaseNotifications with WidgetsBindingObserver {
     if (title != null && body != null) {
       messengerKey.currentState?.showSnackBar(
         SnackBar(
-          backgroundColor: ThemeConstants.primaryMaterialColor.shade300,
+          backgroundColor: ThemeConstants.blackColor20,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

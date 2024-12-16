@@ -165,7 +165,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
                         Text(
-                          '${viewModel.totalAmount} \$',
+                          '${viewModel.totalAmount.toStringAsFixed(2)} \$',
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,

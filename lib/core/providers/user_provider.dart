@@ -4,7 +4,9 @@ import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/manager.dart';
 import 'package:biteflow/models/client.dart';
 import 'package:biteflow/services/auth_service.dart';
+// import 'package:biteflow/services/firestore/cart_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
+// import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/models/user.dart';
 
@@ -163,6 +165,7 @@ class UserProvider extends ChangeNotifier {
     final result = await _authService.logout();
     if (result.isSuccess) {
       _setLoggedOutState();
+      // getIt<CartViewModel>().cleanUpCart();
       return Result(data: true);
     } else {
       _handleError(result);

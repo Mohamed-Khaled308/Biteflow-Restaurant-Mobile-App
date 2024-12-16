@@ -155,9 +155,11 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                     ),
                                     if (orderClientsPayment.isPaid == false)
                                       ElevatedButton(
-                                        onPressed: paymentViewModel.busy
+                                        onPressed: /*paymentViewModel.busy */ paymentViewModel.isBusy(order.id) 
+
                                             ? null
                                             : () async {
+                                                paymentViewModel.setBusyForOrder(order.id, true);
                                                 for (final OrderClientsPayment orderClientsPayment
                                                     in order
                                                         .orderClientsPayment) {
@@ -176,6 +178,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                                 Stripe.instance
                                                     .presentPaymentSheet()
                                                     .then((value) {
+                                                      paymentViewModel.setBusyForOrder(order.id, false);
                                                   paymentViewModel
                                                       .setBusy(false);
                                                   if (context.mounted) {
@@ -194,6 +197,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                                   viewModel.updateOrderClientPaymentStatus(
                                                       order.id);
                                                 }).catchError((e) {
+                                                  paymentViewModel.setBusyForOrder(order.id, false);
                                                   paymentViewModel
                                                       .setBusy(false);
                                                   if (context.mounted) {

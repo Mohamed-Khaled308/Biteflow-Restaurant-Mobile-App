@@ -1,9 +1,9 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
-import 'package:biteflow/locator.dart';
+// import 'package:biteflow/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
-import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:biteflow/views/screens/manager_orders/components/order_bottom_sheet.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
 
@@ -98,17 +98,24 @@ class _OrdersListState extends State<OrdersList> {
                                   top: Radius.circular(20)),
                             ),
                             builder: (context) {
-                              ManagerOrdersDetailsViewModel
-                                  managerOrdersDetailsViewModel =
-                                  getIt<ManagerOrdersDetailsViewModel>();
-                              managerOrdersDetailsViewModel
-                                  .setSelectedOrder(order);
-                              managerOrdersDetailsViewModel
-                                  .loadSelectedOrderClients(); // to load clients based on selected order
-                              return ChangeNotifierProvider(
-                                create: (_) => managerOrdersDetailsViewModel,
+                              // ManagerOrdersDetailsViewModel
+                              //     managerOrdersDetailsViewModel =
+                              //     getIt<ManagerOrdersDetailsViewModel>();
+                              // managerOrdersDetailsViewModel
+                              //     .setSelectedOrder(order);
+                              // managerOrdersDetailsViewModel
+                              //     .loadSelectedOrderClients(); // to load clients based on selected order
+                              
+                              viewModel.setSelectedOrder(order);
+                              viewModel.loadSelectedOrderClients();
+                              return ChangeNotifierProvider.value(
+                                value: viewModel,
                                 child: const OrderBottomSheet(),
                               );
+                              // return ChangeNotifierProvider(
+                              //   create: (_) => managerOrdersDetailsViewModel,
+                              //   child: const OrderBottomSheet(),
+                              // );
                             },
                           );
                         });

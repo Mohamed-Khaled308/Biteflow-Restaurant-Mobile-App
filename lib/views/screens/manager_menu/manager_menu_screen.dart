@@ -1,12 +1,12 @@
 import 'package:biteflow/core/constants/theme_constants.dart';
-import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
+// import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/views/screens/manager_menu/components/categories_list.dart';
 import 'package:biteflow/views/screens/manager_menu/components/create_item_category.dart';
 import 'package:biteflow/views/screens/manager_menu/components/items_list.dart';
-import 'package:biteflow/locator.dart';
+// import 'package:biteflow/locator.dart';
 
 class ManagerMenuScreen extends StatefulWidget {
   const ManagerMenuScreen({super.key});
@@ -16,11 +16,11 @@ class ManagerMenuScreen extends StatefulWidget {
 }
 
 class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
-  @override
-  // ignore: must_call_super
-  void dispose() {
-    // don't call super
-  }
+  // @override
+  // // ignore: must_call_super
+  // void dispose() {
+  //   // don't call super
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,14 +67,23 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                       ),
                     ),
                     builder: (context) {
-                      return ChangeNotifierProvider(
-                        create: (_) => getIt<ManagerCreateItemViewModel>(),
+                      return ChangeNotifierProvider.value(
+                        value: viewModel,
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.75,
-                          child: CreateItemCategory(
-                              categories: viewModel.categories),
-                        ),
+                            height: MediaQuery.of(context).size.height * 0.75,
+                            child: CreateItemCategory(
+                            categories: viewModel.categories
+                            ),
+                          ),
                       );
+                      // return ChangeNotifierProvider(
+                      //   create: (_) => getIt<ManagerCreateItemViewModel>(),
+                      //   child: SizedBox(
+                      //     height: MediaQuery.of(context).size.height * 0.75,
+                      //     child: CreateItemCategory(
+                      //         categories: viewModel.categories),
+                      //   ),
+                      // );
                     });
               },
               backgroundColor: Theme.of(context).primaryColor,
