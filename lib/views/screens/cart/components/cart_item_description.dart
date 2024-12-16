@@ -1,9 +1,9 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/views/widgets/cart/card_trait.dart';
 import 'package:biteflow/views/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:biteflow/core/constants/theme_constants.dart';
 
 class CartItemDescription extends StatelessWidget {
   const CartItemDescription({
@@ -28,7 +28,7 @@ class CartItemDescription extends StatelessWidget {
             style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: ThemeConstants.blackColor,
+                color: Theme.of(context).secondaryHeaderColor,
                 overflow: TextOverflow.ellipsis),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -78,7 +78,7 @@ class CartItemDescription extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
-                    color: ThemeConstants.blackColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
               ],

@@ -51,12 +51,12 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            color: ThemeConstants.whiteColor,
+            color: Theme.of(context).secondaryHeaderColor,
           ),
         ),
-        backgroundColor: ThemeConstants.primaryColor,
-        iconTheme: const IconThemeData(
-          color: ThemeConstants.whiteColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        iconTheme:  IconThemeData(
+          color: Theme.of(context).secondaryHeaderColor,
         ),
       ),
       body: RefreshIndicator(
@@ -155,10 +155,10 @@ class _ParticipantsListScreenState extends State<ParticipantsListScreen> {
                   : cartItemViewModel.sendInvitations,
               backgroundColor: cartItemViewModel.selectedParticipants.isEmpty
                   ? ThemeConstants.greyColor
-                  : ThemeConstants.primaryColor,
-              child: const Icon(
+                  : Theme.of(context).primaryColor,
+              child:  Icon(
                 Icons.send,
-                color: ThemeConstants.whiteColor,
+                color: Theme.of(context).secondaryHeaderColor,
               ),
             )
           : null,

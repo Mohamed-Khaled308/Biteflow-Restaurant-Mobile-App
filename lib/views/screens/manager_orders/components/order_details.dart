@@ -87,8 +87,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Row(
                           children: [
-                            const Icon(Icons.person,
-                                size: 20, color: ThemeConstants.blackColor80),
+                             Icon(Icons.person,
+                                size: 20, color: Theme.of(context).secondaryHeaderColor),
                             const SizedBox(width: 8),
                             Text(
                               orderFullClientsPayment.client.name,

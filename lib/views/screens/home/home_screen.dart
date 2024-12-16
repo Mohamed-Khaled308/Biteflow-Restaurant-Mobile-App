@@ -66,13 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
               'Helwan',
               style: TextStyle(
                 fontSize: 20.sp,
-                color: ThemeConstants.whiteColor,
+                color: Theme.of(context).secondaryHeaderColor,
               ),
             ),
           ],
         ),
-        iconTheme: const IconThemeData(
-          color: ThemeConstants.whiteColor,
+        iconTheme:  IconThemeData(
+          color: Theme.of(context).secondaryHeaderColor,
         ),
         actions: [
           IconButton(
@@ -162,9 +162,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           backgroundColor: Colors.red,
                           child: Text(
                             '$unseenOffers',
-                            style: const TextStyle(
+                            style:  TextStyle(
                               fontSize: 12,
-                              color: Colors.white,
+                              color: Theme.of(context).secondaryHeaderColor,
                             ),
                           ),
                         ),
@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const CartIcon(),
           ),
         ],
-        backgroundColor: ThemeConstants.primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: viewModel.isBusy
           ? const Center(child: CircularProgressIndicator())

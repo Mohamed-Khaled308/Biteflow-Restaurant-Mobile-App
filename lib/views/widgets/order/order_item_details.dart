@@ -27,7 +27,7 @@ class OrderItemDetails extends StatelessWidget {
       decoration: BoxDecoration(
         color: isClientInItems 
           ? Colors.blue.shade50 
-          : Colors.white,
+          : Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(15),
         border: isClientInItems 
           ? Border.all(color: Colors.blue.shade200, width: 2)
@@ -58,7 +58,7 @@ class OrderItemDetails extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: isClientInItems 
                         ? Colors.blue.shade800 
-                        : Colors.black87,
+                        : Theme.of(context).secondaryHeaderColor,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -68,7 +68,7 @@ class OrderItemDetails extends StatelessWidget {
                     Icons.production_quantity_limits_outlined,
                     isClientInItems ? Colors.green.shade600 : Colors.orange,
                     'Quantity: ${orderItem.quantity}',
-                    isClientInItems ? Colors.green.shade900 : Colors.black87,
+                    isClientInItems ? Colors.green.shade900 : Theme.of(context).secondaryHeaderColor,
                   ),
                   if (orderItem.notes.isNotEmpty)
                     Padding(
@@ -89,13 +89,13 @@ class OrderItemDetails extends StatelessWidget {
                     Icons.star,
                     isClientInItems ? Colors.amber.shade600 : Colors.green,
                     'Rating: ${orderItem.rating}',
-                    isClientInItems ? Colors.amber.shade900 : Colors.black87,
+                    isClientInItems ? Colors.amber.shade900 : Theme.of(context).secondaryHeaderColor,
                   ),
                   OrderItemCardTrait(
                     Icons.price_change_rounded,
                     isClientInItems ? Colors.purple.shade600 : Colors.red,
                     '${orderItem.price} \$',
-                    isClientInItems ? Colors.purple.shade900 : Colors.black87,
+                    isClientInItems ? Colors.purple.shade900 : Theme.of(context).secondaryHeaderColor,
                   ),
                   Row(
                     children: [
@@ -138,9 +138,9 @@ class OrderItemDetails extends StatelessWidget {
                         color: Colors.blue.shade600,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child:  Icon(
                         Icons.check,
-                        color: Colors.white,
+                        color: Theme.of(context).secondaryHeaderColor,
                         size: 16,
                       ),
                     ),

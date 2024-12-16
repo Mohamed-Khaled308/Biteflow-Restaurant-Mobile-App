@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/models/order_full_clients_payment.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
 import 'package:provider/provider.dart';
@@ -52,10 +51,10 @@ class _TrackPaymentsState extends State<TrackPayments> {
                           children: [
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   Icons.person,
                                   size: 20,
-                                  color: ThemeConstants.blackColor80,
+                                  color: Theme.of(context).secondaryHeaderColor,
                                 ),
                                 const SizedBox(width: 8),
                                 Text(

@@ -35,8 +35,8 @@ class RoleButton extends StatelessWidget {
           onPressed: () => onPressed(role),
           style: OutlinedButton.styleFrom(
             backgroundColor: isSelected
-                ? ThemeConstants.primaryColor
-                : ThemeConstants.whiteColor,
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).secondaryHeaderColor,
             side: isSelected
                 ? BorderSide.none
                 : const BorderSide(color: ThemeConstants.greyColor),
@@ -49,8 +49,8 @@ class RoleButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               color: isSelected
-                  ? ThemeConstants.whiteColor
-                  : ThemeConstants.blackColor,
+                  ? Theme.of(context).secondaryHeaderColor
+                  : Theme.of(context).secondaryHeaderColor,
             ),
           ),
         ),

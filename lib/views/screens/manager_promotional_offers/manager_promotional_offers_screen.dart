@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/offer_notification.dart';
 import 'package:biteflow/services/firestore/offer_notification_service.dart';
@@ -98,11 +97,10 @@ class _ManagerPromotionalOffersScreenState
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: _offerController,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         labelText: 'Offer Title',
-                        border: OutlineInputBorder(),
-                        fillColor: ThemeConstants
-                            .blackColor40, // Background color of the input
+                        border: const OutlineInputBorder(),
+                        fillColor: Theme.of(context).secondaryHeaderColor, // Background color of the input
                         filled: true, // Enables the background color
                       ),
                     ),
@@ -144,7 +142,7 @@ class _ManagerPromotionalOffersScreenState
                             Navigator.pop(context); // Close the modal
                           },
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.white, // Text color
+                            foregroundColor: Theme.of(context).secondaryHeaderColor, // Text color
                             backgroundColor: Colors.red, // Background color
                             padding: const EdgeInsets.symmetric(
                               vertical: 8.0,
@@ -172,7 +170,7 @@ class _ManagerPromotionalOffersScreenState
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, // Text color
+                            foregroundColor: Theme.of(context).secondaryHeaderColor, // Text color
                             backgroundColor: Colors.green, // Background color
                             padding: const EdgeInsets.symmetric(
                               vertical: 8.0,

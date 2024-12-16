@@ -109,10 +109,10 @@ class _ClientOffersScreenState extends State<ClientOffersScreen> {
                       children: [
                         Text(
                           offer.title,
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: Theme.of(context).secondaryHeaderColor,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,

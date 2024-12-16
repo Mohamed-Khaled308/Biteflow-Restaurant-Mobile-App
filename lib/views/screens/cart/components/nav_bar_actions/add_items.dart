@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
@@ -19,9 +18,9 @@ class AddItems extends StatelessWidget {
           MenuView(restaurantId: viewModel.cart!.restaurantId),
         );
       },
-      child: const Text(
+      child:  Text(
         'Add Items',
-        style: TextStyle(color: ThemeConstants.whiteColor),
+        style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
       ),
     );
   }

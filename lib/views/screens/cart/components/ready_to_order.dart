@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 import 'package:biteflow/locator.dart';
 import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/services/navigation_service.dart';
@@ -36,7 +35,7 @@ class ReadyToOrder extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
-                            color: ThemeConstants.primaryColor,
+                            color: Theme.of(context).primaryColor,
                           ),
                         )
                       : Column(
@@ -72,7 +71,7 @@ class ReadyToOrder extends StatelessWidget {
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: allParticipantsReady
-                        ? ThemeConstants.primaryColor
+                        ? Theme.of(context).primaryColor
                         : Colors.grey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
@@ -99,14 +98,14 @@ class ReadyToOrder extends StatelessWidget {
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                       color: viewModel.isReady
-                          ? ThemeConstants.primaryColor
+                          ? Theme.of(context).primaryColor
                           : Colors.grey,
                     ),
                   ),
                 ),
                 Switch(
                   value: viewModel.isReady,
-                  activeColor: ThemeConstants.primaryColor,
+                  activeColor: Theme.of(context).primaryColor,
                   inactiveThumbColor: Colors.grey,
                   inactiveTrackColor: Colors.grey.withOpacity(0.3),
                   onChanged: (bool value) {

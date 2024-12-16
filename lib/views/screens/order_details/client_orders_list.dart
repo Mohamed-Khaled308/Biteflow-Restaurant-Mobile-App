@@ -43,7 +43,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                 final order = viewModel.orders![index];
                 return Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
@@ -216,7 +216,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                                 });
                                               },
                                         style: ElevatedButton.styleFrom(
-                                          foregroundColor: Colors.white,
+                                          foregroundColor: Theme.of(context).secondaryHeaderColor,
                                           backgroundColor: Colors.blue,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:

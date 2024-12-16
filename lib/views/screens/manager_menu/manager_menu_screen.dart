@@ -1,4 +1,3 @@
-import 'package:biteflow/core/constants/theme_constants.dart';
 // import 'package:biteflow/viewmodels/manager_create_item_view_model.dart';
 import 'package:biteflow/viewmodels/manager_menu_view_model.dart';
 import 'package:flutter/material.dart';
@@ -31,18 +30,18 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
         title: viewModel.busy
             ? const Text('Loading...')
             : Text(viewModel.authenticatedManagerRestaurant!.name,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  color: ThemeConstants.whiteColor,
+                  color: Theme.of(context).secondaryHeaderColor,
                 )),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: viewModel.busy
-          ? const Center(
+          ?  Center(
               child: CircularProgressIndicator(
-              backgroundColor: ThemeConstants.blackColor40,
-              color: ThemeConstants.blackColor80,
+              backgroundColor: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ))
           : viewModel.categories!.isEmpty
               ? const Center(child: Text('No items yet'))
@@ -87,7 +86,7 @@ class _ManagerMenuScreenState extends State<ManagerMenuScreen> {
                     });
               },
               backgroundColor: Theme.of(context).primaryColor,
-              child: const Icon(Icons.add, color: ThemeConstants.whiteColor),
+              child:  Icon(Icons.add, color: Theme.of(context).secondaryHeaderColor),
             ),
     );
   }

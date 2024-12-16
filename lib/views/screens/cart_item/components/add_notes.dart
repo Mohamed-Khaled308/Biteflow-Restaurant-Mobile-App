@@ -110,7 +110,7 @@ class AddNotesState extends State<AddNotes> {
               Icons.mode_comment_outlined,
               size: 28.sp,
               color: isCurrentUserOwner
-                  ? ThemeConstants.blackColor
+                  ? Theme.of(context).secondaryHeaderColor
                   : ThemeConstants.greyColor,
             ),
             SizedBox(width: 16.w),
@@ -122,7 +122,7 @@ class AddNotesState extends State<AddNotes> {
                     'Any special requests?',
                     style: TextStyle(
                       color: isCurrentUserOwner
-                          ? ThemeConstants.blackColor
+                          ? Theme.of(context).secondaryHeaderColor
                           : ThemeConstants.greyColor,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -133,7 +133,7 @@ class AddNotesState extends State<AddNotes> {
                       viewModel.notes,
                       style: TextStyle(
                         color: isCurrentUserOwner
-                            ? ThemeConstants.blackColor60
+                            ? Theme.of(context).secondaryHeaderColor
                             : ThemeConstants.greyColor,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -152,7 +152,7 @@ class AddNotesState extends State<AddNotes> {
                 viewModel.notes.isNotEmpty ? 'Edit' : 'Add note',
                 style: TextStyle(
                   color: isCurrentUserOwner
-                      ? ThemeConstants.primaryColor
+                      ? Theme.of(context).primaryColor
                       : ThemeConstants.greyColor,
                   fontSize: 14.sp,
                 ),

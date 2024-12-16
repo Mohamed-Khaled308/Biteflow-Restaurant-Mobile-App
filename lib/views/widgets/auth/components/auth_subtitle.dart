@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:biteflow/core/constants/theme_constants.dart';
 
 class AuthSubtitle extends StatelessWidget {
   final String subtitle;
@@ -15,7 +14,7 @@ class AuthSubtitle extends StatelessWidget {
         child: Text(
           subtitle,
           style: TextStyle(
-            color: ThemeConstants.blackColor60,
+            color: Theme.of(context).secondaryHeaderColor,
             fontSize: 22.sp,
           ),
           textAlign: TextAlign.center,

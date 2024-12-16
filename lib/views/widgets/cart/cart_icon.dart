@@ -43,7 +43,7 @@ class CartIcon extends StatelessWidget {
                   itemCount > 9 ? '+9' : '$itemCount',
                   style: TextStyle(
                     fontSize: 10.sp,
-                    color: ThemeConstants.whiteColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

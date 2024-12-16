@@ -17,11 +17,11 @@ class RestaurantCard extends StatelessWidget {
       width: 120.w,  // Reduced from 160.w
       margin: EdgeInsets.only(right: (ThemeConstants.defaultPadding * 0.75).w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(10.r),  // Reduced from 12.r
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).secondaryHeaderColor.withOpacity(0.05),
             blurRadius: 8.r,  // Reduced from 10.r
             offset: Offset(0, 4.h),  // Reduced from 5.h
           ),
@@ -71,14 +71,14 @@ class RestaurantCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.table_bar,
-                            color: ThemeConstants.whiteColor,
+                            color: Theme.of(context).secondaryHeaderColor,
                             size: 10.sp,  // Reduced from 12.sp
                           ),
                           SizedBox(width: 3.w),  // Reduced from 4.w
                           Text(
                             'Available',
                             style: TextStyle(
-                              color: ThemeConstants.whiteColor,
+                              color: Theme.of(context).secondaryHeaderColor,
                               fontSize: 8.sp,  // Reduced from 10.sp
                               fontWeight: FontWeight.w500,
                             ),
@@ -135,7 +135,7 @@ class RestaurantCard extends StatelessWidget {
                         vertical: 3.h,  // Reduced from 4.h
                       ),
                       decoration: BoxDecoration(
-                        color: ThemeConstants.primaryColor,
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(
                           (ThemeConstants.defaultBorderRadious * 0.75).r / 3,
                         ),
@@ -146,13 +146,13 @@ class RestaurantCard extends StatelessWidget {
                           Icon(
                             Icons.star,
                             size: 10.sp,  // Reduced from 12.sp
-                            color: ThemeConstants.whiteColor,
+                            color: Theme.of(context).secondaryHeaderColor,
                           ),
                           SizedBox(width: 3.w),  // Reduced from 4.w
                           Text(
                             restaurant.rating.toStringAsFixed(1),
                             style: TextStyle(
-                              color: ThemeConstants.whiteColor,
+                              color: Theme.of(context).secondaryHeaderColor,
                               fontSize: 10.sp,  // Reduced from 12.sp
                               fontWeight: FontWeight.bold,
                             ),

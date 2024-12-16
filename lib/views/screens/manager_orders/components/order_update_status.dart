@@ -2,8 +2,6 @@ import 'package:biteflow/locator.dart';
 import 'package:biteflow/viewmodels/manager_orders_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/core/constants/business_constants.dart';
-import 'package:biteflow/core/constants/theme_constants.dart';
-// import 'package:biteflow/viewmodels/manager_orders_details_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:biteflow/core/utils/status_icon_color.dart';
 import 'package:biteflow/services/navigation_service.dart';
@@ -47,15 +45,15 @@ class _OrderUpdateStatusState extends State<OrderUpdateStatus> {
                 children: [
                   Text(
                     status.toUpperCase(),
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontSize: 16,
-                      color: ThemeConstants.blackColor60,
+                      color: Theme.of(context).secondaryHeaderColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Icon(
                     StatusIconColor.getStatusIcon(status),
-                    color: ThemeConstants.blackColor80,
+                    color: Theme.of(context).secondaryHeaderColor,
                     size: 20,
                   ),
                 ],
