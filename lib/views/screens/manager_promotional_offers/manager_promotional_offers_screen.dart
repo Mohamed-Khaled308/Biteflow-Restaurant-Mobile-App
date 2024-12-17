@@ -133,7 +133,7 @@ class _ManagerPromotionalOffersScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextButton(
+                        ElevatedButton(
                           onPressed: () {
                             // Reset fields to their original state
                             _offerController.text = initialTitle;
@@ -141,7 +141,7 @@ class _ManagerPromotionalOffersScreenState
 
                             Navigator.pop(context); // Close the modal
                           },
-                          style: TextButton.styleFrom(
+                          style: ElevatedButton.styleFrom(
                             foregroundColor: Theme.of(context).secondaryHeaderColor, // Text color
                             backgroundColor: Colors.red, // Background color
                             padding: const EdgeInsets.symmetric(

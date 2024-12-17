@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         top: -8,
                         child: CircleAvatar(
                           radius: 10,
-                          backgroundColor: Colors.red,
+                          backgroundColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                           child: Text(
                             '$unseenOffers',
                             style:  TextStyle(
