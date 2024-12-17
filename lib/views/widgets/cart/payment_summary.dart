@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PaymentSummary extends StatelessWidget {
-  const PaymentSummary(this.totalAmount,this.discount,this.discountTotal, {super.key});
+  const PaymentSummary(this.personalizedDiscountedTotal, this.personalizedOriginalTotal, this.discount, {super.key});
 
-  final double totalAmount;
+  final double personalizedDiscountedTotal;
+  final double personalizedOriginalTotal;
   final double discount;
-  final double discountTotal;
   final bool isReady = true;
 
   @override
@@ -31,7 +31,7 @@ class PaymentSummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Payment Summary',
+            'Your Payment Summary',
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class PaymentSummary extends StatelessWidget {
                 ),
               ),
               Text(
-                '$totalAmount \$',
+                '$personalizedOriginalTotal \$',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class PaymentSummary extends StatelessWidget {
                 ),
               ),
               Text(
-                '-$discountTotal \$',
+                '-$discount \$',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class PaymentSummary extends StatelessWidget {
                 ),
               ),
               Text(
-                '$discount \$',
+                '$personalizedDiscountedTotal \$',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
