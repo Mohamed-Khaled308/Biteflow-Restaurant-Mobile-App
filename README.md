@@ -92,6 +92,62 @@ BiteFlow is an innovative restaurant management platform built with Flutter that
   <img src="https://github.com/user-attachments/assets/f373ade4-a042-4518-9edf-0d9dc02ffae3" alt="profile_dark" width="300">
 </details>
 
+---
+
+### 🛒 Main Features
+
+#### 🍽 Restaurants and Orders
+
+<details>
+<summary>All Restaurants View</summary>
+  <img src="https://github.com/user-attachments/assets/833ca625-ef0e-4c96-828f-c6f097910f1b" alt="all_restaurants_client" width="300">
+</details>
+
+<details>
+<summary>Order Details (Dark Mode)</summary>
+  <img src="https://github.com/user-attachments/assets/2f3db08d-960f-49bc-aa72-d42b1f97ae8c" alt="order_details_dark" width="300">
+</details>
+
+#### 💰 Offers and Payments
+
+<details>
+<summary>Offers (Dark Mode)</summary>
+  <img src="https://github.com/user-attachments/assets/a706a059-ada8-4248-95ea-3d7d2adfbcb2" alt="offers_dark" width="300">
+</details>
+
+<details>
+<summary>Payment Sheet</summary>
+  <img src="https://github.com/user-attachments/assets/1d06940a-4833-4e7e-abe2-ac9787c55d85" alt="payment_sheet" width="300">
+</details>
+
+---
+
+### 🛠 Management Features
+
+<details>
+<summary>Manager Menu (Empty State)</summary>
+  <img src="https://github.com/user-attachments/assets/3f965602-9e7d-445a-b8df-36a057a2faf5" alt="manager_menu_empty" width="300">
+</details>
+
+<details>
+<summary>Update Status (Dark Mode)</summary>
+  <img src="https://github.com/user-attachments/assets/a8f19660-a82f-487e-b8a2-d74a3a0ed2f4" alt="update_status_dark" width="300">
+</details>
+
+---
+
+### 🔗 Additional Features
+
+<details>
+<summary>QR Code (Dark Mode)</summary>
+  <img src="https://github.com/user-attachments/assets/adfaadff-8a06-4b70-a52b-e819a8a6c089" alt="qr_dark" width="300">
+</details>
+
+<details>
+<summary>Ratings (Dark Mode)</summary>
+  <img src="https://github.com/user-attachments/assets/7df56dde-7940-4c90-84bd-b3e02a5ced0d" alt="rating_dark" width="300">
+</details>
+
 
 ## Database Details
 
