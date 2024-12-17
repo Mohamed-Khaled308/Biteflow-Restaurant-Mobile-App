@@ -143,7 +143,7 @@ class _RatingScreenState extends State<RatingScreen> {
                         initialRating: _rating,
                         minRating: 1,
                         direction: Axis.horizontal,
-                        allowHalfRating: true,
+                        allowHalfRating: false,
                         itemCount: 5,
                         itemSize: 40,
                         itemBuilder: (context, _) => const Icon(
