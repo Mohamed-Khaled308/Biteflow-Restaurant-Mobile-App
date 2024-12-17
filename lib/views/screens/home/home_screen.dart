@@ -198,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SectionTitle(title: 'Special Offers'),
                   SizedBox(height: 10.h),
                   SizedBox(
-                    height: 170.h,
+                    height: 180.h,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       // padding: EdgeInsets.symmetric(horizontal: 16.w),
