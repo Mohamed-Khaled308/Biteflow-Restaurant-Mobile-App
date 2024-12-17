@@ -6,8 +6,8 @@ class BusinessConstants {
   static const String servedStatus = 'served';
   static const List<String> statuses = [
     pendingStatus,
-    inprogressStatus,
     acceptedStatus,
+    inprogressStatus,
     servedStatus,
   ];
 

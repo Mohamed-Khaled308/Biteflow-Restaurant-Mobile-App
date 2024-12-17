@@ -97,6 +97,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                             OrderDetailsView(
                               items: order.items,
                               totalAmount: totalAmount,
+                              orderDiscount: order.items.first.discountPercentage,
                             ),
                           );
                         },
@@ -137,7 +138,7 @@ class _ClientsOrdersListState extends State<ClientsOrdersList> {
                                         ),
                                         const SizedBox(height: 6),
                                         Text(
-                                          'Total: \$${order.totalAmount.toStringAsFixed(2)}',
+                                          'Order Total: \$${order.totalAmount.toStringAsFixed(2)}',
                                           style: TextStyle(
                                             fontSize: 18,
                                             color: Colors.grey[700],

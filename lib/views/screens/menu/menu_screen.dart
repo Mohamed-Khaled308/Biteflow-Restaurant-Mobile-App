@@ -147,15 +147,17 @@ class _MenuScreenState extends State<MenuScreen> {
                         ),
                       ),
                       builder: (context) {
-                        return MenuCard(
-                          imageUrl: item.imageUrl,
-                          title: item.title,
-                          description: item.description,
-                          price: item.price,
-                          rating: item.rating,
-                          categoryId: item.categoryId,
-                          restaurantId: widget.restaurantId,
-                          discountPercentage: item.discountPercentage,
+                        return SingleChildScrollView(
+                          child: MenuCard(
+                            imageUrl: item.imageUrl,
+                            title: item.title,
+                            description: item.description,
+                            price: item.price,
+                            rating: item.rating,
+                            categoryId: item.categoryId,
+                            restaurantId: widget.restaurantId,
+                            discountPercentage: item.discountPercentage,
+                          ),
                         );
                       },
                     );

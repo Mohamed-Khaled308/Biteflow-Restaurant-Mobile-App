@@ -24,7 +24,7 @@ class OrderItemDetails extends StatelessWidget {
     }
     final discountPercentage = orderItem.discountPercentage;
     final price = orderItem.price * orderItem.quantity;
-    final newPrice = price * (1 - discountPercentage / 100) * orderItem.quantity;
+    final newPrice = price * (1 - discountPercentage / 100);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
