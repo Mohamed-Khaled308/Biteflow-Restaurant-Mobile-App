@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">897858309084606</string>
+    <string name="app_name">Biteflow</string>
+    <string name="fb_login_protocol_scheme">fb897858309084606</string>
+    <string name="facebook_client_token">955c26ff80dd819e102953ba22837467</string>
+</resources>
