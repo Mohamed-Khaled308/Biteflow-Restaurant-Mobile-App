@@ -7,12 +7,12 @@ BiteFlow is an innovative restaurant management platform built with Flutter that
 ## Table of Contents
 
 - [Key Features](#key-features)
+- [Screenshots](#screenshots)
+- [Database Details](#database-details)
 - [Technical Architecture](#technical-architecture)
 - [Implementation Details](#implementation-details)
 - [Installation Guide](#installation-guide)
-- [Configuration](#configuration)
-- [Usage Guide](#usage-guide)
-- [API Documentation](#api-documentation)
+- [Configuration](#configuration) 
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -444,7 +444,7 @@ Stripe.publishableKey = env['STRIPE_PUBLISHABLE_KEY']!;
 await Stripe.instance.applySettings();
 ``` -->
 
-## Usage Guide
+<!-- ## Usage Guide
 
 ### Payment Processing
 
@@ -458,7 +458,7 @@ await Stripe.instance.applySettings();
 1. Generate QR code for order
 2. Share with other users
 3. Scan and join order
-4. Synchronize order details
+4. Synchronize order details -->
 
 ## Contributing
 
