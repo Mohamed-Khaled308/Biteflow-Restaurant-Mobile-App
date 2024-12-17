@@ -65,28 +65,27 @@ class MenuCard extends StatelessWidget {
                   ),
                 ),
                 // Rating
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-
-                      const SizedBox(width: 4),
-                      Text(
-                        rating.toStringAsFixed(1),
-                        style:  TextStyle(
-                          color: Theme.of(context).secondaryHeaderColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding:
+                //       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                //   decoration: BoxDecoration(
+                //     color: Theme.of(context).primaryColor.withOpacity(0.7),
+                //     borderRadius: BorderRadius.circular(8),
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       const SizedBox(width: 4),
+                //       Text(
+                //         rating.toStringAsFixed(1),
+                //         style:  TextStyle(
+                //           color: Theme.of(context).secondaryHeaderColor,
+                //           fontSize: 12,
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
             const SizedBox(height: 20),
