@@ -74,58 +74,69 @@ BiteFlow is an innovative restaurant management platform built with Flutter that
 
 
 
-## 📸 Screenshots
+## Screenshots
 
-### 🔐 Authentication Screens
+<details>
+<summary>🔐 Authentication Screens</summary>
+
 - **Login**  
   ![login](https://github.com/user-attachments/assets/b9626385-1e7e-435e-a984-7a221f8a6f9d)
 
 - **Profile**  
   ![profile](https://github.com/user-attachments/assets/26622ae1-4369-44d1-97f6-05df4c3fe04e)
 
-- **Profile (Dark Mode)**
+- **Profile (Dark Mode)**  
   ![profile_dark](https://github.com/user-attachments/assets/f373ade4-a042-4518-9edf-0d9dc02ffae3)
 
+</details>
 
 ---
 
-### 🛒 Main Features
+<details>
+<summary>🛒 Main Features</summary>
 
 #### 🍽 Restaurants and Orders
-- **All Restaurants View**
-![all_restaurants_client](https://github.com/user-attachments/assets/833ca625-ef0e-4c96-828f-c6f097910f1b)
+- **All Restaurants View**  
+  ![all_restaurants_client](https://github.com/user-attachments/assets/833ca625-ef0e-4c96-828f-c6f097910f1b)
 
 - **Order Details (Dark Mode)**  
-![order_details_dark](https://github.com/user-attachments/assets/2f3db08d-960f-49bc-aa72-d42b1f97ae8c)
+  ![order_details_dark](https://github.com/user-attachments/assets/2f3db08d-960f-49bc-aa72-d42b1f97ae8c)
 
 #### 💰 Offers and Payments
-- **Offers (Dark Mode)** 
-![offers_dark](https://github.com/user-attachments/assets/a706a059-ada8-4248-95ea-3d7d2adfbcb2)
+- **Offers (Dark Mode)**  
+  ![offers_dark](https://github.com/user-attachments/assets/a706a059-ada8-4248-95ea-3d7d2adfbcb2)
 
-- **Payment Sheet**
-<img width="161" alt="payment_sheet" src="https://github.com/user-attachments/assets/1d06940a-4833-4e7e-abe2-ac9787c55d85" />
-  
+- **Payment Sheet**  
+  <img width="161" alt="payment_sheet" src="https://github.com/user-attachments/assets/1d06940a-4833-4e7e-abe2-ac9787c55d85" />
+
+</details>
 
 ---
 
-### 🛠 Management Features
+<details>
+<summary>🛠 Management Features</summary>
+
 - **Manager Menu (Empty State)**  
-![manager_menu_empty](https://github.com/user-attachments/assets/3f965602-9e7d-445a-b8df-36a057a2faf5)
+  ![manager_menu_empty](https://github.com/user-attachments/assets/3f965602-9e7d-445a-b8df-36a057a2faf5)
 
-- **Update Status (Dark Mode)** 
-![update_status_dark](https://github.com/user-attachments/assets/a8f19660-a82f-487e-b8a2-d74a3a0ed2f4)
+- **Update Status (Dark Mode)**  
+  ![update_status_dark](https://github.com/user-attachments/assets/a8f19660-a82f-487e-b8a2-d74a3a0ed2f4)
 
-
----
-
-### 🔗 Additional Features
-- **QR Code (Dark Mode)** 
-![qr_dark](https://github.com/user-attachments/assets/adfaadff-8a06-4b70-a52b-e819a8a6c089)
-
-- **Ratings (Dark Mode)** 
-![rating_dark](https://github.com/user-attachments/assets/7df56dde-7940-4c90-84bd-b3e02a5ced0d)
+</details>
 
 ---
+
+<details>
+<summary>🔗 Additional Features</summary>
+
+- **QR Code (Dark Mode)**  
+  ![qr_dark](https://github.com/user-attachments/assets/adfaadff-8a06-4b70-a52b-e819a8a6c089)
+
+- **Ratings (Dark Mode)**  
+  ![rating_dark](https://github.com/user-attachments/assets/7df56dde-7940-4c90-84bd-b3e02a5ced0d)
+
+</details>
+
 
 ## Database Details
 
