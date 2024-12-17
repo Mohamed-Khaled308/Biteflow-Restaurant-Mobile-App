@@ -482,11 +482,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 
 ## Support
 
-For support, email support@biteflow.com or join our Discord channel.
+ 
 
 ## Acknowledgments
 
-- Dr. Milad Ghantous - Project Supervisor
+- Dr. Milad Ghantos - Project Supervisor
 - Team Members:
   - Abdelrahman Mohamed Salah
   - Ahmad Hoseiny AlShahhat
