@@ -42,12 +42,12 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           'Cart',
           style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
         ),
         backgroundColor: Theme.of(context).primaryColor,
-        iconTheme:  IconThemeData(
+        iconTheme: IconThemeData(
           color: Theme.of(context).secondaryHeaderColor,
         ),
         actions: [
@@ -66,6 +66,10 @@ class _CartScreenState extends State<CartScreen> {
 
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (snapshot.hasData && !snapshot.data!.isDeleted) {
+            viewModel.setCart = snapshot.data!;
           }
 
           if (!snapshot.hasData || snapshot.data!.items.isEmpty) {

@@ -5,10 +5,8 @@ import 'package:biteflow/models/cart.dart';
 import 'package:biteflow/models/manager.dart';
 import 'package:biteflow/models/client.dart';
 import 'package:biteflow/services/auth_service.dart';
-// import 'package:biteflow/services/firestore/cart_service.dart';
 import 'package:biteflow/services/firestore/user_service.dart';
 import 'package:biteflow/viewmodels/cart_view_model.dart';
-// import 'package:biteflow/viewmodels/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:biteflow/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +20,10 @@ class UserProvider extends ChangeNotifier {
   String? _errorMessage;
 
   bool get isLoggedIn => _isLoggedIn;
+  set setLoggedIn(loggedIn) {
+    _isLoggedIn = loggedIn;
+  }
+
   User? get user => _user;
   String? get errorMessage => _errorMessage;
 
@@ -32,6 +34,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Initialize user authentication state.
   Future<Result<bool>> _initializeAuthState() async {
     final currentUser = _authService.currentUser;
     if (currentUser != null) {
@@ -43,23 +46,33 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  /// Login using email and password.
   Future<Result<bool>> login(String email, String password) async {
     final result =
         await _authService.loginWithEmail(email: email, password: password);
     if (result.isSuccess) {
-      final prefs = await SharedPreferences.getInstance();
-      final savedCartId =
-          prefs.getString('cart_${_authService.currentUser!.uid}');
-      if (savedCartId != null) {
-        getIt<CartViewModel>().joinCart(savedCartId);
-      }
-      return await _initializeAuthState();
+      return await _handleLoginSuccess();
     } else {
       _handleError(result);
       return Result(error: _errorMessage);
     }
   }
 
+  /// Handle post-login state setup and SharedPreferences.
+  Future<Result<bool>> _handleLoginSuccess() async {
+    final initResult = await _initializeAuthState();
+    if (initResult.isSuccess) {
+      final prefs = await SharedPreferences.getInstance();
+      final savedCartId =
+          prefs.getString('cart_${_authService.currentUser!.uid}');
+      if (savedCartId != null) {
+        getIt<CartViewModel>().joinCart(savedCartId);
+      }
+    }
+    return initResult;
+  }
+
+  /// Sign up with user details and save to database.
   Future<Result<bool>> signup({
     required String name,
     required String email,
@@ -90,35 +103,30 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  /// Google login and SharedPreferences handling.
   Future<Result<bool>> loginWithGoogle() async {
     final result = await _authService.signInWithGoogle();
 
     if (result.isSuccess) {
-      if (result.data == null) return Result(data: false);
-      final init = await _initializeAuthState();
-      final prefs = await SharedPreferences.getInstance();
-      final savedCartId =
-          prefs.getString('cart_${_authService.currentUser!.uid}');
-      if (savedCartId != null) {
-        getIt<CartViewModel>().joinCart(savedCartId);
-      }
-      return init;
+      return await _handleLoginSuccess();
     } else {
       _handleError(result);
       return Result(error: _errorMessage);
     }
   }
 
+  /// Facebook login.
   Future<Result<bool>> loginWithFacebook() async {
     final result = await _authService.signInWithFacebook();
     if (result.isSuccess) {
-      return await _initializeAuthState();
+      return await _handleLoginSuccess();
     } else {
       _handleError(result);
       return Result(error: _errorMessage);
     }
   }
 
+  /// Create a user by role and save to database.
   Future<Result<bool>> _createUserByRole({
     required String id,
     required String name,
@@ -143,11 +151,13 @@ class UserProvider extends ChangeNotifier {
     if (result.isSuccess) {
       _isLoggedIn = true;
       _user = newUser;
+      _saveUserToPreferences(newUser);
       _errorMessage = null;
     }
     return result;
   }
 
+  /// Load or create a new user.
   Future<Result<bool>> _loadOrCreateUser(
       String userId, String? email, String? name) async {
     final result = await _userService.getUserById(userId);
@@ -155,6 +165,7 @@ class UserProvider extends ChangeNotifier {
     if (result.isSuccess) {
       _isLoggedIn = true;
       _user = result.data;
+      _saveUserToPreferences(_user!);
       _errorMessage = null;
       notifyListeners();
       return Result(data: true);
@@ -164,6 +175,7 @@ class UserProvider extends ChangeNotifier {
       if (creationResult.isSuccess) {
         _isLoggedIn = true;
         _user = user;
+        _saveUserToPreferences(user);
         _errorMessage = null;
         notifyListeners();
         return Result(data: true);
@@ -177,6 +189,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  /// Logout and clear SharedPreferences.
   Future<Result<bool>> logout() async {
     final currentUser = _user;
     if (currentUser != null) {
@@ -190,6 +203,7 @@ class UserProvider extends ChangeNotifier {
 
     final result = await _authService.logout();
     if (result.isSuccess) {
+      _clearPreferences();
       _setLoggedOutState();
       getIt<CartViewModel>().cleanUpCart();
       return Result(data: true);
@@ -197,6 +211,24 @@ class UserProvider extends ChangeNotifier {
       _handleError(result);
       return Result(error: _errorMessage);
     }
+  }
+
+  /// Save user and cart details to SharedPreferences.
+  Future<void> _saveUserToPreferences(User user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', user.id);
+    await prefs.setString('userEmail', user.email);
+    await prefs.setString('userName', user.name);
+    await prefs.setString('userRole', user.role);
+  }
+
+  /// Clear user and cart details from SharedPreferences.
+  Future<void> _clearPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userId');
+    await prefs.remove('userEmail');
+    await prefs.remove('userName');
+    await prefs.remove('userRole');
   }
 
   void _setLoggedOutState([String? error]) {

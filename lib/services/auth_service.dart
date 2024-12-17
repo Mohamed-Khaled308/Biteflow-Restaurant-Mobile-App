@@ -41,35 +41,42 @@ class AuthService {
   }
 
   Future<Result<User?>> signInWithGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    await googleSignIn.signOut();
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-    if (googleUser != null) {
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
-      return Result(data: userCredential.user);
+        final UserCredential userCredential =
+            await _firebaseAuth.signInWithCredential(credential);
+        return Result(data: userCredential.user);
+      }
+      return Result(error: 'Google Sign-In failed: No user found.');
+    } catch (e) {
+      return Result(error: 'Google Sign-In failed: ${e.toString()}');
     }
-    return Result(data: null);
   }
 
   Future<Result<User?>> signInWithFacebook() async {
-    final LoginResult loginResult = await FacebookAuth.instance.login();
-    if (loginResult.status == LoginStatus.success) {
-      final OAuthCredential credential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
-      return Result(data: userCredential.user);
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+      if (loginResult.status == LoginStatus.success) {
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+        final UserCredential userCredential =
+            await _firebaseAuth.signInWithCredential(credential);
+        return Result(data: userCredential.user);
+      }
+      return Result(error: 'Facebook Sign-In failed: User not found.');
+    } catch (e) {
+      return Result(error: 'Facebook Sign-In failed: ${e.toString()}');
     }
-    return Result(error: 'User Not Found!');
   }
 
   Future<Result<void>> logout() async {

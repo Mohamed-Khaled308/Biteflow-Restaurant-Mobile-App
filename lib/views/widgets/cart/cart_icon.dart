@@ -14,6 +14,7 @@ class CartIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.watch<CartViewModel>();
     final itemCount = viewModel.cartItemCount;
+    // print(itemCount);
     return SizedBox(
       width: 40.w,
       child: Stack(

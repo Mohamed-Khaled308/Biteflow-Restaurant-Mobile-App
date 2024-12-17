@@ -12,6 +12,7 @@ import 'package:biteflow/services/navigation_service.dart';
 import 'package:biteflow/viewmodels/base_model.dart';
 import 'package:biteflow/views/screens/cart/cart_view.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartViewModel extends BaseModel {
   final _navigationService = getIt<NavigationService>();
@@ -114,6 +115,8 @@ class CartViewModel extends BaseModel {
             .any((participant) => participant.id == _cart!.creatorId)) {
       cleanUpCart();
     } else {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('cart_${_userProvider.currentUser!.id}', cartId);
       notifyListeners();
     }
   }
@@ -180,10 +183,11 @@ class CartViewModel extends BaseModel {
     }
   }
 
-  void cleanUpCart() {
+  void cleanUpCart() async {
     _cartStream = null;
     _cart = null;
-
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('cart_${_userProvider.currentUser!.id}');
     notifyListeners();
   }
 
