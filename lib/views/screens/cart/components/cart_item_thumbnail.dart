@@ -102,7 +102,10 @@ class CartItemThumbnail extends StatelessWidget {
                                 cartItem.menuItem.id, cartItem.quantity + 1);
                           }
                         : null,
-                    icon: const Icon(Icons.add),
+                    icon: Icon(Icons.add,
+                        color: cartItem.userId == userProvider.user!.id
+                            ? Theme.of(context).secondaryHeaderColor
+                            : ThemeConstants.greyColor),
                   ),
                 ],
               ),

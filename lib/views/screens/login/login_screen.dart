@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? SizedBox(
                               width: 18.w,
                               height: 16.h,
-                              child:  CircularProgressIndicator(
+                              child: CircularProgressIndicator(
                                 color: Theme.of(context).primaryColor,
                               ),
                             )
@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           Text(
+          Text(
             'Don\'t have an account?',
             style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
           ),
@@ -196,12 +196,17 @@ class _LoginScreenState extends State<LoginScreen> {
           const Icon(Icons.error_outline, color: ThemeConstants.errorColor),
           SizedBox(width: 8.w),
           Expanded(
-            child: Text(
-              errorMessage,
-              style: TextStyle(
-                color: ThemeConstants.errorColor,
-                fontSize: 12.5.sp,
-                fontWeight: FontWeight.w500,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: 100.h), // Limit the height
+              child: SingleChildScrollView(
+                child: Text(
+                  errorMessage,
+                  style: TextStyle(
+                    color: ThemeConstants.errorColor,
+                    fontSize: 12.5.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
           ),

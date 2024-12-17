@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "206872951763-qke3qpo78tolle96hqeg61s908he9hko.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.biteflow.app",
+            "certificate_hash": "6cd84872e0c8be3aeef7561d0e1c41cf1742e4d4"
+          }
+        },
+        {
           "client_id": "206872951763-7tonupihp4mv6havd1to3vpaha6bomuu.apps.googleusercontent.com",
           "client_type": 3
         }
