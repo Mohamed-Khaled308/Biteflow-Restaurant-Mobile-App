@@ -50,6 +50,7 @@ class Options extends StatelessWidget {
                         width: 200,
                         alignment: Alignment.center,
                         child: QrImageView(
+                          // ignore: deprecated_member_use
                           foregroundColor: Theme.of(context).secondaryHeaderColor,
                           data: viewModel.cart!.id,
                           version: QrVersions.auto,
