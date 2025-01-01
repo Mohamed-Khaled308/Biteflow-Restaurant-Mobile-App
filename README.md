@@ -41,7 +41,6 @@ BiteFlow is an innovative restaurant management platform built with Flutter that
 - **Multiple Splitting Methods**
   - Equal split functionality
   - Item-based splitting
-  - Percentage-based division
   - Individual payment tracking
   - Split history maintenance
 
