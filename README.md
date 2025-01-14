@@ -41,7 +41,6 @@ BiteFlow is an innovative restaurant management platform built with Flutter that
 - **Multiple Splitting Methods**
   - Equal split functionality
   - Item-based splitting
-  - Percentage-based division
   - Individual payment tracking
   - Split history maintenance
 
@@ -187,42 +186,11 @@ The following collections are used in the **Firestore Database**:
 ### Database Configuration
 
 - **Database Type**: Firestore (NoSQL)
-- **Region**: `europe-west1` _(adjust as per your project configuration)_
 - **Data Consistency**: Strong consistency using Firestore's document-based structure. 
 - **Security Rules**: Firestore security rules limit read/write access to authorized users.
 
 ---
 
-### Firestore and Firebase Storage Rules
-
-```firestore
-rules_version = '2';
-
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2024, 12, 18);
-    }
-  }
-}
-
-service firebase.storage {
-  match /b/{bucket}/o {
-
-    match /{allPaths=**} {
-      allow read, write: if request.time < timestamp.date(2025, 1, 10);
-    }
-
-    // Development-specific rule
-    match /uploads/{fileName} {
-      allow read: if true;
-      allow write: if true;  // For development only
-    }
-  }
-}
-
-```
 ## Technical Architecture
 
 ### Core Technologies
